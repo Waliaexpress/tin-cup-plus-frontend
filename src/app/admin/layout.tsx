@@ -12,8 +12,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import StoreProvider from "./admin/providers/StoreProvider";
-import { Providers } from "./admin/providers/themProviders";
+import StoreProvider from "./providers/StoreProvider";
+import { Providers } from "./providers/themProviders";
+
 
 // export const metadata: Metadata = {
 //   title: {
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
                 <Header />
 
                 <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+                  <h1>ADMIN SIDE</h1>
                   {children}
                 </main>
               </div>

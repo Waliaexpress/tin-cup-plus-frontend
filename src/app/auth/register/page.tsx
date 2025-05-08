@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   title: "Sign Up", // Changed to "Sign Up" from "Sign in"
 };
 
-export default function SignupPage() {
+const  SignupPage = () => {
   return (
     <>
       <Breadcrumb pageName="Sign Up" />
 
       <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
-        <div className="flex flex-wrap items-center">
+        {/* <div className="flex flex-wrap items-center">
        
 
           <div className="hidden w-full p-7.5 xl:block xl:w-1/2">
@@ -64,8 +64,10 @@ export default function SignupPage() {
               <Signup />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
 }
+
+export default SignupPage
