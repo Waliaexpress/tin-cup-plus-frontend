@@ -1,6 +1,5 @@
 "use client";
 
-import { EmailIcon, PasswordIcon } from "@/assets/icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
@@ -9,6 +8,7 @@ import { Checkbox } from "../FormElements/checkbox";
 import { useState } from "react";
 import { useLoginMutation } from "@/store/services";
 import { toast } from "react-toastify";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 interface SignInFormData {
   email: string;
@@ -19,6 +19,7 @@ interface SignInFormData {
 export default function Signin() {
   const { push } = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [login] = useLoginMutation();
 
   const {
@@ -34,18 +35,19 @@ export default function Signin() {
     mode: "onChange",
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onSubmit = async (data: SignInFormData) => {
     setLoading(true);
     try {
       const response = await login(data).unwrap();
-      console.log(response, "res")
       if(response?.success){
-        await  localStorage.setItem("authToken", response?.data?.token)
+        await localStorage.setItem("authToken", response?.data?.token)
         toast.success(response?.message || "Sign-in successful!");
-
         push("/");
       }
-  
     } catch (error: any) {
       toast.error(
         error?.data?.message || "Failed to sign in. Please try again."
@@ -65,26 +67,53 @@ export default function Signin() {
           type="email"
           placeholder="Enter your email"
           className="mb-4 [&_input]:py-[15px]"
-          icon={<EmailIcon />}
+          icon={<Mail size={20} />}
           control={control}
           name="email"
           errors={errors.email}
         />
 
-        {/* Password Input */}
-        <InputGroup
-          label="Password"
-          type="password"
-          placeholder="Enter your password"
-          className="mb-5 [&_input]:py-[15px]"
-          icon={<PasswordIcon />}
-          control={control}
-          name="password"
-          errors={errors.password}
-        />
+        {/* Password Input with visibility toggle */}
+        <div className="relative mb-5">
+          <InputGroup
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter your password"
+            className="[&_input]:py-[15px]"
+            icon={null}
+            control={control}
+            name="password"
+            errors={errors.password}
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute right-3 top-10 text-gray-500 focus:outline-none"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
 
         {/* Remember Me and Forgot Password */}
         <div className="mb-6 flex items-center justify-between gap-2 py-2 font-medium">
+          <div className="flex items-center gap-2">
+            <Controller
+              name="remember"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  label="Remember me"
+                  name="remember"
+                  withIcon="check"
+                  minimal
+                  radius="md"
+                  onChange={(e) => {
+                    field.onChange(e.target.checked);
+                  }}
+                />
+              )}
+            />
+          </div>
           <Link
             href="/auth/forgot-password"
             className="hover:text-primary dark:text-white dark:hover:text-primary transition-colors"
