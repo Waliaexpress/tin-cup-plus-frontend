@@ -1,3 +1,4 @@
+import { RouteEnums } from "@/routes/Routes";
 import * as Icons from "../icons";
 
 export const NAV_DATA = [
@@ -13,6 +14,18 @@ export const NAV_DATA = [
             url: "/admin",
           },
         ],
+      },
+      {
+        title: "Ingredient",
+        url: RouteEnums.INGREDIENT,
+        icon: Icons.Table,
+        items: [],
+      },
+      {
+        title: "Dietary Tag",
+        url: RouteEnums.DIETARY_TAG,
+        icon: Icons.Table,
+        items: [],
       },
       {
         title: "Calendar",

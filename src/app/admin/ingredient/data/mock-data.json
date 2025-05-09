@@ -1,0 +1,74 @@
+{
+  "response": {
+    "items": [
+      {
+        "id": "ing-001",
+        "name": {
+          "en": "Berbere",
+          "am": "በርበሬ"
+        },
+        "description": {
+          "en": "A hot spice blend that usually includes chili peppers, garlic, ginger, basil, korarima, rue, white and black pepper, and fenugreek.",
+          "am": "ቃሪያ ቃሪያ፣ ነጭ ሽንኩርት፣ ዝንጅብል፣ ባዚል፣ ኮራሪማ፣ ሩ፣ ነጭና ጥቁር ቢላዋ እና ፈኑግሪክ የያዘ ሙቅ ቅመም ድብልቅ።"
+        },
+        "createdAt": "2024-12-01T10:30:00Z",
+        "updatedAt": "2024-12-01T10:30:00Z"
+      },
+      {
+        "id": "ing-002",
+        "name": {
+          "en": "Mitmita",
+          "am": "ሚጥሚጣ"
+        },
+        "description": {
+          "en": "A spicier and more flavorful version of berbere, made with African bird's eye chili peppers, cardamom seeds, cloves, and salt.",
+          "am": "የአፍሪካ ወፍ ዓይን ቃሪያ፣ የካርዳሞም ዘሮች፣ ቅርንፉድ እና ጨው ከበርበሬ የበለጠ ሙቅ እና ጣፋጭ ስሜት የሚሰጥ ቅመም።"
+        },
+        "createdAt": "2024-12-01T11:15:00Z",
+        "updatedAt": "2024-12-01T11:15:00Z"
+      },
+      {
+        "id": "ing-003",
+        "name": {
+          "en": "Niter Kibbeh",
+          "am": "ንጥር ቅቤ"
+        },
+        "description": {
+          "en": "Clarified butter that has been infused with herbs and spices such as koseret, basil, cardamom, cinnamon, and cumin.",
+          "am": "ኮሰረት፣ ባዚል፣ ካርዳሞም፣ ቀረፋ እና ኩሚን ያሉ ቅጠላ ቅጠሎችና ቅመሞች ጋር የተቀላቀለ የተጣራ ቅቤ።"
+        },
+        "createdAt": "2024-12-02T09:45:00Z",
+        "updatedAt": "2024-12-02T09:45:00Z"
+      },
+      {
+        "id": "ing-004",
+        "name": {
+          "en": "Injera",
+          "am": "ኢንጀራ"
+        },
+        "description": {
+          "en": "A sourdough flatbread with a slightly spongy texture, made from teff flour.",
+          "am": "ከጤፍ ዱቄት የሚሰራ ትንሽ ስፖንጅ መሰል ጣዕም ያለው የሆነ ሳውር ዶው ፍላት ብሬድ።"
+        },
+        "createdAt": "2024-12-02T14:20:00Z",
+        "updatedAt": "2024-12-02T14:20:00Z"
+      },
+      {
+        "id": "ing-005",
+        "name": {
+          "en": "Shiro",
+          "am": "ሽሮ"
+        },
+        "description": {
+          "en": "A powdered chickpea or broad bean flour used to make a thick, spicy stew.",
+          "am": "ወፍራም፣ ሙቅ ወጥ ለማዘጋጀት የሚያገለግል የተፈጨ የሽምብራ ወይም የባቄላ ዱቄት።"
+        },
+        "createdAt": "2024-12-03T08:10:00Z",
+        "updatedAt": "2024-12-03T08:10:00Z"
+      }
+    ],
+    "totalCount": 5,
+    "page": 1,
+    "pageSize": 10
+  }
+}
