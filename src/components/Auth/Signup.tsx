@@ -116,7 +116,7 @@ export default function Signup() {
         <button
           type="button"
           onClick={togglePasswordVisibility}
-          className="absolute right-3 top-10 text-gray-500 focus:outline-none"
+          className="absolute right-3 top-12 text-gray-500 focus:outline-none"
         >
           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
@@ -134,32 +134,6 @@ export default function Signup() {
         errors={errors.phone}
       />
 
-      {/* Role Selection */}
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200">
-          Role
-        </label>
-        <Controller
-          name="role"
-          control={control}
-          rules={{ required: "Role is required" }}
-          render={({ field }) => (
-            <select
-              {...field}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-            >
-              {Object.values(Role).map((role) => (
-                <option key={role} value={role}>
-                  {role.replace("_", " ").toLowerCase()}
-                </option>
-              ))}
-            </select>
-          )}
-        />
-        {errors.role && (
-          <p className="mt-1 text-sm text-red-500">{errors.role.message}</p>
-        )}
-      </div>
 
       {/* Submit Button */}
       <button
