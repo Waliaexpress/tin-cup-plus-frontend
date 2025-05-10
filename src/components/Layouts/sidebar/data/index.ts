@@ -28,6 +28,12 @@ export const NAV_DATA = [
         items: [],
       },
       {
+        title: "Menu Item",
+        url: RouteEnums.MENU_ITEM,
+        icon: Icons.Table,
+        items: [],
+      },
+      {
         title: "Calendar",
         url: "/admin/calendar",
         icon: Icons.Calendar,

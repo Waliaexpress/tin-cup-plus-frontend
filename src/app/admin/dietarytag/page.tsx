@@ -15,7 +15,7 @@ import mockData from "./data/mock-data.json";
 
 export default function DietaryTagsPage() {
   const router = useRouter();
-  const [data, setData] = useState<DietaryTag[]>(mockData.response.items);
+  const [data, setData] = useState<any[]>(mockData.response.items);
 
   // Define columns for the data table
   const columns: TableColumn<DietaryTag>[] = [
