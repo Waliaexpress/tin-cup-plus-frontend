@@ -11,4 +11,7 @@ export enum RouteEnums {
     EDIT_MENU_ITEM = "/admin/menu-item/edit",
     SIGN_IN = "/auth/sign-in",
     SIGN_UP = "/auth/register",
+    CATEGORY = "/admin/category",
+    CREATE_CATEGORY = "/admin/category/create",
+    EDIT_CATEGORY = "/admin/category/edit",
 }

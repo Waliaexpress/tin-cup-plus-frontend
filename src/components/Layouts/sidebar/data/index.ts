@@ -33,6 +33,12 @@ export const NAV_DATA = [
         icon: Icons.MenuItemIcon,
         items: [],
       },
+      {
+        title: "Category",
+        url: RouteEnums.CATEGORY,
+        icon: Icons.CategoryIcon,
+        items: [],
+      },
   //     {
   //       title: "Calendar",
   //       url: "/admin/calendar",
