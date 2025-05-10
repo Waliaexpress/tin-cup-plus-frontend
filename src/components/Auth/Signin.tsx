@@ -9,6 +9,8 @@ import { useState } from "react";
 import { useLoginMutation } from "@/store/services";
 import { toast } from "react-toastify";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Config } from "@/shared/Config";
+import { RouteEnums } from "@/routes/Routes";
 
 interface SignInFormData {
   email: string;
@@ -93,8 +95,6 @@ export default function Signin() {
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
-
-        {/* Remember Me and Forgot Password */}
         <div className="mb-6 flex items-center justify-between gap-2 py-2 font-medium">
           <div className="flex items-center gap-2">
             <Controller
@@ -122,7 +122,6 @@ export default function Signin() {
           </Link>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -135,12 +134,11 @@ export default function Signin() {
         </button>
       </form>
 
-      {/* Sign Up Link */}
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-600 dark:text-gray-300">
           Don&apos;t have an account?{" "}
           <Link
-            href="/auth/sign-up"
+            href={RouteEnums.SIGN_UP}
             className="text-primary hover:underline font-medium"
           >
             Sign Up

@@ -34,9 +34,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <ToastContainer position="top-right" autoClose={5000} />
 
             <div className="flex min-h-screen">
-              <div className="w-full bg-blue-200 dark:bg-[#020d1a]">
+              <div className="w-full bg-white dark:bg-[#020d1a]">
 
-                <main className="isolate mx-auto w-full  overflow-hidden p-4 md:p-6 2xl:p-10">
+                <main className="isolate mx-auto w-full  overflow-hidden ">
                   {children}
                 </main>
               </div>

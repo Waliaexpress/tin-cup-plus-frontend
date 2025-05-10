@@ -24,30 +24,18 @@ import { Providers } from "./providers/themProviders";
 //   description: "Task and Performance Management System.",
 // };
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default function AdminLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <StoreProvider>
-          <Providers>
-            <NextTopLoader showSpinner={false} />
+    <div className="flex min-h-screen w-full">
+      <Sidebar />
 
-            <ToastContainer position="top-right" autoClose={5000} />
+      <div className="w-full bg-gray-100 dark:bg-[#020d1a]">
+        <Header />
 
-            <div className="flex min-h-screen">
-              <Sidebar />
-
-              <div className="w-full bg-red-400 dark:bg-[#020d1a]">
-                <Header />
-
-                <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
-                  {children}
-                </main>
-              </div>
-            </div>
-          </Providers>
-        </StoreProvider>
-      </body>
-    </html>
+        <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }

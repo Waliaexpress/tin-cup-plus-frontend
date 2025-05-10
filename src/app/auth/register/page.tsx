@@ -20,7 +20,7 @@ const  SignupPage = () => {
              style={{backgroundImage: "url('/images/bg/authbg.avif')", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}
             className="custom-gradient-1 overflow-hidden rounded-2xl px-12.5 pt-40 dark:!bg-dark-2 dark:bg-none h-[calc(100vh-100px)] ">
             <div className="flex flex-col text-center justify-center items-center mt-6">
-            <Link  className="mb-16 inline-block text-5xl font-serif font-semibold tracking-wide leading-[60px] text-primary hover:text-[#7c7f5a] transition-colors duration-300" href="/">
+            <Link  className="mb-16 inline-block text-5xl font-serif font-semibold tracking-wide leading-[60px] text-primary transition-colors duration-300" href="/">
               Tin Cup Plus<br/> Restaurant
               </Link>
 
@@ -49,7 +49,18 @@ const  SignupPage = () => {
             </div>
           </div>
           <div className="w-full xl:w-1/2">
-            <div className="w-full p-4 sm:p-12.5 xl:p-15">
+            <div className="w-full p-4 sm:p-12.5 xl:p-15  bg-[url('/images/bg/authbg.avif')] md:bg-none bg-cover bg-center"
+             
+            >
+            <div className="md:hidden w-full mb-16 mt-2">
+            <Link  className=" w-full inline-block text-[28px] text-center md:hidden font-serif font-semibold tracking-wide leading-[60px] text-primary transition-colors duration-300" href="/">
+              Tin Cup Plus Restaurant
+              </Link>
+              <div className=" h-1 w-16 bg-primary mx-auto rounded-full"></div>
+              <p className="mt-6 text-lg font-medium text-center text-gray-700 dark:text-white italic">
+             Sign up
+              </p>
+            </div>
               <Signup />
             </div>
           </div>
