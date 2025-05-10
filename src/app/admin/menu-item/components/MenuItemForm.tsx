@@ -394,10 +394,21 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
                       max={MENU_ITEM_CONSTANTS.MAX_PRICE}
                       placeholder="0.00"
                       className="w-full rounded border border-stroke bg-white pl-10 pr-5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-[#F5F7FD] dark:border-dark-3 dark:bg-gray-dark dark:text-white dark:focus:border-primary"
-                      {...field}
+                      value={field.value === 0 && document.activeElement === document.getElementById('price-input') ? '' : field.value}
+                      id="price-input"
                       onChange={(e) => {
-                        const value = parseFloat(e.target.value);
-                        field.onChange(isNaN(value) ? 0 : value);
+                        if (e.target.value === '') {
+                          field.onChange('');
+                        } else {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(value);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        if (e.target.value === '') {
+                          field.onChange(MENU_ITEM_CONSTANTS.MIN_PRICE);
+                        }
+                        field.onBlur();
                       }}
                     />
                   )}
