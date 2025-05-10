@@ -13,7 +13,6 @@ import TagMultiSelect from "@/components/FormElements/TagMultiSelect";
 import ImageUploader from "@/components/FormElements/ImageUploader";
 import { useDebounce } from "@/hooks/useDebounce";
 
-// Import mock data for dropdowns (in a real app, these would be API calls)
 import mockIngredients from "../../ingredient/data/mock-data.json";
 import mockDietaryTags from "../../dietarytag/data/mock-data.json";
 import mockCategories from "../data/mock-data.json";
