@@ -35,12 +35,16 @@ const Categories = () => {
   }, [searchParams, categories, dispatch]);
 
   const handleCategoryClick = (categoryId: string, slug: string) => {
+    // First dispatch the action to update the Redux store
     dispatch(setSelectedCategory(categoryId));
     
-    // Update URL with category parameter
+    // Update URL without causing a navigation/refresh
     const params = new URLSearchParams(searchParams.toString());
     params.set('category', slug);
-    router.push(`/?${params.toString()}`);
+    
+    // Use window.history to update the URL without navigation
+    const newUrl = `/?${params.toString()}`;
+    window.history.pushState({}, '', newUrl);
   };
 
   return (

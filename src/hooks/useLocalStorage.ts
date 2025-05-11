@@ -3,7 +3,8 @@ export function getLocalStorage<T>(key: string, defaultValue: T): T {
   
     try {
       const item = window.localStorage.getItem(key);
-      return item ? (JSON.parse(item) as T) : defaultValue;
+      
+      return item ? (item as T) : defaultValue;
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
       return defaultValue;

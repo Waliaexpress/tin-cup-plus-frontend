@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import Hero from "@/components/localfood/hero/Hero";
 import Categories from "@/components/localfood/categories/Categories";
+import MenuItems from "@/components/localfood/menu/MenuItems";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function LandingPage() {
 
       {/* Categories Section */}
       <Categories />
-
+      <MenuItems />
       {/* About Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
