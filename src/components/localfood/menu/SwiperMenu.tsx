@@ -1,13 +1,10 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import MenuItem from "./MenuItem";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 interface MenuItemType {
   id: string;
@@ -26,12 +23,11 @@ interface SwiperMenuProps {
 const SwiperMenu = ({ items, onAddToCart }: SwiperMenuProps) => {
   return (
     <Swiper
-      modules={[Navigation, Pagination]}
+      modules={[Navigation]}
       spaceBetween={16}
       slidesPerView={1.2}
       centeredSlides={false}
-      pagination={{ clickable: true }}
-      className="pb-10"
+      className="pb-4"
     >
       {items.map((item) => (
         <SwiperSlide key={item.id}>

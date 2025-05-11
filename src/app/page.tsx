@@ -20,8 +20,10 @@ export default function LandingPage() {
 
       {/* Categories Section */}
       <Categories />
+      <div className="flex flex-col gap-14">
       <MenuItems />
       <MenuItems title="Popular Dishes" />
+      </div>
       {/* About Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">

@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
-import menuData from "@/data/menuItems.json";
+import traditionalMenuData from "@/data/menuItems.json";
+import foreignMenuData from "@/data/foreignMenuItems.json";
 
-// Dynamically import components to prevent hydration issues
 const MenuItem = dynamic(() => import("./MenuItem"), { ssr: false });
 const SwiperComponent = dynamic(() => import("./SwiperMenu"), { ssr: false });
 
@@ -24,7 +24,7 @@ interface Category {
   items: MenuItem[];
 }
 
-const MenuItems = ({title}: {title?: string}) => {
+const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "traditional" | "foreign"}) => {
   
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
@@ -34,32 +34,36 @@ const MenuItems = ({title}: {title?: string}) => {
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);
-  // Get selected category from Redux store only on client side
   const selectedCategory = useSelector((state: any) => 
     mounted ? state.category?.selectedCategory : null
   );
 
-  // Handle client-side mounting
+  const menuData = type === "traditional" ? traditionalMenuData : foreignMenuData;
+
   useEffect(() => {
     setMounted(true);
     
-    // Initialize items from default category
-    const defaultCategory = menuData.categories.find(cat => cat.id === "special-dishes");
+    const defaultCategoryId = type === "traditional" ? "special-dishes" : "all";
+    const defaultCategory = menuData.categories.find(cat => cat.id === defaultCategoryId);
     if (defaultCategory) {
-      setItems(defaultCategory.items);
+      if (type === "foreign" && defaultCategoryId === "all") {
+        const allItems = menuData.categories
+          .filter(cat => cat.id !== "all")
+          .flatMap(cat => cat.items);
+        setItems(allItems);
+      } else {
+        setItems(defaultCategory.items);
+      }
     }
-  }, []);
+  }, [type, menuData]);
   
-  // Handle category changes
   useEffect(() => {
     if (!mounted) return;
     
-    // If a category is selected from Redux, use that
     if (selectedCategory) { 
       setActiveCategory(selectedCategory);
     }
 
-    // Find the active category and set its items
     const category = menuData.categories.find((cat) => cat.id === activeCategory);
     if (category) {
       setItems(category.items);
@@ -69,7 +73,6 @@ const MenuItems = ({title}: {title?: string}) => {
   const handleAddToCart = (itemId: string) => {
     if (!mounted) return;
     
-    // Implement add to cart functionality
     const itemToAdd = items.find((item) => item.id === itemId);
     if (itemToAdd) {
       dispatch({
@@ -101,7 +104,7 @@ const MenuItems = ({title}: {title?: string}) => {
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-serif font-semibold mb-8 text-center">
-           {/* {menuTitle} */}
+           {menuTitle}
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((placeholder) => (

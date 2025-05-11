@@ -19,8 +19,6 @@ const MainNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const router = useRouter();
-
-  // Handle scroll effect for navigation background
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -34,7 +32,6 @@ const MainNavigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Toggle mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -47,16 +44,15 @@ const MainNavigation = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          {/* Logo / Restaurant Name */}
           <Link href="/" className="flex items-center">
             <span className={`text-2xl font-serif font-semibold tracking-wide ${
               isScrolled || isMenuOpen ? "text-primary" : "text-primary"
             }`}>
-             <Image src={"/images/logo/tin-cup-plus-logo.jpg"} width={70} height={40} alt="" className="bg-contain" />
+             <Image src={"/images/logo/tin-cup-plus-logo.jpg"} width={65} height={35} 
+             alt="" className="bg-contain" />
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/about" 
@@ -79,7 +75,7 @@ const MainNavigation = () => {
               </button>
               <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                 <Link 
-                  href="/menu" 
+                  href="/" 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Ethiopian Dishes
@@ -93,7 +89,6 @@ const MainNavigation = () => {
               </div>
             </div>
             
-            {/* Cart with Price */}
             <div className="relative">
               <Link 
                 href="/cart" 
