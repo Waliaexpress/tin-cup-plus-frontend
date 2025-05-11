@@ -41,7 +41,7 @@ const MainNavigation = () => {
   return (
     <header 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled || isMenuOpen ? "bg-white shadow-md dark:bg-gray-900" : "bg-transparent"
+        isScrolled || isMenuOpen ? "bg-white shadow-md dark:bg-gray-900" : "bg-white/80 shadow-md dark:bg-gray-900/80"
       }`}
     >
       <div className="container mx-auto px-4">
@@ -49,7 +49,7 @@ const MainNavigation = () => {
           {/* Logo / Restaurant Name */}
           <Link href="/" className="flex items-center">
             <span className={`text-2xl font-serif font-semibold tracking-wide ${
-              isScrolled || isMenuOpen ? "text-primary" : "text-white"
+              isScrolled || isMenuOpen ? "text-primary" : "text-primary"
             }`}>
               Tin Cup Plus Restaurant
             </span>
@@ -60,7 +60,7 @@ const MainNavigation = () => {
             <Link 
               href="/about" 
               className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                isScrolled ? "text-gray-700 dark:text-white" : "text-white"
+                isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
               }`}
             >
               <Info size={18} />
@@ -70,7 +70,7 @@ const MainNavigation = () => {
             <div className="relative group">
               <button 
                 className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                  isScrolled ? "text-gray-700 dark:text-white" : "text-white"
+                  isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
                 }`}
               >
                 <span>Menu</span>
@@ -97,7 +97,7 @@ const MainNavigation = () => {
               <Link 
                 href="/cart" 
                 className={`flex items-center gap-2 font-medium hover:text-primary transition-colors ${
-                  isScrolled ? "text-gray-700 dark:text-white" : "text-white"
+                  isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
                 }`}
               >
                 <ShoppingCart size={20} />
@@ -112,7 +112,7 @@ const MainNavigation = () => {
             <div className="relative group">
               <button 
                 className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                  isScrolled ? "text-gray-700 dark:text-white" : "text-white"
+                  isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
                 }`}
               >
                 <User size={20} />
@@ -150,9 +150,9 @@ const MainNavigation = () => {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X size={24} className={isScrolled ? "text-gray-700 dark:text-white" : "text-white"} />
+              <X size={24} className={isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"} />
             ) : (
-              <Menu size={24} className={isScrolled ? "text-gray-700 dark:text-white" : "text-white"} />
+              <Menu size={24} className={isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"} />
             )}
           </button>
         </div>

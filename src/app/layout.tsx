@@ -14,6 +14,7 @@ import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import StoreProvider from "./admin/providers/StoreProvider";
 import { Providers } from "./admin/providers/themProviders";
+import ReduxProvider from "@/providers/ReduxProvider";
 
 // export const metadata: Metadata = {
 //   title: {
@@ -29,18 +30,20 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <StoreProvider>
           <Providers>
-            <NextTopLoader showSpinner={false} />
+            <ReduxProvider>
+              <NextTopLoader showSpinner={false} />
 
-            <ToastContainer position="top-right" autoClose={5000} />
+              <ToastContainer position="top-right" autoClose={5000} />
 
-            <div className="flex min-h-screen">
-              <div className="w-full bg-white dark:bg-[#020d1a]">
+              <div className="flex min-h-screen">
+                <div className="w-full bg-white dark:bg-[#020d1a]">
 
-                <main className="isolate mx-auto w-full  overflow-hidden ">
-                  {children}
-                </main>
+                  <main className="isolate mx-auto w-full  overflow-hidden ">
+                    {children}
+                  </main>
+                </div>
               </div>
-            </div>
+            </ReduxProvider>
           </Providers>
         </StoreProvider>
       </body>
