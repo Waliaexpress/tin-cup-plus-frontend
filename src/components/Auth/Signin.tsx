@@ -6,11 +6,10 @@ import { useForm, Controller } from "react-hook-form";
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
 import { useState } from "react";
-import { useLoginMutation } from "@/store/services";
 import { toast } from "react-toastify";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { Config } from "@/shared/Config";
+import { Mail, Eye, EyeOff } from "lucide-react";
 import { RouteEnums } from "@/routes/Routes";
+import axiosInstance from "@/utils/AxiosInstance";
 
 interface SignInFormData {
   email: string;
@@ -18,11 +17,26 @@ interface SignInFormData {
   remember: boolean;
 }
 
+interface LoginResponse {
+  error: boolean;
+  success: boolean;
+  data: {
+    user: {
+      id: string;
+      email: string;
+      role: string;
+      status: string;
+      firstName: string;
+      lastName: string;
+    };
+    token: string;
+  };
+}
+
 export default function Signin() {
   const { push } = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [login] = useLoginMutation();
 
   const {
     control,
@@ -44,17 +58,28 @@ export default function Signin() {
   const onSubmit = async (data: SignInFormData) => {
     setLoading(true);
     try {
-      const response = await login(data).unwrap();
-      if(response?.success){
-        await localStorage.setItem("authToken", response?.data?.token)
-        toast.success(response?.message || "Sign-in successful!");
-        push("/");
+      const response = await axiosInstance.post<LoginResponse>('/login', {
+        email: data.email,
+        password: data.password
+      });
+      
+      if (response.data.success) {
+        const { user, token } = response.data.data;
+        
+        localStorage.setItem('tin-cup-token', token);    
+      toast.success('Sign-in successful!');
+        
+        if (user?.role === 'admin') {
+          push('/admin');
+        } else {
+          push('/');
+        }
       }
     } catch (error: any) {
       toast.error(
-        error?.data?.message || "Failed to sign in. Please try again."
+        error?.response?.data?.message || 'Failed to sign in. Please try again.'
       );
-      console.error("Sign-in error:", error);
+      console.error('Sign-in error:', error);
     } finally {
       setLoading(false);
     }
@@ -75,7 +100,6 @@ export default function Signin() {
           errors={errors.email}
         />
 
-        {/* Password Input with visibility toggle */}
         <div className="relative mb-5">
           <InputGroup
             label="Password"
@@ -90,7 +114,7 @@ export default function Signin() {
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="absolute right-3 top-10 text-gray-500 focus:outline-none"
+            className="absolute right-3 top-14 text-gray-500 focus:outline-none"
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
