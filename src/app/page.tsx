@@ -21,6 +21,7 @@ export default function LandingPage() {
       {/* Categories Section */}
       <Categories />
       <MenuItems />
+      <MenuItems title="Popular Dishes" />
       {/* About Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">

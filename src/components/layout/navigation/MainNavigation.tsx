@@ -12,6 +12,7 @@ import {
   Info
 } from "lucide-react";
 import { RouteEnums } from "@/routes/Routes";
+import Image from "next/image";
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,7 +52,7 @@ const MainNavigation = () => {
             <span className={`text-2xl font-serif font-semibold tracking-wide ${
               isScrolled || isMenuOpen ? "text-primary" : "text-primary"
             }`}>
-              Tin Cup Plus Restaurant
+             <Image src={"/images/logo/tin-cup-plus-logo.jpg"} width={70} height={40} alt="" className="bg-contain" />
             </span>
           </Link>
 

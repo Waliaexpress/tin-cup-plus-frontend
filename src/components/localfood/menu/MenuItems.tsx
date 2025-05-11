@@ -24,12 +24,16 @@ interface Category {
   items: MenuItem[];
 }
 
-const MenuItems = () => {
+const MenuItems = ({title}: {title?: string}) => {
+  
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("special-dishes");
   const [items, setItems] = useState<any[]>([]);
-  
+  const [menuTitle, setMenuTitle] = useState<string>("");
+  useEffect(() => {
+    setMenuTitle(title || "Special Dishes");
+  }, [title]);
   // Get selected category from Redux store only on client side
   const selectedCategory = useSelector((state: any) => 
     mounted ? state.category?.selectedCategory : null
@@ -51,7 +55,7 @@ const MenuItems = () => {
     if (!mounted) return;
     
     // If a category is selected from Redux, use that
-    if (selectedCategory) {
+    if (selectedCategory) { 
       setActiveCategory(selectedCategory);
     }
 
@@ -81,10 +85,8 @@ const MenuItems = () => {
     }
   };
 
-  // Get the active category name for display
-  const activeCategoryName = "Special Dishes"; // Default value
+  const activeCategoryName = title || "Special Dishes"; 
   
-  // Only update on client-side to prevent hydration mismatch
   useEffect(() => {
     if (mounted) {
       const categoryName = menuData.categories.find(cat => cat.id === activeCategory)?.name || "Special Dishes";
@@ -94,14 +96,12 @@ const MenuItems = () => {
       }
     }
   }, [activeCategory, mounted]);
-    
-  // Show loading skeleton while client is mounting
   if (!mounted) {
     return (
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-serif font-semibold mb-8 text-center">
-            Special Dishes
+           {/* {menuTitle} */}
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((placeholder) => (
