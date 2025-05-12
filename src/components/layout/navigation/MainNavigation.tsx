@@ -48,7 +48,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             <span className={`text-2xl font-serif font-semibold tracking-wide ${
               isScrolled || isMenuOpen ? "text-primary" : "text-primary"
             }`}>
-             <Image src={"/images/logo/tin-cup-plus-logo.png"} width={65} height={35} 
+             <Image src={"/images/logo/tin-cup-plus-logo.jpg"} width={65} height={35} 
              alt="" className="bg-contain" />
             </span>
           </Link>

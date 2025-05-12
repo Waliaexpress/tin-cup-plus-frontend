@@ -95,7 +95,10 @@ const FeatureSection = ({ image, title, description, isReversed, index, menuLink
             src={image}
             alt={title}
             fill
-            className="object-cover transition-transform duration-700 "
+            loading="lazy"
+            quality={75}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover transition-transform duration-700"
           />
         </div>
       </motion.div>

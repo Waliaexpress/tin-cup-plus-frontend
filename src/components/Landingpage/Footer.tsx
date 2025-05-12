@@ -66,6 +66,9 @@ const Footer = () => {
           src="/images/landing_pages/land2.jpg"
           alt="Footer banner"
           fill
+          loading="lazy"
+          quality={70}
+          sizes="100vw"
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
@@ -87,6 +90,7 @@ const Footer = () => {
                   width={60}
                   height={60}
                   alt="Tin Cup Plus Logo"
+                  loading="lazy"
                   className="mr-3"
                 />
                 <h3 className="text-xl font-bold font-playfair text-white">

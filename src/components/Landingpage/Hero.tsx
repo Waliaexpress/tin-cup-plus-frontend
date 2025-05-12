@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Phone } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -16,6 +17,7 @@ const Hero = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
 
   const sliderImages = [
     "/images/landing_pages/slider1.jpg",
@@ -51,6 +53,9 @@ const Hero = () => {
                 alt={`Slider image ${index + 1}`}
                 fill
                 priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                quality={80}
+                sizes="100vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-black bg-opacity-50" />
@@ -123,6 +128,21 @@ const Hero = () => {
             <div className="w-1 h-3 bg-white rounded-full" />
           </motion.div>
         </motion.div>
+      </div>
+      
+      <div className="absolute top-32 right-8 z-20 hidden md:block">
+        <motion.a
+          href="tel:+16127034169"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-4 py-3 rounded-full shadow-lg border border-white/30"
+        >
+          <Phone className="text-white" size={20} />
+          <span className="font-medium font-inter">+1 612-703-4169</span>
+        </motion.a>
       </div>
     </div>
   );
