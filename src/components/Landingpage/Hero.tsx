@@ -58,7 +58,7 @@ const Hero = () => {
                 sizes="100vw"
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-50" />
+              <div className="absolute inset-0 bg-black bg-opacity-30 " />
             </div>
           </SwiperSlide>
         ))}
