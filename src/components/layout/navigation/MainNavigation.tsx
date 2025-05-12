@@ -39,7 +39,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
   return (
     <header 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled || isMenuOpen ? `bg-white  dark:bg-gray-900` : `${landing ? "bg-transparent " : "bg-white/80 shadow-md"}  dark:bg-gray-900/80`
+        isScrolled || isMenuOpen ? `bg-white  dark:bg-gray-900 shadow-md` : `${landing ? "bg-transparent  " : "bg-white/80 shadow-md"}  dark:bg-gray-900/80`
       }`}
     >
       <div className="container mx-auto px-4">

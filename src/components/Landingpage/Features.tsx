@@ -1,8 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import Link from "next/link";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { featuresData } from "./constants";
 
 interface FeatureProps {
   image: string;
@@ -10,11 +13,44 @@ interface FeatureProps {
   description: string;
   isReversed?: boolean;
   index: number;
+  menuLink: string;
 }
 
-const FeatureSection = ({ image, title, description, isReversed, index }: FeatureProps) => {
-  const ref = useRef(null);
+const FeatureSection = ({ image, title, description, isReversed, index, menuLink }: FeatureProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [elementTop, setElementTop] = useState(0);
+  const [clientHeight, setClientHeight] = useState(0);
+  
+  const { scrollY } = useScroll();
+  
+  const scale = useTransform(
+    scrollY,
+    [elementTop - clientHeight, elementTop, elementTop + clientHeight],
+    [0.9, 1.1, 0.9]
+  );
+
+  useEffect(() => {
+    if (!imageRef.current) return;
+    
+    const element = imageRef.current;
+    const rect = element.getBoundingClientRect();
+    
+    setElementTop(rect.top + window.scrollY);
+    setClientHeight(window.innerHeight);
+
+    const handleResize = () => {
+      const rect = element.getBoundingClientRect();
+      setElementTop(rect.top + window.scrollY);
+      setClientHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [imageRef]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -47,8 +83,10 @@ const FeatureSection = ({ image, title, description, isReversed, index }: Featur
       } items-center gap-8 md:gap-16 py-16 md:py-24`}
     >
       <motion.div
+        ref={imageRef}
         variants={itemVariants}
-        whileHover={{ scale: 1.03 }}
+        style={{ scale }}
+        // whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
         className="w-full md:w-1/2"
       >
@@ -57,7 +95,7 @@ const FeatureSection = ({ image, title, description, isReversed, index }: Featur
             src={image}
             alt={title}
             fill
-            className="object-cover transition-transform duration-700 hover:scale-110"
+            className="object-cover transition-transform duration-700 "
           />
         </div>
       </motion.div>
@@ -78,36 +116,26 @@ const FeatureSection = ({ image, title, description, isReversed, index }: Featur
         ></motion.div>
         <motion.p
           variants={itemVariants}
-          className="text-lg text-gray-600 leading-relaxed font-montserrat"
+          className="text-lg text-gray-600 leading-relaxed font-montserrat mb-6"
         >
           {description}
         </motion.p>
+        <motion.div variants={itemVariants}>
+          <Link 
+            href={menuLink}
+            className="inline-flex items-center px-6 py-3  text-primary animate-pulse rounded-lg font-medium hover:bg-opacity-90 transition-colors font-inter"
+          >
+           <span> View Menu</span>
+           <ArrowRight/>
+          </Link>
+        </motion.div>
       </motion.div>
     </motion.div>
   );
 };
 
 const Features = () => {
-  const featuresData = [
-    {
-      image: "/images/landing_pages/land1.jpg",
-      title: "Traditional Ethiopian Dining Experience",
-      description:
-        "Immerse yourself in the authentic ambiance of our traditional Ethiopian dining hall. Experience the rich cultural heritage of Ethiopia through our meticulously designed space that honors centuries-old traditions. Our hall features handcrafted furniture and traditional décor, creating the perfect setting for enjoying our authentic Ethiopian cuisine served on traditional injera.",
-    },
-    {
-      image: "/images/landing_pages/land2.jpg",
-      title: "Communal Dining & Cultural Celebrations",
-      description:
-        "Our traditional Ethiopian restaurant hall is designed for communal dining experiences that bring people together. Perfect for family gatherings, cultural celebrations, and special occasions, our space accommodates both intimate dinners and larger groups. Experience the Ethiopian tradition of sharing food from a common plate, symbolizing unity and friendship while enjoying our carefully prepared authentic dishes.",
-    },
-    {
-      image: "/images/landing_pages/land3.jpg",
-      title: "Exquisite Buffet Selection",
-      description:
-        "Indulge in our extensive buffet offering a wide variety of both Ethiopian and international cuisines. Our buffet features a rotating selection of freshly prepared dishes, allowing you to sample multiple flavors in one visit. From traditional Ethiopian stews and injera to international favorites, our buffet caters to all palates. Perfect for those who want to explore a diverse range of culinary delights in a modern, elegant setting.",
-    },
-  ];
+ 
 
   return (
     <section className="container mx-auto px-4 py-16">
@@ -136,6 +164,7 @@ const Features = () => {
             description={feature.description}
             isReversed={index % 2 !== 0}
             index={index}
+            menuLink={feature.menuLink}
           />
         ))}
       </div>

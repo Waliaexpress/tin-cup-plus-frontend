@@ -20,7 +20,7 @@ const Hero = () => {
   const sliderImages = [
     "/images/landing_pages/slider1.jpg",
     "/images/landing_pages/slider2.jpg",
-    "/images/slider_food/home-slider-tibse.jpg",
+    "/images/landing_pages/land1.jpg",
   ];
 
   const handleNavigation = (path: string) => {
