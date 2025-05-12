@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { type HTMLInputTypeAttribute, useId } from "react";
 import { useController } from "react-hook-form";
-// import  DisplayError  from "@/common/DisplayError";
+
 
 type InputGroupProps = {
   className?: string;
@@ -78,8 +78,6 @@ const InputGroup: React.FC<InputGroupProps> = ({
         />
         {icon}
       </div>
-
-      {/* <DisplayError errors={errors} name={name} /> */}
     </div>
   );
 };

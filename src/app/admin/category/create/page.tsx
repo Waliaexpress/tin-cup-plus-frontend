@@ -17,7 +17,7 @@ export default function CreateCategoryPage() {
           </p>
         </div>
 
-        <CategoryForm isEditing={false} />
+        <CategoryForm isEditing={false}  />
       </div>
     </>
   );

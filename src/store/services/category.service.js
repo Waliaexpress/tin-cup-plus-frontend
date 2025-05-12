@@ -60,7 +60,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 
     createCategory: builder.mutation({
       query: (formData) => ({
-        url: '/categories',
+        url: '/admin/categories',
         method: 'POST',
         body: formData,
       }),

@@ -41,7 +41,6 @@ export default function CategoriesPage() {
 
 
 
-
   const pagination = {
     currentPage: page,
     nextPage: page < data?.data?.lastPage ? page + 1 : null,
