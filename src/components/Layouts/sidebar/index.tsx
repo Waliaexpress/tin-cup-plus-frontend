@@ -9,6 +9,8 @@ import { NAV_DATA } from "./data";
 import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
+import { Drumstick } from "lucide-react";
+import Image from "next/image";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -70,7 +72,10 @@ export function Sidebar() {
               onClick={() => isMobile && toggleSidebar()}
               className="px-0 py-2.5 min-[850px]:py-0"
             >
-              <Logo />
+              <Link href="/" className="flex items-center space-x-3 text-primary hover:text-[#a7454e] transition-colors duration-300">
+                <Image src={"/images/logo.svg"} width={50} height={50} alt="logo" />
+                <span className="text-3xl font-bold font-serif">Tin Cup Plus</span>
+              </Link>
             </Link>
 
             {isMobile && (
@@ -116,7 +121,7 @@ export function Sidebar() {
                                 className={cn(
                                   "ml-auto rotate-180 transition-transform duration-200",
                                   expandedItems.includes(item.title) &&
-                                    "rotate-0",
+                                  "rotate-0",
                                 )}
                                 aria-hidden="true"
                               />
@@ -147,7 +152,7 @@ export function Sidebar() {
                               "url" in item
                                 ? item.url + ""
                                 : "/" +
-                                  item.title.toLowerCase().split(" ").join("-");
+                                item.title.toLowerCase().split(" ").join("-");
 
                             return (
                               <MenuItem

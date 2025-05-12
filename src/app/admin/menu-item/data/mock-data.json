@@ -1,0 +1,225 @@
+{
+  "response": {
+    "items": [
+      {
+        "id": "mi-001",
+        "name": {
+          "en": "Doro wat",
+          "am": "ዶሮ ወጥ"
+        },
+        "description": {
+          "en": "Spicy chicken stew that is slowly simmered with berbere spice, fenugreek, and niter kibbeh.",
+          "am": "በርበሬ፣ አብሽ እና ቅቤ ጋር በዝግታ የሚቀቀል ሙቅ የዶሮ ወጥ።"
+        },
+        "price": 15.99,
+        "category": {
+          "id": "cat-001",
+          "name": "Main Dishes"
+        },
+        "dietaryTags": [
+          {
+            "id": "dt-001",
+            "name": {
+              "en": "Spicy",
+              "am": "ሙቅ"
+            }
+          },
+          {
+            "id": "dt-002",
+            "name": {
+              "en": "Gluten-free",
+              "am": "ግሉተን-ነፃ"
+            }
+          }
+        ],
+        "ingredients": [
+          {
+            "id": "ing-001",
+            "name": {
+              "en": "Chicken",
+              "am": "ዶሮ"
+            }
+          },
+          {
+            "id": "ing-002",
+            "name": {
+              "en": "Berbere",
+              "am": "በርበሬ"
+            }
+          },
+          {
+            "id": "ing-003",
+            "name": {
+              "en": "Niter Kibbeh",
+              "am": "ቅቤ"
+            }
+          }
+        ],
+        "images": [
+          {
+            "id": "img-001",
+            "url": "/images/menu/doro-wat-1.jpg",
+            "isMain": true
+          },
+          {
+            "id": "img-002",
+            "url": "/images/menu/doro-wat-2.jpg",
+            "isMain": false
+          }
+        ],
+        "isActive": true,
+        "isAvailable": true,
+        "createdAt": "2023-01-15T12:00:00Z",
+        "updatedAt": "2023-04-20T15:30:00Z"
+      },
+      {
+        "id": "mi-002",
+        "name": {
+          "en": "Tibs",
+          "am": "ጥብስ"
+        },
+        "description": {
+          "en": "Sautéed meat dish made with beef or lamb, cooked with vegetables and Ethiopian spices.",
+          "am": "ከበሬ ወይም ከበግ ስጋ ጋር የሚሰራ፣ ከአትክልቶች እና ከኢትዮጵያ ቅመሞች ጋር የሚቀቀል።"
+        },
+        "price": 17.99,
+        "category": {
+          "id": "cat-001",
+          "name": "Main Dishes"
+        },
+        "dietaryTags": [
+          {
+            "id": "dt-001",
+            "name": {
+              "en": "Spicy",
+              "am": "ሙቅ"
+            }
+          }
+        ],
+        "ingredients": [
+          {
+            "id": "ing-004",
+            "name": {
+              "en": "Beef",
+              "am": "የበሬ ስጋ"
+            }
+          },
+          {
+            "id": "ing-005",
+            "name": {
+              "en": "Onion",
+              "am": "ሽንኩርት"
+            }
+          },
+          {
+            "id": "ing-006",
+            "name": {
+              "en": "Pepper",
+              "am": "ቃሪያ"
+            }
+          }
+        ],
+        "images": [
+          {
+            "id": "img-003",
+            "url": "/images/menu/tibs-1.jpg",
+            "isMain": true
+          }
+        ],
+        "isActive": true,
+        "isAvailable": true,
+        "createdAt": "2023-02-10T14:15:00Z",
+        "updatedAt": "2023-05-05T09:45:00Z"
+      },
+      {
+        "id": "mi-003",
+        "name": {
+          "en": "Kitfo",
+          "am": "ክትፎ"
+        },
+        "description": {
+          "en": "Minced raw beef marinated in mitmita (a chili powder-based spice blend) and niter kibbeh.",
+          "am": "በሚጥሚጣ እና በቅቤ የተቀመመ ጥሬ የተፈጨ የበሬ ስጋ።"
+        },
+        "price": 16.99,
+        "category": {
+          "id": "cat-001",
+          "name": "Main Dishes"
+        },
+        "dietaryTags": [
+          {
+            "id": "dt-001",
+            "name": {
+              "en": "Spicy",
+              "am": "ሙቅ"
+            }
+          },
+          {
+            "id": "dt-002",
+            "name": {
+              "en": "Gluten-free",
+              "am": "ግሉተን-ነፃ"
+            }
+          }
+        ],
+        "ingredients": [
+          {
+            "id": "ing-004",
+            "name": {
+              "en": "Beef",
+              "am": "የበሬ ስጋ"
+            }
+          },
+          {
+            "id": "ing-007",
+            "name": {
+              "en": "Mitmita",
+              "am": "ሚጥሚጣ"
+            }
+          },
+          {
+            "id": "ing-003",
+            "name": {
+              "en": "Niter Kibbeh",
+              "am": "ቅቤ"
+            }
+          }
+        ],
+        "images": [
+          {
+            "id": "img-004",
+            "url": "/images/menu/kitfo-1.jpg",
+            "isMain": true
+          },
+          {
+            "id": "img-005",
+            "url": "/images/menu/kitfo-2.jpg",
+            "isMain": false
+          }
+        ],
+        "isActive": true,
+        "isAvailable": false,
+        "createdAt": "2023-03-05T11:30:00Z",
+        "updatedAt": "2023-06-15T16:20:00Z"
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat-001",
+        "name": "Main Dishes"
+      },
+      {
+        "id": "cat-002",
+        "name": "Appetizers"
+      },
+      {
+        "id": "cat-003",
+        "name": "Desserts"
+      },
+      {
+        "id": "cat-004",
+        "name": "Beverages"
+      }
+    ]
+  }
+}

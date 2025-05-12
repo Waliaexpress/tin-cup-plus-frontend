@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getLocalStorage } from '@/hooks/useLocalStorage'
 
 const getLastSeen = () => {
   if (typeof window !== 'undefined') {
@@ -9,7 +10,8 @@ const getLastSeen = () => {
   return []
 }
 
-const token = localStorage.getItem('tin-cup-token') || ''
+
+const token = getLocalStorage('tin-cup-token', '')
 
 const initialState = {
     token,

@@ -1,4 +1,5 @@
 import { SVGProps } from "react";
+import { UtensilsCrossed, Tag, Menu, Box } from "lucide-react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
 
@@ -120,6 +121,21 @@ export function Table(props: PropsType) {
       />
     </svg>
   );
+}
+
+export function IngredientIcon(props: PropsType) {
+  return <UtensilsCrossed {...props} />;
+}
+
+export function TagIcon(props: PropsType) {
+  return <Tag {...props} />;
+}
+export function CategoryIcon(props: PropsType) {
+  return <Box {...props} />;
+}
+
+export function MenuItemIcon(props: PropsType) {
+  return <Menu {...props} />;
 }
 
 export function PieChart(props: PropsType) {

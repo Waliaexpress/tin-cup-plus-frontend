@@ -12,8 +12,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { Providers } from "@/app/providers/themProviders";
-import StoreProvider from "@/app/providers/StoreProvider";
+import StoreProvider from "./admin/providers/StoreProvider";
+import { Providers } from "./admin/providers/themProviders";
+import ReduxProvider from "@/providers/ReduxProvider";
 
 // export const metadata: Metadata = {
 //   title: {
@@ -29,21 +30,20 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <StoreProvider>
           <Providers>
-            <NextTopLoader showSpinner={false} />
+            <ReduxProvider>
+              <NextTopLoader showSpinner={false} />
 
-            <ToastContainer position="top-right" autoClose={5000} />
+              <ToastContainer position="top-right" autoClose={5000} />
 
-            <div className="flex min-h-screen">
-              <Sidebar />
+              <div className="flex min-h-screen">
+                <div className="w-full bg-white dark:bg-[#020d1a]">
 
-              <div className="w-full bg-gray-2 dark:bg-[#020d1a]">
-                <Header />
-
-                <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
-                  {children}
-                </main>
+                  <main className="isolate mx-auto w-full  overflow-hidden ">
+                    {children}
+                  </main>
+                </div>
               </div>
-            </div>
+            </ReduxProvider>
           </Providers>
         </StoreProvider>
       </body>

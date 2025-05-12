@@ -1,3 +1,4 @@
+import { RouteEnums } from "@/routes/Routes";
 import * as Icons from "../icons";
 
 export const NAV_DATA = [
@@ -10,96 +11,120 @@ export const NAV_DATA = [
         items: [
           {
             title: "eCommerce",
-            url: "/",
+            url: "/admin",
           },
         ],
       },
       {
-        title: "Calendar",
-        url: "/calendar",
-        icon: Icons.Calendar,
+        title: "Ingredient",
+        url: RouteEnums.INGREDIENT,
+        icon: Icons.IngredientIcon,
         items: [],
       },
       {
-        title: "Profile",
-        url: "/profile",
-        icon: Icons.User,
+        title: "Dietary Tag",
+        url: RouteEnums.DIETARY_TAG,
+        icon: Icons.TagIcon,
         items: [],
       },
       {
-        title: "Forms",
-        icon: Icons.Alphabet,
-        items: [
-          {
-            title: "Form Elements",
-            url: "/forms/form-elements",
-          },
-          {
-            title: "Form Layout",
-            url: "/forms/form-layout",
-          },
-        ],
+        title: "Menu Item",
+        url: RouteEnums.MENU_ITEM,
+        icon: Icons.MenuItemIcon,
+        items: [],
       },
       {
-        title: "Tables",
-        url: "/tables",
-        icon: Icons.Table,
-        items: [
-          {
-            title: "Tables",
-            url: "/tables",
-          },
-        ],
+        title: "Category",
+        url: RouteEnums.CATEGORY,
+        icon: Icons.CategoryIcon,
+        items: [],
       },
-      {
-        title: "Pages",
-        icon: Icons.Alphabet,
-        items: [
-          {
-            title: "Settings",
-            url: "/pages/settings",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "OTHERS",
-    items: [
-      {
-        title: "Charts",
-        icon: Icons.PieChart,
-        items: [
-          {
-            title: "Basic Chart",
-            url: "/charts/basic-chart",
-          },
-        ],
-      },
-      {
-        title: "UI Elements",
-        icon: Icons.FourCircle,
-        items: [
-          {
-            title: "Alerts",
-            url: "/ui-elements/alerts",
-          },
-          {
-            title: "Buttons",
-            url: "/ui-elements/buttons",
-          },
-        ],
-      },
-      {
-        title: "Authentication",
-        icon: Icons.Authentication,
-        items: [
-          {
-            title: "Sign In",
-            url: "/auth/sign-in",
-          },
-        ],
-      },
+  //     {
+  //       title: "Calendar",
+  //       url: "/admin/calendar",
+  //       icon: Icons.Calendar,
+  //       items: [],
+  //     },
+  //     {
+  //       title: "Profile",
+  //       url: "/admin/profile",
+  //       icon: Icons.User,
+  //       items: [],
+  //     },
+  //     {
+  //       title: "Forms",
+  //       icon: Icons.Alphabet,
+  //       items: [
+  //         {
+  //           title: "Form Elements",
+  //           url: "/admin/forms/form-elements",
+  //         },
+  //         {
+  //           title: "Form Layout",
+  //           url: "/admin/forms/form-layout",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Tables",
+  //       url: "/admin/tables",
+  //       icon: Icons.Table,
+  //       items: [
+  //         {
+  //           title: "Tables",
+  //           url: "/admin/tables",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Pages",
+  //       icon: Icons.Alphabet,
+  //       items: [
+  //         {
+  //           title: "Settings",
+  //           url: "/admin/pages/settings",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "OTHERS",
+  //   items: [
+  //     {
+  //       title: "Charts",
+  //       icon: Icons.PieChart,
+  //       items: [
+  //         {
+  //           title: "Basic Chart",
+  //           url: "/admin/charts/basic-chart",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "UI Elements",
+  //       icon: Icons.FourCircle,
+  //       items: [
+  //         {
+  //           title: "Alerts",
+  //           url: "/admin/ui-elements/alerts",
+  //         },
+  //         {
+  //           title: "Buttons",
+  //           url: "/admin/ui-elements/buttons",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Authentication",
+  //       icon: Icons.Authentication,
+  //       items: [
+  //         {
+  //           title: "Sign In",
+  //           url: "/admin/auth/sign-in",
+  //         },
+  //       ],
+  //     },
     ],
   },
 ];
