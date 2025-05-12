@@ -30,7 +30,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
 
 
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] =useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const defaultValues = {
@@ -109,7 +109,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
-    setFile(selectedFile);
+    setFile(selectedFile as string);
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
