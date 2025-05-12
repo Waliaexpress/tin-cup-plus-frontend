@@ -9,7 +9,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { RouteEnums } from "@/routes/Routes";
-import axiosInstance from "@/utils/AxiosInstance";
+import { useLoginMutation } from "@/store/services";
+
+
 
 interface SignInFormData {
   email: string;
@@ -37,7 +39,7 @@ export default function Signin() {
   const { push } = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [login] = useLoginMutation();
   const {
     control,
     handleSubmit,
@@ -58,14 +60,10 @@ export default function Signin() {
   const onSubmit = async (data: SignInFormData) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.post<LoginResponse>('/login', {
-        email: data.email,
-        password: data.password
-      });
       
-      if (response.data.success) {
-        const { user, token } = response.data.data;
-        
+      const response = await login({ email: data.email, password: data.password }).unwrap();
+      if (response.success) {
+        const { user, token } = response.data
         localStorage.setItem('tin-cup-token', token);    
       toast.success('Sign-in successful!');
         
@@ -77,7 +75,7 @@ export default function Signin() {
       }
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message || 'Failed to sign in. Please try again.'
+        error?.data?.message || 'Failed to sign in. Please try again.'
       );
       console.error('Sign-in error:', error);
     } finally {

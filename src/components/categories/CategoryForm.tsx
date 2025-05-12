@@ -10,6 +10,8 @@ import InputGroup from "@/components/FormElements/InputGroup";
 import { Category, CATEGORY_CONSTANTS } from "@/types/category";
 import ImageUploader from "@/components/FormElements/ImageUploader";
 import Toggle from "@/components/common/Toggle";
+import {  useCreateCategoryMutation} from "@/store/services/category.service";
+
 
 interface CategoryFormProps {
   initialData?: Category;
@@ -21,6 +23,18 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
   const [activeTab, setActiveTab] = useState(CATEGORY_CONSTANTS.LANGUAGES.ENGLISH);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formModified, setFormModified] = useState(false);
+
+
+
+
+
+  //? Queries
+  //* Create Category
+  const [createCategory, { data, isSuccess, isLoading, error, isError }] =   useCreateCategoryMutation()
+ 
+
+
+
   
   const defaultValues = {
     name: {

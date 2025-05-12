@@ -1,0 +1,89 @@
+
+import { apiSlice } from './rootAPI';
+
+export const categoryApiSlice = apiSlice.injectEndpoints({
+  endpoints: builder => ({
+    getCategories: builder.query({
+      query: ({ page, limit }) => {
+        const queryParams = new URLSearchParams()
+        Object.entries({
+          page, 
+          limit
+        }).forEach(([key,value]) => {
+          if(value) queryParams.set(key, value);
+        });
+        return {
+          url: `/admin/categories?${queryParams.toString()}`,
+          method: 'GET'
+        }
+      },
+    }),
+
+    getCategoryById: builder.query({
+      query: ({ id }) => ({
+        url: `/categories/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, err, arg) => [{ type: 'Category', id: arg.id }],
+    }),
+
+    searchCategory: builder.query({
+      query: ({ amName, enName, start, limit }) => {
+        const params = new URLSearchParams();
+        if (amName) params.append('amName', amName);
+        if (enName) params.append('enName', enName);
+        if (limit) params.append('limit', limit);
+        if (start) params.append('start', start);
+      
+        return {
+          url: `/categories/search?${params.toString()}`,
+          method: 'GET',
+        }
+      },
+      providesTags: (result) => 
+        result?.data 
+          ? [
+              ...result.data.map(({ _id }) => ({ type: 'Category', id: _id })),
+              'Category'
+            ]
+          : ['Category'],
+    }),
+
+    updateCategory: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/categories/${id}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: (result, err, arg) => [{ type: 'Category', id: arg.id }],
+    }),
+
+    createCategory: builder.mutation({
+      query: (formData) => ({
+        url: '/categories',
+        method: 'POST',
+        body: formData,
+      }),
+      invalidatesTags: ['Category'],
+    }),
+    
+    deleteCategory: builder.mutation({
+      query: ({ id }) => ({
+        url: `/categories/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, err, arg) => [{ type: 'Category', id: arg.id }],
+    }),
+  }),
+})
+
+export const {
+  useGetCategoriesQuery,
+  useGetCategoryByIdQuery,
+  useSearchCategoryQuery,
+  useUpdateCategoryMutation,
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoryApiSlice;
+
+

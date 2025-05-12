@@ -26,6 +26,8 @@ import { Providers } from "./providers/themProviders";
 
 export default function AdminLayout({ children }: PropsWithChildren) {
   return (
+    <Providers>
+
     <div className="flex min-h-screen w-full">
       <Sidebar />
 
@@ -37,5 +39,7 @@ export default function AdminLayout({ children }: PropsWithChildren) {
         </main>
       </div>
     </div>
+    </Providers>
+
   );
 }
