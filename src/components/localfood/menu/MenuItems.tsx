@@ -64,11 +64,19 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
       setActiveCategory(selectedCategory);
     }
 
+    if (type === "foreign" && activeCategory === "all") {
+      const allItems = menuData.categories
+        .filter(cat => cat.id !== "all")
+        .flatMap(cat => cat.items);
+      setItems(allItems);
+      return;
+    }
+    
     const category = menuData.categories.find((cat) => cat.id === activeCategory);
     if (category) {
       setItems(category.items);
     }
-  }, [selectedCategory, activeCategory, mounted]);
+  }, [selectedCategory, activeCategory, mounted, type, menuData]);
 
   const handleAddToCart = (itemId: string) => {
     if (!mounted) return;
@@ -132,7 +140,6 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
           {activeCategoryName}
         </h2>
 
-        {/* Mobile View: Swiper for smaller screens */}
         <div className="md:hidden">
           <SwiperComponent 
             items={items} 
@@ -140,7 +147,6 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
           />
         </div>
 
-        {/* Desktop View: Grid for larger screens */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6">
           {items.map((item) => (
             <MenuItem

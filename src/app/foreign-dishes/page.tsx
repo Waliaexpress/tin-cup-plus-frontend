@@ -16,6 +16,26 @@ export default function ForeignDishesPage() {
   // Get categories from the JSON data
   const categories = foreignMenuData.categories;
 
+  // Handle category change
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    
+    // Special handling for "all" category
+    if (categoryId === "all") {
+      // For "all" category, we need a special approach
+      // First reset by using a temporary different category
+      dispatch(setSelectedCategory("temp-reset"));
+      
+      // Then set it back to "all" after a short delay
+      setTimeout(() => {
+        dispatch(setSelectedCategory("all"));
+      }, 50);
+    } else {
+      // For other categories, just dispatch normally
+      dispatch(setSelectedCategory(categoryId));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <MainNavigation />
@@ -51,10 +71,7 @@ export default function ForeignDishesPage() {
                     ? "bg-primary text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
-                onClick={() => {
-                  setActiveCategory(category.id);
-                  dispatch(setSelectedCategory(category.id));
-                }}
+                onClick={() => handleCategoryChange(category.id)}
               >
                 {category.name}
               </button>

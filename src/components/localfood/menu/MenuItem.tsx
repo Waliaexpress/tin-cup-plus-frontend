@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface MenuItemProps {
   id: string;
@@ -15,6 +16,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: MenuItemProps) => {
   const [quantity, setQuantity] = useState(0);
+  const router = useRouter();
   
   const handleIncrement = () => {
     const newQuantity = quantity + 1;
@@ -25,11 +27,17 @@ const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: Me
   const handleDecrement = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
-      // You might want to implement a removeFromCart function here
     }
   };
+  
+  const handleItemClick = () => {
+    router.push(`/menu/${id}`);
+  };
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div 
+      className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+      onClick={handleItemClick}
+    >
       <div className="relative h-48 w-full overflow-hidden">
         <img
           src={image}
@@ -47,16 +55,25 @@ const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: Me
           <div className="flex items-center">
             {quantity === 0 ? (
               <button
-                onClick={handleIncrement}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent navigation when clicking the button
+                  handleIncrement();
+                }}
                 className="bg-primary text-white px-3 py-1 rounded-md hover:bg-primary/90 transition-colors"
                 aria-label={`Add ${name} to cart`}
               >
                 Add
               </button>
             ) : (
-              <div className="flex items-center bg-primary text-white px-2 py-1 rounded-md">
+              <div 
+                className="flex items-center bg-primary text-white px-2 py-1 rounded-md"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
-                  onClick={handleDecrement}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDecrement();
+                  }}
                   className="p-0.5 hover:bg-primary-dark rounded-full"
                   aria-label={`Remove ${name} from cart`}
                 >
@@ -64,7 +81,10 @@ const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: Me
                 </button>
                 <span className="font-medium text-white min-w-[24px] text-center mx-1">{quantity}</span>
                 <button
-                  onClick={handleIncrement}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleIncrement();
+                  }}
                   className="p-0.5 hover:bg-primary-dark rounded-full"
                   aria-label={`Add ${name} to cart`}
                 >
