@@ -37,7 +37,6 @@ export default function DietaryTagsPage() {
 
 
 
-
   const pagination = {
     currentPage: page,
     nextPage: page < data?.data?.lastPage ? page + 1 : null,
@@ -96,6 +95,7 @@ export default function DietaryTagsPage() {
     router.push(`/admin/Dietary Tag/edit/${item.id}`);
   };
 
+  
   return (
     <div className="mx-auto px-4 md:px-8 2xl:px-0">
       <ToastContainer />
