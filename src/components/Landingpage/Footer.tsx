@@ -10,10 +10,21 @@ import {
   Instagram,
   Facebook,
   ExternalLink,
-  ArrowRight
+  ArrowRight,
+  Clock
 } from "lucide-react";
 
 const Footer = () => {
+  const businessHours = {
+    "Monday": "9:00 AM - 9:00 PM",
+    "Tuesday": "9:00 AM - 9:00 PM",
+    "Wednesday": "9:00 AM - 9:00 PM",
+    "Thursday": "9:00 AM - 9:00 PM",
+    "Friday": "9:00 AM - 9:00 PM",
+    "Saturday": "9:00 AM - 10:00 PM",
+    "Sunday": "9:00 AM - 10:00 PM"
+  };
+
   const contactInfo = [
     {
       icon: <Mail className="text-primary" size={20} />,
@@ -69,7 +80,7 @@ const Footer = () => {
       </div>
       <div className="bg-[#8B2500] text-white">
         <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -147,38 +158,73 @@ const Footer = () => {
               viewport={{ once: true }}
               className="col-span-1 lg:col-span-1"
             >
-              <h3 className="text-lg font-bold mb-6 text-white font-playfair">
-                Contact Us
-              </h3>
-              <ul className="space-y-4">
-                {contactInfo.map((contact, index) => (
-                  <motion.li
-                    key={index}
-                    whileHover={{ x: 5 }}
-                    className="flex items-start"
-                  >
-                    <div className="mt-1 mr-3">{contact.icon}</div>
-                    <div>
-                      <p className="text-sm text-gray-200 font-montserrat">
-                        {contact.label}
-                      </p>
-                      <a
-                        href={contact.action}
-                        target={contact.label === "Address" ? "_blank" : undefined}
-                        rel={contact.label === "Address" ? "noopener noreferrer" : undefined}
-                        className="text-white hover:text-gray-200 flex items-center font-montserrat"
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-lg font-bold mb-6 text-white font-playfair">
+                    Contact Us
+                  </h3>
+                  <ul className="space-y-4">
+                    {contactInfo.map((contact, index) => (
+                      <motion.li
+                        key={index}
+                        whileHover={{ x: 5 }}
+                        className="flex items-start"
                       >
-                        {contact.value}
-                        {contact.label === "Address" && (
-                          <ExternalLink size={14} className="ml-1 text-primary" />
-                        )}
-                      </a>
-                    </div>
-                  </motion.li>
-                ))}
-              </ul>
+                        <div className="mt-1 mr-3">{contact.icon}</div>
+                        <div>
+                          <p className="text-sm text-gray-200 font-montserrat">
+                            {contact.label}
+                          </p>
+                          <a
+                            href={contact.action}
+                            target={contact.label === "Address" ? "_blank" : undefined}
+                            rel={contact.label === "Address" ? "noopener noreferrer" : undefined}
+                            className="text-white hover:text-gray-200 flex items-center font-montserrat"
+                          >
+                            {contact.value}
+                            {contact.label === "Address" && (
+                              <ExternalLink size={14} className="ml-1 text-primary" />
+                            )}
+                          </a>
+                        </div>
+                      </motion.li>
+                      
+                    ))}
+                  </ul>
+                </div>
+
+              
+              </div>
             </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="col-span-3 lg:col-span-1"
+            >
+                <div className=" md:border-l md:px-2 border-white border-opacity-20 ">
+                  <h3 className="text-lg font-bold mb-6 text-white font-playfair flex items-center">
+                    <Clock className="text-primary mr-2" size={20} />
+                    Business Hours
+                  </h3>
+                  <ul className="space-y-2">
+                    {Object.entries(businessHours).map(([day, hours], index) => (
+                      <motion.li
+                        key={index}
+                        whileHover={{ x: 5 }}
+                        className="flex justify-between font-montserrat"
+                      >
+                        <span className="text-gray-200">{day}:</span>
+                        <span className="text-white">{hours}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
           </div>
+
+
 
           <motion.div
             initial={{ opacity: 0 }}
