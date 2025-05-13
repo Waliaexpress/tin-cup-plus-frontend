@@ -10,6 +10,7 @@ export interface Category {
   };
   image: string;
   isActive: boolean;
+  isTraditional: boolean;
   createdAt: string;
   updatedAt: string;
 }

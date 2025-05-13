@@ -28,9 +28,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
   const [createCategory, {isLoading: isLoadingCreate}] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
 
-
-
-  const [file, setFile] =useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const defaultValues = {
@@ -44,6 +42,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
     },
     image: initialData?.image || "",
     isActive: initialData?.isActive ?? true,
+    isTraditional: initialData?.isTraditional ?? true
   };
 
   const {
@@ -62,6 +61,9 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
   useEffect(() => {
     if (initialData) {
       reset(defaultValues);
+      if (initialData.image) {
+        setImagePreview(initialData.image);
+      }
     }
   }, [initialData, reset]);
 
@@ -75,17 +77,33 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
     try {
       const formData = new FormData();
       
+      // Append name and description only if they exist
+      if (data.name?.en) {
+        formData.append('name[en]', data.name.en.trim());
+      }
+      if (data.name?.am) {
+        formData.append('name[am]', data.name.am.trim());
+      }
+      if (data.description?.en) {
+        formData.append('description[en]', data.description.en.trim());
+      }
+      if (data.description?.am) {
+        formData.append('description[am]', data.description.am.trim());
+      }
       
-      formData.append('name[en]', data.name.en.trim());
-      formData.append('name[am]', data.name.am.trim());
-      formData.append('description[en]', data.description.en.trim());
-      formData.append('description[am]', data.description.am.trim());
-      // Append image file if it's a new file
+      if(data?.isTraditional){
+        formData.append("isTraditional", data?.isTraditional.toString());
+      }
+      // Append image file if it's a new file or keep existing image if editing
       if (file) {
         formData.append('image', file);
+      } else if (isEditing && initialData?.image) {
+        // If editing and no new file was selected, keep the existing image
+        formData.append('image', initialData.image);
       }
+      
       formData.append('isActive', data.isActive.toString());
-
+  
       if (isEditing && initialData?._id) {
         await updateCategory({ id: initialData._id, body: formData }).unwrap();
         toast.success('Category updated successfully!');
@@ -93,10 +111,10 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
         await createCategory(formData).unwrap();
         toast.success('Category created successfully!');
       }
-
+  
       router.push("/admin/category");
       router.refresh();
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Error submitting form:", error);
       toast.error(error.message || "An error occurred. Please try again.");
     } finally {
@@ -104,12 +122,9 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
     }
   };
 
-
-
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
-    setFile(selectedFile as string);
+    setFile(selectedFile);
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -118,10 +133,11 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
         }
       };
       reader.readAsDataURL(selectedFile);
-      setValue('image', selectedFile, { shouldValidate: true });
+      setValue('image', selectedFile.name, { shouldValidate: true });
+    } else {
+      setImagePreview(null);
     }
   };
-
 
   const handleCancel = () => {
     if (formModified && !confirm("You have unsaved changes. Are you sure you want to leave?")) {
@@ -136,6 +152,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
   const watchNameAm = watch("name.am");
   const watchDescEn = watch("description.en");
   const watchDescAm = watch("description.am");
+  const isTraditional = watch("isTraditional")
 
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-5 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
@@ -161,16 +178,16 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
 
           {activeTab === CATEGORY_CONSTANTS.LANGUAGES.ENGLISH && (
             <div>
-            <InputGroup
-            label="English Name"
-            type="text"
-            placeholder="Enter English  Name"
-            className="w-full sm:w-1/2"
-            name="name.en"
-            control={control}
-            errors={errors.name}
-            required
-          />
+              <InputGroup
+                label="English Name"
+                type="text"
+                placeholder="Enter English Name"
+                className="w-full"
+                name="name.en"
+                control={control}
+                errors={errors.name}
+                required
+              />
               <p className="mt-1 text-xs text-body-color">
                 {watchNameEn?.length || 0}/{CATEGORY_CONSTANTS.MAX_NAME_LENGTH} characters
               </p>
@@ -205,16 +222,16 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
 
           {activeTab === CATEGORY_CONSTANTS.LANGUAGES.AMHARIC && (
             <div>  
-         <InputGroup
-           label="Name (Amharic)"
-            type="text"
-            placeholder="Enter Name (Amharic)"
-            className="w-full sm:w-1/2"
-            name="name.am"
-            control={control}
-            errors={errors.name}
-            required
-          />
+              <InputGroup
+                label="Name (Amharic)"
+                type="text"
+                placeholder="Enter Name (Amharic)"
+                className="w-full"
+                name="name.am"
+                control={control}
+                errors={errors.name}
+                required
+              />
               <p className="mt-1 text-xs text-body-color">
                 {watchNameAm?.length || 0}/{CATEGORY_CONSTANTS.MAX_NAME_LENGTH} characters
               </p>
@@ -248,26 +265,23 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
           )}
         </div>
 
-
-         
-          <div className="flex-1 space-y-3 my-4">
+        <div className="flex-1 space-y-3 my-4">
           <label className="text-dark dark:text-white font-medium mb-2.5 block">
             Category Image <span className="text-red">*</span>
           </label>
-            <div className="flex items-center gap-x-3">
-              <input
-                type="file"
-                id="image"
-                onChange={handleFileChange}
-                className="border border-gray-300 px-3 py-2 w-full"
-                accept="image/*"
-              />
-             
-              {errors.image && (
-                <span className="text-red-500">{errors.image.message}</span>
-              )}
-            </div>
-
+          <div className="flex items-center gap-x-3">
+            <input
+              type="file"
+              id="image"
+              onChange={handleFileChange}
+              className="border border-gray-300 px-3 py-2 w-full"
+              accept="image/*"
+            />
+           
+            {errors.image && (
+              <span className="text-red-500">{errors.image.message}</span>
+            )}
+          </div>
 
           {errors.image && (
             <p className="mt-1 text-xs text-red">
@@ -284,15 +298,12 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
                 src={imagePreview}
                 width={400}
                 height={200}
-                alt="Banner Image"
+                alt="Category Image"
                 className="rounded-lg"
               />
             </div>
           )}
-
         </div>
-
-        
 
         <div className="mb-6">
           <label className="text-dark dark:text-white font-medium mb-2.5 block">
@@ -315,33 +326,54 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
             </span>
           </div>
         </div>
+        <div className="mb-6">
+          <label className="text-dark dark:text-white font-medium mb-2.5 block">
+            For Traditional
+          </label>
+          <div className="flex items-center">
+            <Controller
+              name="isTraditional"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <Toggle
+                  checked={value}
+                  onChange={onChange}
+                  className="mr-2"
+                />
+              )}
+            />
+            <span className="text-sm text-dark dark:text-white">
+              {watch("isTraditional") ? "Traditional" : "Normal"}
+            </span>
+          </div>
+        </div>
 
-  
         <div className="flex justify-end gap-4">
-        
-            <Button
+          <Button
             variant="outlinePrimary"
-            className="border-stroke bg-white text-primary  p-4 hover:border-primary hover:bg-white dark:border-dark-3 dark:bg-gray-dark dark:hover:border-primary dark:hover:bg-gray-dark"
-              isRounded
-              type="button"
-              onClick={() => handleCancel()}
-            >
-              Cancel
-            </Button>
+            className="border border-stroke bg-white text-primary px-6 py-3 rounded-full hover:border-primary hover:bg-white dark:border-dark-3 dark:bg-gray-dark dark:hover:border-primary dark:hover:bg-gray-dark"
+            isRounded
+            type="button"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
         
           <Button
-     variant="primary"
-     className={`hover:bg-primary text-white p-4 ${(isSubmitting || (!isDirty && isEditing)) ? 'opacity-50 cursor-not-allowed' : ''}`}
+            variant="primary"
+            className={`px-6 py-3 rounded-full text-white hover:bg-primary-dark ${
+              (isSubmitting || (!isDirty && isEditing)) ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             isRounded
             type="submit"
-            isLoading={isLoadingCreate}
+            isLoading={isLoadingCreate || isSubmitting}
             disabled={
-              !isDirty || 
-              (!isEditing && !createCategory) || 
-              (isEditing && !updateCategory)
+              isSubmitting || 
+              (!isDirty && isEditing) || 
+              isLoadingCreate
             }
           >
-            {!isEditing ? "Create" : "Update"}
+            {isEditing ? "Update" : "Create"}
           </Button>
         </div>
       </form>
