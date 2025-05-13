@@ -20,7 +20,7 @@ interface DataTableProps<T> {
   data: T[];
   onEdit?: (item: T) => void;
   onDelete?: (item: T) => void;
-  keyField: keyof T;
+  keyField: keyof T | string;
   statusOptions?: {
     field: keyof T;
     values: Record<string, { className: string }>;

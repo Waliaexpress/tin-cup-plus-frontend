@@ -39,14 +39,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
           url: `/categories/search?${params.toString()}`,
           method: 'GET',
         }
-      },
-      providesTags: (result) => 
-        result?.data 
-          ? [
-              ...result.data.map(({ _id }) => ({ type: 'Category', id: _id })),
-              'Category'
-            ]
-          : ['Category'],
+      }
     }),
 
     updateCategory: builder.mutation({

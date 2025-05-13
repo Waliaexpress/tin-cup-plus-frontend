@@ -50,7 +50,7 @@ export default function CategoriesPage() {
     lastPage: data?.data?.lastPage || 1,
   };
 
-  console.log(pagination, "pa")
+
   const columns: TableColumn<Category>[] = [
     {
       header: "Name (English)",

@@ -3,24 +3,43 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui-elements/button";
+import { Button } from "@/components/ui-elements/buttons/Buttons";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputGroup from "@/components/FormElements/InputGroup";
 import { Ingredient } from "@/types/ingredient";
+import { useCreateIngridientMutation, useUpdateIngridientMutation } from "@/store/services";
 
 interface IngredientFormProps {
   initialData?: Ingredient;
   isEditing: boolean;
 }
 
+interface IngredientFormValues {
+  name: {
+    en: string;
+    am: string;
+  };
+  description: {
+    en: string;
+    am: string;
+  };
+}
+
 export default function IngredientForm({ initialData, isEditing }: IngredientFormProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("english");
+  const [activeTab, setActiveTab] = useState<"english" | "amharic">("english");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formModified, setFormModified] = useState(false);
   
-  const defaultValues = {
+
+
+ const [createIngridient,{isLoading: isLoadingCreate }] = useCreateIngridientMutation();
+ const [updateIngridient, {isLoading: isUpdateLoading}] = useUpdateIngridientMutation();
+
+
+
+  const defaultValues: IngredientFormValues = {
     name: {
       en: initialData?.name.en || "",
       am: initialData?.name.am || "",
@@ -38,7 +57,9 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
     formState: { errors, isDirty },
     watch,
     setValue,
-  } = useForm({
+    reset,
+    trigger,
+  } = useForm<IngredientFormValues>({
     defaultValues,
     mode: "onChange"
   });
@@ -53,26 +74,59 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
   const watchNameAm = watch("name.am");
   const watchDescEn = watch("description.en");
   const watchDescAm = watch("description.am");
+
+  // Validate if ingredient name already exists
+  const validateIngredientName = async (value: string, field: 'en' | 'am') => {
+    if (!value.trim()) return true; // Let required validation handle empty fields
+    
+    // In a real app, you would call your API here
+    // const exists = await checkIngredientNameExists(value, field);
+    // For demo purposes, we'll simulate this
+    const exists = false; // Replace with actual API call
+    
+    if (exists) {
+      // If editing, allow keeping the same name
+      if (isEditing && initialData) {
+        return initialData.name[field] === value.trim();
+      }
+      return false;
+    }
+    return true;
+  };
   
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: IngredientFormValues) => {
     setIsSubmitting(true);
     
     try {
-      // Trim all text inputs
       const trimmedData = {
         name: {
-          en: data.name.en.trim(),
-          am: data.name.am.trim(),
+          en: data?.name?.en?.trim?.() || '',
+          am: data?.name?.am?.trim?.() || '',
         },
         description: {
-          en: data.description.en.trim(),
-          am: data.description.am.trim(),
+          en: data?.description?.en?.trim?.() || '',
+          am: data?.description?.am?.trim?.() || '',
         },
       };
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
       
+      // First validate both names
+      const isNameEnValid = await validateIngredientName(trimmedData.name.en, 'en');
+      const isNameAmValid = await validateIngredientName(trimmedData.name.am, 'am');
+      
+      if (!isNameEnValid || !isNameAmValid) {
+        throw new Error('Ingredient with this name already exists');
+      }
+      
+      if (isEditing && initialData?._id) {
+        await updateIngridient({ id: initialData._id, body: trimmedData }).unwrap();
+        toast.success('Ingridient updated successfully!');
+      } else {
+        await createIngridient(trimmedData).unwrap();
+        toast.success('Ingridient  created successfully!');
+      }
+  
+        
       toast.success(`Ingredient ${isEditing ? 'updated' : 'created'} successfully!`, {
         position: "top-right",
         autoClose: 3000,
@@ -82,13 +136,12 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
         draggable: true
       });
       
-      // In a real app, this would be an API call
-      // For now, redirect back to the list page
+      // Redirect back to the list page
       router.push("/admin/ingredient");
       router.refresh();
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("An error occurred. Please try again.", {
+      toast.error(error instanceof Error ? error.message : "An error occurred. Please try again.", {
         position: "top-right",
         autoClose: 3000
       });
@@ -98,13 +151,15 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
   };
 
   const handleCancel = () => {
-    if (formModified) {
-      if (confirm("You have unsaved changes. Are you sure you want to leave?")) {
-        router.back();
-      }
-    } else {
-      router.back();
+    if (formModified && !confirm("You have unsaved changes. Are you sure you want to leave?")) {
+      return;
     }
+    router.back();
+  };
+
+  const handleReset = () => {
+    reset(defaultValues);
+    setFormModified(false);
   };
 
   return (
@@ -137,8 +192,10 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
                 name="name.en"
                 control={control}
                 errors={errors}
-                required
               />
+              <p className="mt-1 text-xs text-body-color">
+                {watchNameEn?.length || 0}/100 characters
+              </p>
               
               <div className="mb-6 mt-6">
                 <div className="text-dark dark:text-white font-medium mb-2.5">
@@ -149,13 +206,16 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
                   placeholder="Enter description"
                   {...register("description.en", { 
                     required: "Description is required",
-                    maxLength: 500
+                    maxLength: {
+                      value: 500,
+                      message: "Description cannot exceed 500 characters"
+                    }
                   })}
                   className="w-full rounded border border-stroke bg-white px-5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-[#F5F7FD] dark:border-dark-3 dark:bg-gray-dark dark:text-white dark:focus:border-primary"
                 />
                 {errors.description?.en && (
                   <p className="mt-1 text-xs text-red">
-                    {errors.description.en.message as string}
+                    {errors.description.en.message}
                   </p>
                 )}
                 <p className="mt-1 text-xs text-body-color">
@@ -173,8 +233,10 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
                 name="name.am"
                 control={control}
                 errors={errors}
-                required
               />
+              <p className="mt-1 text-xs text-body-color">
+                {watchNameAm?.length || 0}/100 characters
+              </p>
               
               <div className="mb-6 mt-6">
                 <div className="text-dark dark:text-white font-medium mb-2.5">
@@ -185,13 +247,16 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
                   placeholder="Enter description"
                   {...register("description.am", { 
                     required: "Description is required",
-                    maxLength: 500
+                    maxLength: {
+                      value: 500,
+                      message: "Description cannot exceed 500 characters"
+                    }
                   })}
                   className="w-full rounded border border-stroke bg-white px-5 py-3 text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-[#F5F7FD] dark:border-dark-3 dark:bg-gray-dark dark:text-white dark:focus:border-primary"
                 />
                 {errors.description?.am && (
                   <p className="mt-1 text-xs text-red">
-                    {errors.description.am.message as string}
+                    {errors.description.am.message}
                   </p>
                 )}
                 <p className="mt-1 text-xs text-body-color">
@@ -202,7 +267,7 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
           )}
         </div>
 
-        {isEditing && (
+        {isEditing && initialData && (
           <div className="mb-6 grid grid-cols-2 gap-4">
             <div>
               <div className="text-dark dark:text-white font-medium mb-2.5">
@@ -210,7 +275,7 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
               </div>
               <input
                 type="text"
-                value={initialData ? new Date(initialData.createdAt).toLocaleString() : ''}
+                value={new Date(initialData.createdAt).toLocaleString()}
                 disabled
                 className="w-full rounded border border-stroke bg-[#F5F7FD] px-5 py-3 text-dark outline-none transition disabled:cursor-not-allowed dark:border-dark-3 dark:bg-gray-dark dark:text-white"
               />
@@ -221,7 +286,7 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
               </div>
               <input
                 type="text"
-                value={initialData ? new Date(initialData.updatedAt).toLocaleString() : ''}
+                value={new Date(initialData.updatedAt).toLocaleString()}
                 disabled
                 className="w-full rounded border border-stroke bg-[#F5F7FD] px-5 py-3 text-dark outline-none transition disabled:cursor-not-allowed dark:border-dark-3 dark:bg-gray-dark dark:text-white"
               />
@@ -230,19 +295,31 @@ export default function IngredientForm({ initialData, isEditing }: IngredientFor
         )}
 
         <div className="mt-10 flex justify-end gap-4">
-          <Button 
-            label="Cancel"
-            onClick={handleCancel}
+        <Button
             variant="outlinePrimary"
-            className="border-stroke bg-white hover:border-primary hover:bg-white dark:border-dark-3 dark:bg-gray-dark dark:hover:border-primary dark:hover:bg-gray-dark"
-          />
-          <Button 
-            label={isSubmitting ? 'Saving...' : isEditing ? 'Update Ingredient' : 'Create Ingredient'}
+            className="border border-stroke bg-white text-primary px-6 py-3 rounded-full hover:border-primary hover:bg-white dark:border-dark-3 dark:bg-gray-dark dark:hover:border-primary dark:hover:bg-gray-dark"
+            isRounded
+            type="button"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+          <Button
             variant="primary"
-            className="hover:bg-primary-dark"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting || (!isDirty && isEditing)}
-          />
+            className={`px-6 py-3 rounded-full text-white hover:bg-primary-dark ${
+              (isSubmitting || (!isDirty && isEditing)) ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            isRounded
+            type="submit"
+            isLoading={isLoadingCreate || isSubmitting || isUpdateLoading}
+            disabled={
+              isSubmitting || 
+              (!isDirty && isEditing) || 
+              isLoadingCreate || isUpdateLoading
+            }
+          >
+            {isEditing ? "Update" : "Create"}
+          </Button>
         </div>
       </form>
     </div>

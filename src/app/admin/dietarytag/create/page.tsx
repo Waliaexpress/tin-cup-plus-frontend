@@ -1,6 +1,6 @@
 "use client";
 
-import DietaryTagForm from "../components/DietaryTagForm";
+import DietaryTagForm from "@/components/dietary-tags/DietaryTagForm";
 
 export default function CreateDietaryTag() {
   return (
