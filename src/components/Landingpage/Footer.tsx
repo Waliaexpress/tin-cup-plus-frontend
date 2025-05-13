@@ -3,12 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Instagram, 
-  Facebook, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Instagram,
+  Facebook,
   ExternalLink,
   ArrowRight
 } from "lucide-react";
@@ -61,19 +61,12 @@ const Footer = () => {
 
   return (
     <footer className="w-full">
-      <div className="relative w-full h-[150px] overflow-hidden">
-        <Image
-          src="/images/landing_pages/land2.jpg"
-          alt="Footer banner"
-          fill
-          loading="lazy"
-          quality={70}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div
+        className="relative w-full h-[300px] bg-fixed bg-center bg-cover"
+        style={{ backgroundImage: "url('/images/landing_pages/land2.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-50" />
       </div>
-
       <div className="bg-[#8B2500] text-white">
         <div className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -98,7 +91,7 @@ const Footer = () => {
                 </h3>
               </div>
               <p className="text-white mb-6 font-montserrat">
-                Experience authentic Ethiopian and international cuisine in a warm, 
+                Experience authentic Ethiopian and international cuisine in a warm,
                 welcoming environment.
               </p>
               <div className="flex space-x-4">
