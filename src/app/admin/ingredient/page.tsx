@@ -14,8 +14,6 @@ import {  useGetIngridientsQuery,} from "@/store/services";
 import { useUrlQuery, useChangeRoute } from "@/hooks";
 import Pagination from "@/components/filters/Pagination";
 
-// Import the mock data (in a real app, this would be an API call)
-import mockData from "./data/mock-data.json";
 
 export default function IngredientsPage() {
   const router = useRouter();
@@ -108,7 +106,7 @@ export default function IngredientsPage() {
         />
       </div>
 
-      <Pagination pagination={pagination} changeRoute={changeRoute} section="departments"  />
+      <Pagination pagination={pagination} changeRoute={changeRoute} section="ingridients"  />
     </div>
     </>
   );

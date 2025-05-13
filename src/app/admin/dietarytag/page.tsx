@@ -9,13 +9,44 @@ import { DietaryTag } from "@/types/dietary-tag";
 import { PlusCircle } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUrlQuery, useChangeRoute } from "@/hooks";
+import Pagination from "@/components/filters/Pagination";
 
-// Import the mock data (in a real app, this would be an API call)
-import mockData from "./data/mock-data.json";
+
+
+import {  useGetDietaryTagsQuery} from "@/store/services"
 
 export default function DietaryTagsPage() {
   const router = useRouter();
-  const [data, setData] = useState<any[]>(mockData.response.items);
+  
+
+
+
+  const query = useUrlQuery();
+  const page = query?.page ? +query.page : 1;
+  const limit = query?.limit ? +query.limit : 2;
+  const enName = query.enName ?? "";
+  const amName = query.amName ?? "";
+  const isActive = query.isActive ?? "";
+
+  const changeRoute = useChangeRoute();
+
+  // Fetch department list with pagination data
+  const { data, isLoading, isError } =   useGetDietaryTagsQuery({ page, limit });
+ const dietaryTags  = data?.data?.dietaryTags ?? []
+
+
+
+
+  const pagination = {
+    currentPage: page,
+    nextPage: page < data?.data?.lastPage ? page + 1 : null,
+    previousPage: page > 1 ? page - 1 : null,
+    hasNextPage: page < data?.data?.lastPage,
+    hasPreviousPage: page > 1,
+    lastPage: data?.data?.lastPage || 1,
+  };
+
 
   // Define columns for the data table
   const columns: TableColumn<DietaryTag>[] = [
@@ -65,22 +96,6 @@ export default function DietaryTagsPage() {
     router.push(`/admin/Dietary Tag/edit/${item.id}`);
   };
 
-  const handleDelete = (item: DietaryTag) => {
-    // In a real app, this would be an API call
-    if (confirm(`Are you sure you want to delete ${item.name.en}?`)) {
-      setData(data.filter((tag) => tag.id !== item.id));
-      
-      toast.success(`${item.name.en} has been deleted successfully.`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true
-      });
-    }
-  };
-
   return (
     <div className="mx-auto px-4 md:px-8 2xl:px-0">
       <ToastContainer />
@@ -101,12 +116,12 @@ export default function DietaryTagsPage() {
       <div className="flex flex-col gap-5 md:gap-7">
         <DataTable
           columns={columns}
-          data={data}
+          data={dietaryTags}
           onEdit={handleEdit}
-          onDelete={handleDelete}
           keyField="id"
         />
       </div>
+      <Pagination pagination={pagination} changeRoute={changeRoute} section="dietary tags"  />
     </div>
   );
 }
