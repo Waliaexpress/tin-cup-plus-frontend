@@ -14,7 +14,7 @@ import {
 import { RouteEnums } from "@/routes/Routes";
 import Image from "next/image";
 
-const MainNavigation = () => {
+const MainNavigation = ({landing}: {landing?: boolean}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
@@ -39,7 +39,7 @@ const MainNavigation = () => {
   return (
     <header 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled || isMenuOpen ? "bg-white shadow-md dark:bg-gray-900" : "bg-white/80 shadow-md dark:bg-gray-900/80"
+        isScrolled || isMenuOpen ? `bg-white  dark:bg-gray-900 shadow-md` : `${landing ? "bg-transparent  " : "bg-white/80 shadow-md"}  dark:bg-gray-900/80`
       }`}
     >
       <div className="container mx-auto px-4">
@@ -57,7 +57,7 @@ const MainNavigation = () => {
             <Link 
               href="/about" 
               className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
+                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
               }`}
             >
               <Info size={18} />
@@ -67,7 +67,7 @@ const MainNavigation = () => {
             <div className="relative group">
               <button 
                 className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                  isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
+                  isScrolled ? "text-gray-700 dark:text-white" : `${landing ? "text-white" : "text-gray-700"}`
                 }`}
               >
                 <span>Menu</span>
@@ -93,7 +93,7 @@ const MainNavigation = () => {
               <Link 
                 href="/cart" 
                 className={`flex items-center gap-2 font-medium hover:text-primary transition-colors ${
-                  isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
+                  isScrolled ? "text-gray-700 dark:text-white" : `${landing ? "text-white" : "text-gray-700"}`
                 }`}
               >
                 <ShoppingCart size={20} />
@@ -108,7 +108,7 @@ const MainNavigation = () => {
             <div className="relative group">
               <button 
                 className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                  isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"
+                  isScrolled ? "text-gray-700 dark:text-white" : `${landing ? "text-white" : "text-gray-700"}`
                 }`}
               >
                 <User size={20} />

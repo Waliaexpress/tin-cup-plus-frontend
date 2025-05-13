@@ -15,6 +15,25 @@ import type { PropsWithChildren } from "react";
 import StoreProvider from "./admin/providers/StoreProvider";
 import { Providers } from "./admin/providers/themProviders";
 import ReduxProvider from "@/providers/ReduxProvider";
+import { Inter, Montserrat, Playfair_Display } from "next/font/google";
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-montserrat',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-playfair',
+});
 
 // export const metadata: Metadata = {
 //   title: {
@@ -26,7 +45,7 @@ import ReduxProvider from "@/providers/ReduxProvider";
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body>
         <StoreProvider>
               <NextTopLoader showSpinner={false} />

@@ -8,6 +8,9 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['"Satoshi"', ...defaultTheme.fontFamily.sans],
+        inter: ['var(--font-inter)', ...defaultTheme.fontFamily.sans],
+        montserrat: ['var(--font-montserrat)', ...defaultTheme.fontFamily.sans],
+        playfair: ['var(--font-playfair)', ...defaultTheme.fontFamily.serif],
       },
       screens: {
         "2xsm": "375px",
