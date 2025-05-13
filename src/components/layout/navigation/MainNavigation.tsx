@@ -48,7 +48,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             <span className={`text-2xl font-serif font-semibold tracking-wide ${
               isScrolled || isMenuOpen ? "text-primary" : "text-primary"
             }`}>
-             <Image src={"/images/logo/tin-cup-plus-logo.jpg"} width={65} height={35} 
+             <Image src={ isScrolled ? "/images/logo/tin-cup-plus-logo-2.png" :  "/images/logo/tin-cup-plus-logo.jpg"} width={65} height={35} 
              alt="" className="bg-contain" />
             </span>
           </Link>
@@ -129,8 +129,6 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                 </Link>
               </div>
             </div>
-            
-            {/* Order Now Button */}
             <button 
               onClick={() => router.push("/order")}
               className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
@@ -138,8 +136,6 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               Order Now
             </button>
           </nav>
-
-          {/* Mobile Menu Button */}
           <button 
             className="md:hidden text-2xl p-2" 
             onClick={toggleMenu}
@@ -148,13 +144,11 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             {isMenuOpen ? (
               <X size={24} className={isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"} />
             ) : (
-              <Menu size={24} className={isScrolled ? "text-gray-700 dark:text-white" : "text-gray-700 dark:text-white"} />
+              <Menu size={24} className={isScrolled ? "text-gray-700 dark:text-white" : `${landing ? "text-white": "text-gray-700"} dark:text-white`} />
             )}
           </button>
         </div>
       </div>
-
-      {/* Mobile Menu */}
       <div 
         className={`md:hidden transition-all duration-300 overflow-hidden ${
           isMenuOpen ? "max-h-screen py-4" : "max-h-0"
