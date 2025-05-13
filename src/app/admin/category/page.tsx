@@ -10,47 +10,47 @@ import { PlusCircle, Search, Calendar, Filter } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import mockData from "./data/mock-data.json";
 import Toggle from "@/components/common/Toggle";
+
+import {  useGetCategoriesQuery,} from "@/store/services";
+import { useUrlQuery, useChangeRoute } from "@/hooks";
+import Pagination from "@/components/filters/Pagination";
 
 export default function CategoriesPage() {
   const router = useRouter();
-  const [data, setData] = useState<Category[]>(mockData.response.items);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
 
-  const filteredData = data.filter(category => {
-    // Search term filter
-    const matchesSearch = searchTerm === "" || 
-      category.name.en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.name.am.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description.en.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    // Status filter
-    const matchesStatus = 
-      statusFilter === "all" || 
-      (statusFilter === "active" && category.isActive) || 
-      (statusFilter === "inactive" && !category.isActive);
-    
-    // Date range filter
-    let matchesDateRange = true;
-    if (dateRange.start && dateRange.end) {
-      const categoryDate = new Date(category.createdAt);
-      const startDate = new Date(dateRange.start);
-      const endDate = new Date(dateRange.end);
-      endDate.setHours(23, 59, 59, 999);
-      
-      matchesDateRange = categoryDate >= startDate && categoryDate <= endDate;
-    }
-    
-    return matchesSearch && matchesStatus && matchesDateRange;
-  });
-const handleToggleActive = (item: Category, checked: boolean) => {
-  setData(data.map(category => 
-    category.id === item.id ? { ...category, isActive: checked } : category
-  ));
-}
+
+
+
+  const query = useUrlQuery();
+  const page = query?.page ? +query.page : 1;
+  const limit = query?.limit ? +query.limit : 2;
+  const enName = query.enName ?? "";
+  const amName = query.amName ?? "";
+  const isActive = query.isActive ?? "";
+
+  const changeRoute = useChangeRoute();
+
+  // Fetch department list with pagination data
+  const { data, isLoading, isError } =  useGetCategoriesQuery({ page, limit });
+  const categories = data?.data.categories ?? [];
+
+
+
+
+  const pagination = {
+    currentPage: page,
+    nextPage: page < data?.data?.lastPage ? page + 1 : null,
+    previousPage: page > 1 ? page - 1 : null,
+    hasNextPage: page < data?.data?.lastPage,
+    hasPreviousPage: page > 1,
+    lastPage: data?.data?.lastPage || 1,
+  };
+
+  console.log(pagination, "pa")
   const columns: TableColumn<Category>[] = [
     {
       header: "Name (English)",
@@ -68,11 +68,6 @@ const handleToggleActive = (item: Category, checked: boolean) => {
       header: "Status",
       accessor: (item) => (
         <div className="flex items-center">
-          <Toggle
-            checked={item.isActive}
-            onChange={(checked) => handleToggleActive(item, checked)}
-            className="mr-2"
-          />
           <span className="text-sm">{item.isActive ? "Active" : "Inactive"}</span>
         </div>
       )
@@ -87,32 +82,8 @@ const handleToggleActive = (item: Category, checked: boolean) => {
     router.push(`/admin/category/edit/${item.id}`);
   };
 
-  const handleDelete = (item: Category) => {
-    if (confirm(`Are you sure you want to delete ${item.name.en}?`)) {
-      setData(data.filter((category) => category.id !== item.id));
-      
-      toast.success(`${item.name.en} has been deleted successfully.`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true
-      });
-    }
-  };
 
-  const handleStatusChange = (item: Category, status: boolean) => {
-    const updatedData = data.map(category => 
-      category.id === item.id ? { ...category, isActive: status } : category
-    );
-    setData(updatedData);
-    
-    toast.success(`${item.name.en} is now ${status ? 'active' : 'inactive'}.`, {
-      position: "top-right",
-      autoClose: 3000
-    });
-  };
+
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -121,6 +92,7 @@ const handleToggleActive = (item: Category, checked: boolean) => {
   };
 
   return (
+    <>
     <div className="mx-auto px-4 md:px-8 2xl:px-0">
       <ToastContainer />
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -202,12 +174,16 @@ const handleToggleActive = (item: Category, checked: boolean) => {
       <div className="flex flex-col gap-5 md:gap-7">
         <DataTable
           columns={columns}
-          data={filteredData}
+          data={categories}
           onEdit={handleEdit}
-          onDelete={handleDelete}
+          // onDelete={handleDelete}
           keyField="id"
         />
+    
       </div>
+
     </div>
+    <Pagination pagination={pagination} changeRoute={changeRoute} section="departments"  />
+    </>
   );
 }

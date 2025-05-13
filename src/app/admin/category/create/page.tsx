@@ -1,9 +1,10 @@
-"use client";
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import CategoryForm from "../components/CategoryForm";
+import CategoryForm from "@/components/categories/CategoryForm";
 
 export default function CreateCategoryPage() {
+
+  
   return (
     <>
       <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
@@ -16,7 +17,7 @@ export default function CreateCategoryPage() {
           </p>
         </div>
 
-        <CategoryForm isEditing={false} />
+        <CategoryForm isEditing={false}  />
       </div>
     </>
   );

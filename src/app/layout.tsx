@@ -48,10 +48,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body>
         <StoreProvider>
-          <Providers>
-            <ReduxProvider>
               <NextTopLoader showSpinner={false} />
-
               <ToastContainer position="top-right" autoClose={5000} />
 
               <div className="flex min-h-screen">
@@ -62,8 +59,6 @@ export default function RootLayout({ children }: PropsWithChildren) {
                   </main>
                 </div>
               </div>
-            </ReduxProvider>
-          </Providers>
         </StoreProvider>
       </body>
     </html>

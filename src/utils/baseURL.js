@@ -1,1 +1,1 @@
-export const baseURL =  "http://localhost:5000/api/v1";
+export const baseURL =  "https://jellyfish-app-xvaim.ondigitalocean.app/api/v1";

@@ -1,5 +1,5 @@
 export interface Category {
-  id: string;
+  _id: string;
   name: {
     en: string;
     am: string;
@@ -10,6 +10,7 @@ export interface Category {
   };
   image: string;
   isActive: boolean;
+  isTraditional: boolean;
   createdAt: string;
   updatedAt: string;
 }
