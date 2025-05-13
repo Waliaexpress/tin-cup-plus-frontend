@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/store/services/auth.service.js", "src/store/services/category.service.js"  ],
+, "src/store/services/auth.service.js", "src/store/services/category.service.js", "src/store/services/index.js", "src/store/services/ingridient.service.js", "src/store/services/dietaryTag.service.js"  ],
   "exclude": [
     "node_modules"
   ]
