@@ -53,8 +53,8 @@ console.log("categories --**", categories)
               onBlur={() => setIsFocused(false)}
             >
               <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+              {categories?.map((category) => (
+                <option key={category.id} value={category._id}>
                   {category.name?.en || category.name}
                 </option>
               ))}

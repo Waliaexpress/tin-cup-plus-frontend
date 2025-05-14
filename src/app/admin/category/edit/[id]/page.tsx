@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import CategoryForm from "../../components/CategoryForm";
+import CategoryForm from "@/components/categories/CategoryForm";
 import { Category } from "@/types/category";
 import mockData from "../../data/mock-data.json";
 

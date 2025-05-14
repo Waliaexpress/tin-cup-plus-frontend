@@ -20,6 +20,7 @@ import CategorizationSection from "./sections/CategorizationSection";
 import DietaryIngredientsSection from "./sections/DietaryIngredientsSection";
 import MediaSection from "./sections/MediaSection";
 import AvailabilitySection from "./sections/AvailabilitySection";
+import { AnyARecord } from "dns";
 
 
 export default function MenuItemForm({ initialData, isEditing }: MenuItemFormProps) {
@@ -280,20 +281,26 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
       formData.append('description[am]', data.description.am.trim());
       formData.append('price', data.price.toString());
       formData.append('category', data.categoryId);
-      formData.append('is_traditional', isTraditional.toString());
+      formData.append('isTraditional', isTraditional.toString());
 
       if (data.dietaryTagIds && data.dietaryTagIds.length > 0) {
         const filteredTags = data.dietaryTagIds.filter(id => id); 
        
         
        
-        
-        formData.append('dietaryTag[0]', JSON.stringify(filteredTags));
+        filteredTags.map((item: any)=> {
+          formData.append('dietaryTag[0]', item);
+        })
+       
       }
       
       if (data.ingredientIds && data.ingredientIds.length > 0) {
         const filteredIngredients = data.ingredientIds.filter(id => id); 
-        formData.append('ingredients[0]', JSON.stringify(filteredIngredients));
+        
+       
+        filteredIngredients.map((item: any)=> {
+          formData.append('ingredients[0]', item);
+        })
       }
 
       if (data.images && data.images.length > 0) {
@@ -312,9 +319,9 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
           mainImageIndex = 0;
         }
         
-        if (mainImageIndex !== -1) {
-          formData.append('mainImageIndex', mainImageIndex.toString());
-        }
+        // if (mainImageIndex !== -1) {
+        //   formData.append('mainImageIndex', mainImageIndex.toString());
+        // }
         
        
         data.images.forEach((image, index) => {
@@ -328,9 +335,9 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
                   validFilesFound = true;
                   
         
-                  if (index === mainImageIndex) {
-                    formData.append('mainImage', 'true');
-                  }
+                  // if (index === mainImageIndex) {
+                  //   formData.append('mainImage', 'true');
+                  // }
                 }
               } else {
                 console.log('Not a valid File object:', image.file);
@@ -357,8 +364,8 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
         console.log('No images to upload');
       }
 
-      formData.append('isActive', data.isActive.toString());
-      formData.append('isAvailable', data.isAvailable.toString());
+      // formData.append('isActive', data.isActive.toString());
+      // formData.append('isAvailable', data.isAvailable.toString());
 
 
       const response = await createMenuItem(formData).unwrap();

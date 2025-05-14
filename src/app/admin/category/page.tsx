@@ -79,7 +79,8 @@ export default function CategoriesPage() {
   ];
 
   const handleEdit = (item: Category) => {
-    router.push(`/admin/category/edit/${item.id}`);
+    router.push(`/admin/category/edit/${item._id
+      }`);
   };
 
 
