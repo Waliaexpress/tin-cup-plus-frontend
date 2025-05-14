@@ -215,7 +215,6 @@ export default function MenuItemsPage() {
         </div>
       </div>
 
-      {/* Loading State */}
       {isLoadingMenuItems && (
         <LoadingSpinner />
       )}

@@ -21,8 +21,8 @@ const Hero = () => {
 
   const sliderImages = [
     "/images/landing_pages/slider1.jpg",
-    "/images/landing_pages/slider2.jpg",
-    "/images/landing_pages/land1.jpg",
+    "/images/landing_pages/modern_res.jpg",
+    "/images/landing_pages/modern_res2.jpg",
   ];
 
   const handleNavigation = (path: string) => {
@@ -99,16 +99,16 @@ const Hero = () => {
               onClick={() => handleNavigation("/foreign-dishes")}
               className="px-8 py-3 bg-white text-primary font-semibold rounded-lg text-lg transition-all hover:shadow-lg w-64 sm:w-auto font-inter"
             >
-              Foreign Dishes
+              Explore Menu
             </motion.button>
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleNavigation("/ethiopian-dishes")}
               className="px-8 py-3 bg-primary text-white font-semibold rounded-lg text-lg transition-all hover:shadow-lg w-64 sm:w-auto font-inter"
             >
               Ethiopian Dishes
-            </motion.button>
+            </motion.button> */}
           </motion.div>
         </motion.div>
       </div>

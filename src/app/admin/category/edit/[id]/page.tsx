@@ -1,43 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import CategoryForm from "@/components/categories/CategoryForm";
+import { useParams, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Category } from "@/types/category";
-import mockData from "../../data/mock-data.json";
+import { useGetCategoryByIdQuery } from "@/store/services/category.service";
+import { useEffect, useState } from "react";
+
+const Breadcrumb = dynamic(() => import("@/components/Breadcrumbs/Breadcrumb"), { ssr: false });
+const CategoryForm = dynamic(() => import("@/components/categories/CategoryForm"), { ssr: false });
 
 export default function EditCategoryPage() {
   const params = useParams();
-  const [category, setCategory] = useState<Category | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const categoryId = params.id as string;
+  
+  const { data, isLoading, error } = useGetCategoryByIdQuery({ id: categoryId }, {
+    refetchOnMountOrArgChange: true,
+    skip: !categoryId,
+  });
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const categoryId = params.id as string;
-        const foundCategory = mockData.response.items.find(
-          (item) => item.id === categoryId
-        );
-
-        if (foundCategory) {
-          setCategory(foundCategory);
-        } else {
-          setError("Category not found");
-        }
-      } catch (err) {
-        setError("Failed to load category");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+  const formatCategoryData = (): Category | null => {
+    if (!data || !data.data) return null;
+    
+    const categoryData = data.data;
+    return {
+      _id: categoryData._id,
+      name: {
+        en: categoryData.name.en || "",
+        am: categoryData.name.am || "",
+      },
+      description: {
+        en: categoryData.description.en || "",
+        am: categoryData.description.am || "",
+      },
+      image: categoryData.image?.fileUrl || "",
+      isActive: categoryData.isActive,
+      isTraditional: categoryData.isTraditional,
+      createdAt: categoryData.createdAt,
+      updatedAt: categoryData.updatedAt || categoryData.createdAt || new Date().toISOString(),
     };
+  };
 
-    fetchCategory();
-  }, [params.id]);
+  const formattedCategory = data ? formatCategoryData() : null;
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
@@ -45,36 +50,28 @@ export default function EditCategoryPage() {
     );
   }
 
-  if (error || !category) {
+  if (error || !formattedCategory) {
     return (
       <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
         <div className="flex flex-col items-center justify-center h-60">
           <h3 className="mb-3 text-xl font-semibold text-dark dark:text-white">
-            {error || "Category not found"}
+            {error ? "Error loading category" : "Category not found"}
           </h3>
           <p className="text-body-color dark:text-dark-6">
-            The category you are looking for could not be found.
+            The category you are looking for could not be found or there was an error loading it.
           </p>
         </div>
       </div>
     );
   }
 
+
   return (
     <>
-      <Breadcrumb pageName="Edit Category" />
+      { <Breadcrumb pageName="Edit Category" />}
 
       <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-dark dark:text-white">
-            Edit Category: {category.name.en}
-          </h2>
-          <p className="text-sm text-body-color dark:text-dark-6">
-            Update category details and settings
-          </p>
-        </div>
-
-        <CategoryForm initialData={category} isEditing={true} />
+        <CategoryForm initialData={formattedCategory} isEditing={true} />
       </div>
     </>
   );

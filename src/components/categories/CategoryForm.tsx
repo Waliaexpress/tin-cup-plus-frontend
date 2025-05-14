@@ -23,8 +23,8 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
   const [activeTab, setActiveTab] = useState(CATEGORY_CONSTANTS.LANGUAGES.ENGLISH);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formModified, setFormModified] = useState(false);
-
-  // RTK Query mutations
+console.log("initialData ---------- ", initialData)
+ 
   const [createCategory, {isLoading: isLoadingCreate}] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
 
@@ -62,7 +62,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
     if (initialData) {
       reset(defaultValues);
       if (initialData.image) {
-        setImagePreview(initialData.image);
+        setImagePreview(initialData?.image);
       }
     }
   }, [initialData, reset]);
@@ -72,23 +72,23 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
   }, [isDirty]);
 
   const onSubmit = async (data: typeof defaultValues) => {
+    console.log("Update", data)
     setIsSubmitting(true);
     
     try {
       const formData = new FormData();
       
-      // Append name and description only if they exist
       if (data.name?.en) {
-        formData.append('name[en]', data.name.en.trim());
+        formData.append('name[en]', data?.name?.en?.trim());
       }
       if (data.name?.am) {
-        formData.append('name[am]', data.name.am.trim());
+        formData.append('name[am]', data?.name?.am?.trim());
       }
       if (data.description?.en) {
-        formData.append('description[en]', data.description.en.trim());
+        formData.append('description[en]', data?.description?.en?.trim());
       }
       if (data.description?.am) {
-        formData.append('description[am]', data.description.am.trim());
+        formData.append('description[am]', data?.description?.am?.trim());
       }
       
       if(data?.isTraditional){
@@ -147,7 +147,6 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
     router.push("/admin/category");
   };
 
-  // Watched values for character counters
   const watchNameEn = watch("name.en");
   const watchNameAm = watch("name.am");
   const watchDescEn = watch("description.en");
@@ -294,7 +293,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
 
           {imagePreview && (
             <div className="flex flex-col items-center space-y-3">
-              <Image
+              <img
                 src={imagePreview}
                 width={400}
                 height={200}
@@ -312,7 +311,7 @@ export default function CategoryForm({ initialData, isEditing }: CategoryFormPro
           <div className="flex items-center">
             <Controller
               name="isActive"
-              control={control}
+              control={control} 
               render={({ field: { value, onChange } }) => (
                 <Toggle
                   checked={value}

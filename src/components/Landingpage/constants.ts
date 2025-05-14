@@ -2,17 +2,17 @@ import { RouteEnums } from "@/routes/Routes";
 
 export const featuresData = [
     {
-      image: "/images/landing_pages/land1.jpg",
-      title: "Traditional Ethiopian Dining Experience",
+      image: "/images/landing_pages/modern_res.jpg",
+      title: "Welcome to Modern Elegance and Comfort",
       description:
-        "Immerse yourself in the authentic ambiance of our traditional Ethiopian dining hall (የባህላዊ አዳራሽ). Experience the rich cultural heritage of Ethiopia through our meticulously designed space that honors centuries-old traditions. Our hall features handcrafted furniture and traditional décor, creating the perfect setting for enjoying our authentic Ethiopian cuisine served on traditional injera.",
-      menuLink: RouteEnums.ETHIOPIAN_DISHES
+        "Step into our beautifully designed dining space that blends contemporary flair with warm hospitality. Our restaurant offers the perfect setting for both casual lunches and vibrant evening gatherings. Ambient lighting and stylish décor create a cozy yet upscale atmosphere, making it the ideal spot to relax, unwind, and enjoy delicious food and drinks.",
+      menuLink: RouteEnums.FOREIGN_DISHES
     },
     {
-      image: "/images/landing_pages/land2.jpg",
-      title: "Communal Dining & Cultural Celebrations",
+      image: "/images/landing_pages/modern_res2.jpg",
+      title: "Spacious Dining with a Welcoming Atmosphere",
       description:
-        "Our traditional Ethiopian restaurant hall is designed for communal dining experiences that bring people together. Perfect for family gatherings, cultural celebrations, and special occasions, our space accommodates both intimate dinners and larger groups. Experience the Ethiopian tradition of sharing food from a common plate, symbolizing unity and friendship while enjoying our carefully prepared authentic dishes.",
+        "Enjoy a relaxed and comfortable dining experience in our spacious seating area, thoughtfully arranged to accommodate both small gatherings and larger groups. With a mix of cozy booths and open tables, our layout ensures privacy without compromising the vibrant energy of the space. Natural light filters through large windows, creating a bright and inviting setting perfect for any occasion.",
       menuLink: RouteEnums.FOREIGN_DISHES
     },
     {

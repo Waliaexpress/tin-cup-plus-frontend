@@ -21,7 +21,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 
     getCategoryById: builder.query({
       query: ({ id }) => ({
-        url: `/categories/${id}`,
+        url: `/admin/categories/${id}`,
         method: 'GET',
       }),
       providesTags: (result, err, arg) => [{ type: 'Category', id: arg.id }],
@@ -44,7 +44,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 
     updateCategory: builder.mutation({
       query: ({ id, body }) => ({
-        url: `/categories/${id}`,
+        url: `/admin/categories/${id}`,
         method: 'PUT',
         body,
       }),
