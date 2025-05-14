@@ -6,3 +6,5 @@ export * from './category.service'
 export * from './ingridient.service'
 
 export * from './dietaryTag.service'
+
+export * from './menuItem.service'

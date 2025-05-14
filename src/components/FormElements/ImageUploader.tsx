@@ -28,16 +28,31 @@ export default function ImageUploader({
   onChange,
   maxImages = MENU_ITEM_CONSTANTS.MAX_IMAGES,
 }: ImageUploaderProps) {
-  const [images, setImages] = useState<ImageFile[]>(() => 
-    initialImages.map((img) => ({
-      id: img.id,
-      file: new File([], "placeholder"), // Placeholder file for existing images
-      preview: img.url,
-      isMain: img.isMain,
-      isUploading: false,
-      progress: 100,
-    }))
-  );
+  const [images, setImages] = useState<ImageFile[]>(() => {
+    console.log('Initial images:', initialImages);
+    return initialImages.map((img) => {
+      // Create a real file from the URL if possible, otherwise use a placeholder
+      let file: File;
+      try {
+        // Create a non-empty file to ensure it's detected in form submission
+        // This is a workaround since we can't create a real file from a URL directly
+        const blob = new Blob(['image-content-placeholder'], { type: 'application/octet-stream' });
+        file = new File([blob], img.url?.split('/')?.pop() || 'image.jpg', { type: 'image/jpeg' });
+      } catch (error) {
+        console.error('Error creating file from image:', error);
+        file = new File(['placeholder-content'], "placeholder.jpg", { type: 'image/jpeg' });
+      }
+
+      return {
+        id: img.id || `existing-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+        file: file,
+        preview: img.url,
+        isMain: img.isMain || false,
+        isUploading: false,
+        progress: 100,
+      };
+    });
+  });
   
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -83,22 +98,46 @@ export default function ImageUploader({
     Array.from(files).forEach((file) => {
       if (!validateFile(file)) return;
       
+      // Create a unique ID for this file
       const id = `new-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
       const isMain = images.length === 0 && newImages.length === 0;
       
-      newImages.push({
+      // Store the actual file object (critical for form submission)
+      const imageFile = {
         id,
-        file,
+        file, // This is the actual File object that needs to be sent to the API
         preview: URL.createObjectURL(file),
         isMain,
         isUploading: true,
         progress: 0,
+      };
+      
+      // Add detailed logging
+      console.log('Created new image file object:', {
+        id: imageFile.id,
+        fileName: file.name,
+        fileSize: file.size,
+        fileType: file.type,
+        preview: imageFile.preview
       });
+      
+      newImages.push(imageFile);
     });
     
-    // Simulate upload progress
+    // Update both local state and parent form
     const updatedImages = [...images, ...newImages];
+    
+    // Log what files are being sent to the form
+    console.log('Adding new images to form:', newImages.map(img => ({
+      id: img.id,
+      fileName: img.file.name,
+      fileSize: img.file.size,
+      fileType: img.file.type
+    })));
+    
     setImages(updatedImages);
+    
+    // Ensure the form gets the full file objects
     onChange(updatedImages);
     
     // Simulate upload progress for each new image
@@ -108,22 +147,22 @@ export default function ImageUploader({
         progress += 10;
         if (progress > 100) {
           clearInterval(interval);
-          setImages((prev) => 
-            prev.map((i) => 
+          // Update local state
+          setImages((prev) => {
+            const updated = prev.map((i) => 
               i.id === img.id ? { ...i, isUploading: false, progress: 100 } : i
-            )
-          );
-          onChange(
-            images.map((i) => 
-              i.id === img.id ? { ...i, isUploading: false, progress: 100 } : i
-            )
-          );
+            );
+            // Critical: Call onChange with the updated array to sync with parent form
+            setTimeout(() => onChange(updated), 0);
+            return updated;
+          });
         } else {
-          setImages((prev) => 
-            prev.map((i) => 
+          setImages((prev) => {
+            const updated = prev.map((i) => 
               i.id === img.id ? { ...i, progress } : i
-            )
-          );
+            );
+            return updated;
+          });
         }
       }, 200);
     });
@@ -288,7 +327,7 @@ export default function ImageUploader({
               <div className="p-2 text-xs truncate">
                 {img.file.name !== "placeholder"
                   ? img.file.name
-                  : img.preview.split("/").pop() || "Image"}
+                  : img.preview?.split("/")?.pop() || "Image"}
               </div>
             </div>
           ))}

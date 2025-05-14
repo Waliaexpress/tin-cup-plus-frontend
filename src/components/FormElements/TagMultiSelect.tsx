@@ -20,6 +20,7 @@ interface TagMultiSelectProps {
   error?: string;
   label?: string;
   language?: string;
+  onListEndReached?: () => void;
 }
 
 export default function TagMultiSelect({
@@ -31,7 +32,8 @@ export default function TagMultiSelect({
   required = false,
   error,
   label,
-  language = "en"
+  language = "en",
+  onListEndReached
 }: TagMultiSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,10 +72,19 @@ export default function TagMultiSelect({
   }, [isOpen]);
 
   const toggleOption = (optionId: string) => {
+    console.log('Toggling option:', optionId);
+    console.log('Current selected values:', selectedValues);
+    
     if (selectedValues.includes(optionId)) {
-      onChange(selectedValues.filter(id => id !== optionId));
+      // Remove this ID from the selection
+      const newValues = selectedValues.filter(id => id !== optionId);
+      console.log('New selected values (after removal):', newValues);
+      onChange(newValues);
     } else {
-      onChange([...selectedValues, optionId]);
+      // Add this ID to the selection
+      const newValues = [...selectedValues, optionId];
+      console.log('New selected values (after addition):', newValues);
+      onChange(newValues);
     }
   };
 
@@ -158,7 +169,17 @@ export default function TagMultiSelect({
               </div>
             </div>
             
-            <div className="max-h-60 overflow-y-auto p-2">
+            <div 
+              className="max-h-60 overflow-y-auto p-2"
+              onScroll={(e) => {
+                const target = e.target as HTMLDivElement;
+                const isScrollAtBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;
+                
+                if (isScrollAtBottom && onListEndReached) {
+                  onListEndReached();
+                }
+              }}
+            >
               {filteredOptions.length > 0 ? (
                 filteredOptions.map(option => (
                   <div
