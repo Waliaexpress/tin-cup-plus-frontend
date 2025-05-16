@@ -16,4 +16,7 @@ export enum RouteEnums {
     EDIT_CATEGORY = "/admin/category/edit",
     ETHIOPIAN_DISHES = "/ethiopian-dishes",
     FOREIGN_DISHES = "/foreign-dishes",
+    PACKAGE = "/admin/package",
+    CREATE_PACKAGE = "/admin/package/create",
+    EDIT_PACKAGE = "/admin/package/edit",
 }

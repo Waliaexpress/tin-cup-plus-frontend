@@ -1,5 +1,6 @@
 import { RouteEnums } from "@/routes/Routes";
 import * as Icons from "../icons";
+import { PackageIcon } from "lucide-react";
 
 export const NAV_DATA = [
   {
@@ -37,6 +38,12 @@ export const NAV_DATA = [
         title: "Category",
         url: RouteEnums.CATEGORY,
         icon: Icons.CategoryIcon,
+        items: [],
+      },
+      {
+        title: "Package",
+        url: RouteEnums.PACKAGE,
+        icon: PackageIcon,
         items: [],
       },
   //     {
