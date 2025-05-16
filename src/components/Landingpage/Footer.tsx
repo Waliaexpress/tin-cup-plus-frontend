@@ -74,7 +74,7 @@ const Footer = () => {
     <footer className="w-full">
       <div
         className="relative w-full h-[300px] bg-fixed bg-center bg-cover"
-        style={{ backgroundImage: "url('/images/landing_pages/land2.jpg')" }}
+        style={{ backgroundImage: "url('/images/landing_pages/res5.jpg')" }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50" />
       </div>

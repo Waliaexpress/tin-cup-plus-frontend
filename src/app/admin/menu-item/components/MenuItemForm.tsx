@@ -288,9 +288,9 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
        
         
        
-        filteredTags.map((item: any)=> {
-          formData.append('dietaryTag[0]', item);
-        })
+       
+          formData.append('dietaryTag', JSON.stringify(filteredTags));
+
        
       }
       
@@ -298,9 +298,7 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
         const filteredIngredients = data.ingredientIds.filter(id => id); 
         
        
-        filteredIngredients.map((item: any)=> {
-          formData.append('ingredients[0]', item);
-        })
+        formData.append('ingredients', JSON.stringify(filteredIngredients));
       }
 
       if (data.images && data.images.length > 0) {
