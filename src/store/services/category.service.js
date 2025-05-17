@@ -67,6 +67,13 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, err, arg) => [{ type: 'Category', id: arg.id }],
     }),
+    getPublicCategories: builder.query({
+      query: ({isTraditional}) => ({
+        url: `/public/categories?isTraditional=${isTraditional}`,
+        method: 'GET',
+      }),
+      providesTags: ['Category'],
+    }),
   }),
 })
 
@@ -77,6 +84,7 @@ export const {
   useUpdateCategoryMutation,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
+  useGetPublicCategoriesQuery
 } = categoryApiSlice;
 
 
