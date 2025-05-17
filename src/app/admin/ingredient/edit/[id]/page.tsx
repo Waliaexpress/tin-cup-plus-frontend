@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import IngredientForm from "../../components/IngredientForm";
+import IngredientForm from "@/components/ingridients/IngredientForm";
 import { Ingredient } from "@/types/ingredient";
 
 // Import mock data (in a real app, this would be an API call)

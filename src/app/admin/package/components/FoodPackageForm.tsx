@@ -3,6 +3,8 @@ import { Button } from "@/components/ui-elements/button";
 import { ArrowRight, ArrowLeft, Search, Check, X } from "lucide-react";
 import { CreatePackageFormData } from "@/types/package";
 
+import {  useGetMenuItemsQuery,} from "@/store/services"
+
 interface FoodPackageFormProps {
   formData: CreatePackageFormData;
   updateFormData: (data: Partial<CreatePackageFormData>) => void;
@@ -33,6 +35,8 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [foodSearch, setFoodSearch] = useState("");
   const [drinkSearch, setDrinkSearch] = useState("");
+
+  const  {data: foodMenuItems}  =   useGetMenuItemsQuery( {page:1, limit: 20});
   
   const filteredFoods = mockFoods.filter(food => 
     food.name.en.toLowerCase().includes(foodSearch.toLowerCase()) ||
