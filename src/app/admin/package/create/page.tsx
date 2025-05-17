@@ -70,16 +70,13 @@ export default function CreatePackagePage() {
   };
 
   const handleCreatePackage = () => {
-    // This would connect to an API in a real implementation
     toast.success("Package created successfully!", {
       position: "top-right",
       autoClose: 3000,
     });
     
-    // Log form data to console (for development purposes)
     console.log("Package data:", formData);
     
-    // Navigate back to packages page after a delay
     setTimeout(() => {
       router.push(RouteEnums.PACKAGE);
     }, 2000);
@@ -216,8 +213,6 @@ export default function CreatePackagePage() {
           })}
         </div>
       </div>
-
-      {/* Form Steps */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stroke p-6 md:p-8">
         {renderFormStep()}
       </div>

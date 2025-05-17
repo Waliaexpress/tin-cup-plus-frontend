@@ -76,13 +76,8 @@ export default function HallPackageForm({
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-
-    if (formData.hall.capacity === null || formData.hall.capacity <= 0) {
-      newErrors.capacity = "Hall capacity must be greater than 0";
-    }
-
-    if (formData.hall.images.length === 0) {
-      newErrors.images = "At least one hall image is required";
+    if (formData.hall.capacity !== null && formData.hall.capacity <= 0) {
+      newErrors.capacity = "If provided, hall capacity must be greater than 0";
     }
 
     setErrors(newErrors);
@@ -90,7 +85,8 @@ export default function HallPackageForm({
   };
 
   const handleSubmit = () => {
-    updateFormData({ includesHall: true });
+    const hasHallInfo = (formData.hall.capacity !== null && formData.hall.capacity > 0) || formData.hall.images.length > 0;
+    updateFormData({ includesHall: hasHallInfo });
     if (validate()) {
       onContinue();
     }
@@ -109,7 +105,7 @@ export default function HallPackageForm({
       
       <div>
         <label htmlFor="capacity" className="block text-sm font-medium text-gray-700 mb-1">
-          Hall Capacity (People) <span className="text-red-500">*</span>
+          Hall Capacity (People) (Optional)
         </label>
         <input
           id="capacity"
@@ -127,7 +123,7 @@ export default function HallPackageForm({
       
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Hall Images <span className="text-red-500">*</span>
+          Hall Images (Optional)
         </label>
         <div 
           className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md ${
@@ -162,7 +158,6 @@ export default function HallPackageForm({
         {errors.images && <p className="mt-1 text-sm text-red-500">{errors.images}</p>}
       </div>
       
-      {/* Image Preview Gallery */}
       {previewImages.length > 0 && (
         <div className="mt-6">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Images</h4>

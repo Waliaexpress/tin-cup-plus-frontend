@@ -9,8 +9,6 @@ interface FoodPackageFormProps {
   onContinue: () => void;
   onPrevious?: () => void;
 }
-
-// Mock data for demonstration
 const mockFoods = [
   { id: "food1", name: { en: "Injera with Doro Wat", am: "ዶሮ ወጥ" }, price: 12.99, category: "Main Course" },
   { id: "food2", name: { en: "Tibs", am: "ጥብስ" }, price: 14.99, category: "Main Course" },
@@ -92,7 +90,6 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
       <h3 className="text-xl font-semibold mb-4">Foods & Drinks Selection</h3>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Foods Section */}
         <div>
           <div className="flex justify-between items-center mb-4">
             <h4 className="text-lg font-medium">Foods <span className="text-red-500">*</span></h4>
@@ -174,8 +171,6 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
             Selected: {formData.foods.length} foods
           </div>
         </div>
-        
-        {/* Drinks Section */}
         <div>
           <div className="flex justify-between items-center mb-4">
             <h4 className="text-lg font-medium">Drinks</h4>

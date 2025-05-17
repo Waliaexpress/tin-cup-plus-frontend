@@ -99,7 +99,6 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
         </div>
       )}
 
-      {/* Add New Service Form */}
       <div className="bg-white border border-gray-200 rounded-lg p-4">
         <h4 className="text-md font-medium mb-4">Add New Service</h4>
         

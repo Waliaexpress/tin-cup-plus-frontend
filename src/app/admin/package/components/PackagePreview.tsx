@@ -12,7 +12,6 @@ interface PackagePreviewProps {
   onPrevious?: () => void;
 }
 
-// Mock data for demonstration
 const mockFoods = [
   { id: "food1", name: { en: "Injera with Doro Wat", am: "ዶሮ ወጥ" }, price: 12.99, category: "Main Course" },
   { id: "food2", name: { en: "Tibs", am: "ጥብስ" }, price: 14.99, category: "Main Course" },
@@ -48,7 +47,6 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
         Review all the details of your package before activating it. Once activated, the package will be visible to customers.
       </p>
       
-      {/* Banner and Basic Info */}
       <div className="bg-gray-50 rounded-lg overflow-hidden">
         {formData.bannerImage && (
           <div className="relative w-full h-48 sm:h-64 bg-gray-200">
@@ -110,7 +108,6 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
         </div>
       </div>
       
-      {/* Hall Information */}
       {formData.includesHall && (
         <div className="p-6 border border-gray-200 rounded-lg">
           <h3 className="text-lg font-semibold mb-4">Hall Information</h3>
@@ -141,9 +138,7 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
         </div>
       )}
       
-      {/* Food and Drinks */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Food Items */}
         <div className="p-6 border border-gray-200 rounded-lg">
           <h3 className="text-lg font-semibold mb-4">Food Items ({selectedFoods.length})</h3>
           
@@ -167,7 +162,6 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
           )}
         </div>
         
-        {/* Drink Items */}
         <div className="p-6 border border-gray-200 rounded-lg">
           <h3 className="text-lg font-semibold mb-4">Drink Items ({selectedDrinks.length})</h3>
           
@@ -192,7 +186,6 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
         </div>
       </div>
       
-      {/* Services */}
       {formData.services.length > 0 && (
         <div className="p-6 border border-gray-200 rounded-lg">
           <h3 className="text-lg font-semibold mb-4">Additional Services ({formData.services.length})</h3>
@@ -212,8 +205,6 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
           </ul>
         </div>
       )}
-      
-      {/* Activation Section */}
       <div className="bg-gray-50 rounded-lg p-6 mt-8">
         <div className="flex items-center justify-between">
           <div>
@@ -223,14 +214,12 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
             </p>
           </div>
           <Toggle
-            id="toggle-active"
             checked={formData.isActive}
             onChange={handleToggleActive}
           />
         </div>
       </div>
       
-      {/* Submit Button */}
       <div className="flex justify-between mt-8">
         {onPrevious && (
           <Button

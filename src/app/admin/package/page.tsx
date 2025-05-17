@@ -179,7 +179,6 @@ export default function PackagesPage() {
             </span>
           )}
           <Toggle 
-            id={`toggle-${item._id}`}
             checked={item.isActive} 
             onChange={(checked) => handleToggleActive(item, checked)}
           />
@@ -193,7 +192,6 @@ export default function PackagesPage() {
   };
 
   const handleDelete = (item: any) => {
-    // In a real app, we'd call a delete API endpoint
     toast.success(`${item.name?.en} has been deleted successfully.`, {
       position: "top-right",
       autoClose: 3000,
