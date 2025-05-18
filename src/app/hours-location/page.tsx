@@ -7,6 +7,7 @@ import FindUs from "@/components/FindUs/FindUs";
 import { Calendar, Clock, MapPin, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { businessHours, contactInfo } from "@/constants/hours";
+import { RouteEnums } from "@/routes/Routes";
 
 export default function HoursLocationPage() {
 
@@ -119,7 +120,7 @@ export default function HoursLocationPage() {
               ))}
             </div>
             
-            <motion.div 
+            {/* <motion.div 
               className="mt-8 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -131,7 +132,7 @@ export default function HoursLocationPage() {
               >
                 Make a Reservation
               </Link>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
       </div>
@@ -152,17 +153,17 @@ export default function HoursLocationPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/ethiopian-dishes"
+              href={RouteEnums.FOREIGN_DISHES}
               className="px-8 py-3 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
             >
               View Our Menu
             </Link>
-            <Link
+            {/* <Link
               href="/order"
               className="px-8 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition-colors"
             >
               Order Online
-            </Link>
+            </Link> */}
           </div>
         </div>
       </motion.section>
