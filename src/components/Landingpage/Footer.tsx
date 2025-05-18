@@ -34,7 +34,7 @@ const Footer = () => {
             >
               <div className="flex items-center mb-6">
                 <Image
-                  src="/images/logo/tin-cup-plus-logo.png"
+                  src={"/images/logo/tin-cup-plus-logo.jpg"}
                   width={60}
                   height={60}
                   alt="Tin Cup Plus Logo"
