@@ -66,15 +66,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               <span>About Us</span>
             </Link> */}
             
-            <Link 
-              href="/hours-location" 
-              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
-              }`}
-            >
-              <Clock size={18} />
-              <span>Hours & Location</span>
-            </Link>
+          
             
             <div className="relative group">
               <button 
@@ -100,6 +92,15 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                 </Link>
               </div>
             </div>
+            <Link 
+              href="/hours-location" 
+              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
+                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
+              }`}
+            >
+              <Clock size={18} />
+              <span>Hours & Location</span>
+            </Link>
             
             {/* <div className="relative">
               <Link 
