@@ -36,7 +36,7 @@ export default function CategoriesPage() {
   const changeRoute = useChangeRoute();
 
   // Fetch department list with pagination data
-  const { data, isLoading, isError } = useGetCategoriesQuery({ page, limit });
+  const { data, isLoading, isError, refetch } = useGetCategoriesQuery({ page, limit });
   const categories = data?.data.categories ?? [];
 
 
@@ -96,7 +96,7 @@ export default function CategoriesPage() {
     try {
       await deleteCategory({ id: item }).unwrap();
       toast.success("Category deleted successfully");
-      useGetCategoriesQuery({ page, limit });
+      refetch(); 
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to delete category");
     }
