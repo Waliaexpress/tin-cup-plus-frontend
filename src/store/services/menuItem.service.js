@@ -4,10 +4,12 @@ export const menuItemApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     // Get paginated menu items (admin)
     getMenuItems: builder.query({
-      query: ({ page, limit }) => {
+      query: ({ page, limit, categoryId}) => {
         const params = new URLSearchParams();
         if (page) params.append('page', page);
         if (limit) params.append('limit', limit);
+        if(categoryId) params.append("categoryId", categoryId)
+
 
         return {
           url: `/admin/menu-items?${params.toString()}`,

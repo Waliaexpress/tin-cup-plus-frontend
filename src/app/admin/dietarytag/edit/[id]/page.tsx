@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import DietaryTagForm from "../../components/DietaryTagForm";
+import DietaryTagForm from "@/components/dietary-tags/DietaryTagForm";
 import { DietaryTag } from "@/types/dietary-tag";
 
 // Import the mock data (in a real app, this would be an API call)

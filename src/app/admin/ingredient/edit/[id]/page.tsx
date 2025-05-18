@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import IngredientForm from "../../create/page";
+
 import { Ingredient } from "@/types/ingredient";
 
 // Import mock data (in a real app, this would be an API call)
