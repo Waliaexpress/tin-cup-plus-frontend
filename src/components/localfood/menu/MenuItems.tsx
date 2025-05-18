@@ -105,7 +105,7 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
       let categoryName = "Menu Items";
       
       if (categoryId && menuItemsResponse?.data?.menuItems && menuItemsResponse.data.menuItems.length > 0) {
-        const item = menuItemsResponse.data.menuItems.find(item => 
+        const item = menuItemsResponse.data.menuItems.find((item: any) => 
           item.category && item.category._id === categoryId
         );
         if (item?.category?.name?.en) {
