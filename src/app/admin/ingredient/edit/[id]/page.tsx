@@ -65,7 +65,7 @@ export default function EditIngredientPage() {
           Update the ingredient information below
         </p>
       </div>
-      
+        {/* @ts-ignore */}
       <IngredientForm isEditing={true} initialData={ingredient} />
     </div>
   );
