@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import IngredientForm from "@/components/ingridients/IngredientForm";
+import IngredientForm from "../../create/page";
+
 import { Ingredient } from "@/types/ingredient";
 
 // Import mock data (in a real app, this would be an API call)
@@ -65,7 +66,7 @@ export default function EditIngredientPage() {
           Update the ingredient information below
         </p>
       </div>
-      
+        {/* @ts-ignore */}
       <IngredientForm isEditing={true} initialData={ingredient} />
     </div>
   );
