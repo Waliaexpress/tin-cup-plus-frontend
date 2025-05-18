@@ -29,6 +29,9 @@ export default function FormElementsPage() {
               label="Default input"
               placeholder="Default input text"
               type="text"
+              name="active"
+              control={""}
+              errors={""}
             />
 
             <InputGroup
@@ -36,6 +39,9 @@ export default function FormElementsPage() {
               placeholder="Active input text"
               active
               type="text"
+              name="active"
+              control={""}
+              errors={""}
             />
 
             <InputGroup
@@ -43,6 +49,9 @@ export default function FormElementsPage() {
               placeholder="Disabled input text"
               type="text"
               disabled
+              name="active"
+              control={""}
+              errors={""}
             />
           </ShowcaseSection>
 
@@ -67,6 +76,9 @@ export default function FormElementsPage() {
               fileStyleVariant="style1"
               label="Attach file"
               placeholder="Attach file"
+              name="active"
+              control={""}
+              errors={""}
             />
 
             <InputGroup
@@ -74,6 +86,9 @@ export default function FormElementsPage() {
               fileStyleVariant="style2"
               label="Attach file"
               placeholder="Attach file"
+              name="active"
+              control={""}
+              errors={""}
             />
           </ShowcaseSection>
         </div>
@@ -83,18 +98,27 @@ export default function FormElementsPage() {
             <TextAreaGroup
               label="Default textarea"
               placeholder="Default textarea"
+              name="active"
+              control={""}
+              errors={""}
             />
 
             <TextAreaGroup
               label="Active textarea"
               placeholder="Active textarea"
               active
+              name="active"
+              control={""}
+              errors={""}
             />
 
             <TextAreaGroup
               label="Disabled textarea"
               placeholder="Disabled textarea"
               disabled
+              name="active"
+              control={""}
+              errors={""}
             />
           </ShowcaseSection>
 
