@@ -22,7 +22,7 @@ const GoogleMapRender: React.FC<GoogleMapProps> = ({ latitude, longitude, addres
   const mapLatitude = 44.978083;
   const mapLongitude =  -93.105694;
 
-  const hasValidCoordinates = typeof mapLatitude === 'number' && typeof mapLongitude === 'number';
+  const hasValidCoordinates = typeof mapLatitude === "number" && typeof mapLongitude === "number";
   const center = hasValidCoordinates ? { lat: mapLatitude, lng: mapLongitude } : undefined;
 
   const mapRef = useRef<google.maps.Map | null>(null);
@@ -54,7 +54,7 @@ const GoogleMapRender: React.FC<GoogleMapProps> = ({ latitude, longitude, addres
         <div className="w-full py-4">
         </div>
         <div className="w-full px-5 md:px-8 py-4 text-center text-red-500">
-          "Error loading map. Please try again later."
+          &quot;Error loading map. Please try again later.&quot;
         </div>
       </div>
     );
@@ -102,13 +102,13 @@ const GoogleMapRender: React.FC<GoogleMapProps> = ({ latitude, longitude, addres
       ) : !hasValidCoordinates ? (
         <div className="w-full px-5 md:px-8 py-4 text-center">
           <div className="bg-gray-100 h-auto p-6 rounded-xl flex items-center justify-center">
-            <p className="text-gray-500">("No location data available")</p>
+            <p className="text-gray-500">(&quot;No location data available&quot;)</p>
           </div>
         </div>
       ) : (
         <div className="w-full px-5 md:px-8 py-4 text-center">
           <div className="animate-pulse bg-gray-200 h-[400px] rounded-xl flex items-center justify-center">
-            <p className="text-gray-500">("Loading map...")</p>
+            <p className="text-gray-500">(&quot;Loading map...&quot;)</p>
           </div>
         </div>
       )}
