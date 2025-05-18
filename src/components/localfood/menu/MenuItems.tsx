@@ -33,7 +33,7 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
   const [menuTitle, setMenuTitle] = useState<string>("");
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
-  const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId });
+  const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isTraditional: isTraditional, categoryId: categoryId });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);

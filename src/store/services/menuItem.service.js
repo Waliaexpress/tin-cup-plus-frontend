@@ -71,7 +71,15 @@ export const menuItemApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['MenuItem'],
     }),
-  }),
+ 
+    getPublicMenuItemById: builder.query({
+      query: (id) => ({
+        url: `/public/menu-items/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, id) => [{ type: 'MenuItem', id }],
+    }),
+  })
 });
 
 export const {
@@ -81,4 +89,5 @@ export const {
   useUpdateMenuItemMutation,
   useDeleteMenuItemMutation,
   useGetPublicMenuItemsQuery,
+  useGetPublicMenuItemByIdQuery,
 } = menuItemApiSlice;

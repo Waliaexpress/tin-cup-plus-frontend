@@ -1,24 +1,65 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Plus, Minus, ArrowLeft, Facebook, Twitter, Instagram, Share2, Copy, Check } from "lucide-react";
 import Link from "next/link";
 import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import MenuItems from "@/components/localfood/menu/MenuItems";
-import traditionalMenuData from "@/data/menuItems.json";
-import foreignMenuData from "@/data/foreignMenuItems.json";
 import { useDispatch } from "react-redux";
+import { useGetPublicMenuItemByIdQuery } from "@/store/services/menuItem.service";
 
-interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
+interface ApiMenuItem {
+  _id: string;
+  name: {
+    am: string;
+    en: string;
+  };
+  description: {
+    am: string;
+    en: string;
+  };
   price: number;
-  unit: string;
-  image: string;
-  dietaryTags?: string[];
+  category: any;
+  dietaryTag: Array<{
+    _id: string;
+    name: {
+      en: string;
+      am: string;
+    };
+    description: {
+      en: string;
+      am: string;
+    };
+    colorCode: string;
+    isActive: boolean;
+  }>;
+  images: Array<{
+    _id: string;
+    fileUrl: string;
+    fileType: string;
+    fileName: string;
+    storageType: string;
+  }>;
+  ingredients: Array<{
+    _id: string;
+    name: {
+      am: string;
+      en: string;
+    };
+    description: {
+      am: string;
+      en: string;
+    };
+    isActive: boolean;
+  }>;
+  isActive: boolean;
+  isAvailable: boolean;
+  isTraditional: boolean;
+  isSpecial: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function MenuItemDetail() {
@@ -26,44 +67,12 @@ export default function MenuItemDetail() {
   const id = params.id as string;
   const dispatch = useDispatch();
   
-  const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [menuType, setMenuType] = useState<"traditional" | "foreign">("traditional");
-  const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    // Find the menu item in both data sources
-    const findMenuItem = () => {
-      setLoading(true);
-      
-      // Search in traditional menu data
-      for (const category of traditionalMenuData.categories) {
-        const item = category.items.find(item => item.id === id);
-        if (item) {
-          setMenuItem(item);
-          setMenuType("traditional");
-          setLoading(false);
-          return;
-        }
-      }
-      
-      // Search in foreign menu data
-      for (const category of foreignMenuData.categories) {
-        const item = category.items.find(item => item.id === id);
-        if (item) {
-          setMenuItem(item);
-          setMenuType("foreign");
-          setLoading(false);
-          return;
-        }
-      }
-      
-      setLoading(false);
-    };
-    
-    findMenuItem();
-  }, [id]);
+  // Fetch menu item data using the API
+  const { data: menuItemResponse, isLoading, isError } = useGetPublicMenuItemByIdQuery(id);
+  const menuItem = menuItemResponse?.data;
 
   const handleIncrement = () => {
     setQuantity(prev => prev + 1);
@@ -81,11 +90,11 @@ export default function MenuItemDetail() {
     dispatch({
       type: "cart/addItem",
       payload: {
-        id: menuItem.id,
-        name: menuItem.name,
+        id: menuItem._id,
+        name: menuItem.name.en,
         price: menuItem.price,
         quantity: quantity,
-        image: menuItem.image
+        image: menuItem.images && menuItem.images.length > 0 ? menuItem.images[0].fileUrl : ''
       }
     });
   };
@@ -100,7 +109,7 @@ export default function MenuItemDetail() {
 
   const handleShare = (platform: string) => {
     const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(`Check out this delicious ${menuItem?.name} at Tin Cup Plus Restaurant!`);
+    const text = encodeURIComponent(`Check out this delicious ${menuItem?.name?.en} at Tin Cup Plus Restaurant!`);
     
     let shareUrl = '';
     
@@ -122,7 +131,7 @@ export default function MenuItemDetail() {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen pt-20 bg-gray-50">
         <MainNavigation />
@@ -139,18 +148,15 @@ export default function MenuItemDetail() {
     );
   }
 
-  if (!menuItem) {
+  if (isError || !menuItem) {
     return (
       <div className="min-h-screen pt-20 bg-gray-50">
         <MainNavigation />
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-3xl font-serif font-semibold mb-4">Menu Item Not Found</h1>
-          <p className="text-gray-600 mb-8">The menu item you are looking for does not exist.</p>
-          <Link 
-            href="/"
-            className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-          >
-            <ArrowLeft size={18} className="mr-2" />
+        <div className="container mx-auto px-4 py-8 text-center">
+          <h2 className="text-2xl font-bold mb-4">Menu item not found</h2>
+          <p className="mb-6">The menu item you're looking for doesn't exist or has been removed.</p>
+          <Link href="/menu" className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+            <ArrowLeft size={16} className="mr-2" />
             Back to Menu
           </Link>
         </div>
@@ -164,55 +170,56 @@ export default function MenuItemDetail() {
       
       <div className="container mx-auto px-4 py-8">
         {/* Back Button */}
-        <Link 
-          href={menuType === "traditional" ? "/" : "/foreign-dishes"}
-          className="inline-flex items-center text-gray-600 hover:text-primary mb-6 transition-colors"
-        >
-          <ArrowLeft size={18} className="mr-2" />
-          Back to {menuType === "traditional" ? "Ethiopian" : "Foreign"} Menu
-        </Link>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {/* Product Image */}
-          <div className="rounded-lg overflow-hidden h-[300px] md:h-[400px] relative">
-            <img
-              src={menuItem.image}
-              alt={menuItem.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="bg-white rounded-lg shadow-md overflow-hidden p-6">
+          <Link href="/menu" className="inline-flex items-center text-primary hover:underline mb-6">
+            <ArrowLeft size={16} className="mr-1" />
+            Back to Menu
+          </Link>
           
-          {/* Product Details */}
-          <div>
-            <h1 className="text-3xl font-serif font-semibold mb-2">{menuItem.name}</h1>
-            
-            <div className="text-2xl text-primary font-medium mb-4">
-              ${menuItem.price.toFixed(2)} <span className="text-sm text-gray-500">/ {menuItem.unit}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="rounded-lg overflow-hidden">
+              <img
+                src={menuItem.images && menuItem.images.length > 0 ? menuItem.images[0].fileUrl : '/images/placeholder-food.jpg'}
+                alt={menuItem.name.en}
+                width={500}
+                height={400}
+                className="w-full h-auto object-cover"
+              />
             </div>
             
-            {menuItem.dietaryTags && menuItem.dietaryTags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {menuItem.dietaryTags.map(tag => (
-                  <span 
-                    key={tag} 
-                    className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
+            <div>
+              <h1 className="text-3xl font-bold mb-2">{menuItem.name.en}</h1>
+              <h2 className="text-xl font-medium text-gray-600 mb-4">{menuItem.name.am}</h2>
+            
+              <div className="text-2xl text-primary font-medium mb-4">
+                ${menuItem.price.toFixed(2)}
               </div>
-            )}
-            
-            <p className="text-gray-600 mb-8">{menuItem.description}</p>
-            
-            {/* Quantity Selector */}
-            <div className="flex items-center mb-6">
-              <span className="mr-4 font-medium">Quantity:</span>
-              <div className="flex items-center border border-gray-300 rounded-md">
-                <button
-                  onClick={handleDecrement}
-                  className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                  disabled={quantity <= 1}
+              
+              {menuItem.dietaryTag && menuItem.dietaryTag.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {menuItem.dietaryTag.map(tag => (
+                    <span 
+                      key={tag._id} 
+                      className="px-3 py-1 text-white text-xs rounded-full"
+                      style={{ backgroundColor: tag.colorCode || '#757575' }}
+                    >
+                      {tag.name.en}
+                    </span>
+                  ))}
+                </div>
+              )}
+              
+              <p className="text-gray-600 mb-4">{menuItem.description.en}</p>
+              <p className="text-gray-500 mb-8">{menuItem.description.am}</p>
+              
+              {/* Quantity Selector */}
+              {/* <div className="flex items-center mb-6">
+                <span className="mr-4 font-medium">Quantity:</span>
+                <div className="flex items-center border border-gray-300 rounded-md">
+                  <button
+                    onClick={handleDecrement}
+                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+                    disabled={quantity <= 1}
                 >
                   <Minus size={16} />
                 </button>
@@ -226,15 +233,15 @@ export default function MenuItemDetail() {
                   <Plus size={16} />
                 </button>
               </div>
-            </div>
+            </div> */}
             
             {/* Add to Cart Button */}
-            <button
+            {/* <button
               onClick={handleAddToCart}
               className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
             >
               Add to Cart - ${(menuItem.price * quantity).toFixed(2)}
-            </button>
+            </button> */}
             
             {/* Share Section */}
             <div className="mt-6">
@@ -276,11 +283,12 @@ export default function MenuItemDetail() {
         
         <div className="mb-12">
           <MenuItems 
-            type={menuType} 
+            isTraditional={menuItem.isTraditional}
             title={`Related Dishes`} 
           />
         </div>
       </div>
+    </div>
     </div>
   );
 }

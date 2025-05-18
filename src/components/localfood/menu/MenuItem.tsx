@@ -52,7 +52,7 @@ const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: Me
           <div className="text-primary font-medium">
             ${price} <span className="text-sm text-gray-500">/ {unit}</span>
           </div>
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             {quantity === 0 ? (
               <button
                 onClick={(e) => {
@@ -92,7 +92,7 @@ const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: Me
                 </button>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 
 import { RouteEnums } from "@/routes/Routes";
-import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Facebook, Music } from "lucide-react";
 
 export   const businessHours = {
     "Monday": "11:00 AM - 11:00 PM",
@@ -44,6 +44,12 @@ export   const businessHours = {
         icon: <Facebook size={24} />,
         url: "https://web.facebook.com/people/Tin-Cup-Plus-%25E1%258B%25A8%25E1%2589%25A3%25E1%2588%2585%25E1%2588%258B%25E1%258B%258A-%25E1%258A%25A0%25E1%258B%25B3%25E1%2588%25AB%25E1%2588%25BD/61576067886301/?mibextid=wwXIfr&rdid=5LlFAoEaEhCiiBhD&share_url=https%253A%252F%252Fweb.facebook.com%252Fshare%252F16gEcGKdVj%252F%253Fmibextid%253DwwXIfr%2526_rdc%253D1%2526_rdr",
         label: "Facebook",
+      },
+      {
+        icon: "/images/tiktok.svg",
+        url: " https://www.tiktok.com/@tin.cup.plus?_t=ZM-8wSVNL5iLfq&_r=1",
+        label: "Tiktok",
+        type: "img"
       },
     ];
   
