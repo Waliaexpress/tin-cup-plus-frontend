@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
 import { useGetPublicMenuItemsQuery } from "@/store/services/menuItem.service";
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const MenuItem = dynamic(() => import("./MenuItem"), { ssr: false });
 const SwiperComponent = dynamic(() => import("./SwiperMenu"), { ssr: false });
@@ -31,8 +31,14 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
   const [activeCategory, setActiveCategory] = useState<string>("special-dishes");
   const [items, setItems] = useState<any[]>([]);
   const [menuTitle, setMenuTitle] = useState<string>("");
-  const searchParams = useSearchParams();
-  const categoryId = searchParams.get("category");
+  const pathname = usePathname();
+  const [categoryId, setCategoryId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCategoryId(new URLSearchParams(window.location.search).get('category'));
+    }
+  }, [pathname]);
   const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isTraditional: isTraditional, categoryId: categoryId });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
