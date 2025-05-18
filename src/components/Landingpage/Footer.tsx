@@ -50,7 +50,7 @@ const Footer = () => {
                 welcoming environment.
               </p>
               <div className="flex space-x-4">
-                {socialLinks.map((social, index) => (
+                {socialLinks.map((social: any, index) => (
                   <motion.a
                     key={index}
                     href={social.url}
@@ -61,7 +61,11 @@ const Footer = () => {
                     whileTap={{ scale: 0.95 }}
                     aria-label={social.label}
                   >
-                    {social.icon}
+                   {social.type == "img" ?
+                   <Image src={social.icon} alt={social.label} width={24} height={24} />
+                   :
+                   social.icon
+                   }
                   </motion.a>
                 ))}
               </div>

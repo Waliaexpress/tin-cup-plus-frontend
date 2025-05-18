@@ -2,6 +2,7 @@
 const nextConfig = {
   images: {
     domains: ["localhost"],
+    ignoreDuringBuilds: true,
     remotePatterns: [
       {
         protocol: "https",
