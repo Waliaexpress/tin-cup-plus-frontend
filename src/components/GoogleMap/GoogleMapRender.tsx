@@ -19,8 +19,8 @@ const containerStyle = {
 const libraries: ("places")[] = ["places"];
 
 const GoogleMapRender: React.FC<GoogleMapProps> = ({ latitude, longitude, address }) => {
-  const mapLatitude = latitude || 40.7128;
-  const mapLongitude = longitude || -74.0060;
+  const mapLatitude = 44.978083;
+  const mapLongitude =  -93.105694;
 
   const hasValidCoordinates = typeof mapLatitude === 'number' && typeof mapLongitude === 'number';
   const center = hasValidCoordinates ? { lat: mapLatitude, lng: mapLongitude } : undefined;
