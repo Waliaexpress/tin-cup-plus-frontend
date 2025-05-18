@@ -10,6 +10,7 @@ import { setSelectedCategory } from "@/store/slices/categorySlice";
 import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import { useGetPublicCategoriesQuery } from "@/store/services/category.service";
 import { useSearchParams } from "next/navigation";
+import Footer from "@/components/Landingpage/Footer";
 
 export default function ForeignDishesPage() {
   const dispatch = useDispatch();
@@ -76,23 +77,7 @@ export default function ForeignDishesPage() {
         </div>
       </section>
       <MenuItems type="foreign" title="Foreign Dishes" isTraditional={false} />
-
-      <section className="py-16 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-serif font-semibold mb-6">
-            Try Our Ethiopian Specialties
-          </h2>
-          <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            While you're here, don't miss our authentic Ethiopian dishes prepared with traditional recipes and spices.
-          </p>
-          <Link 
-            href="/" 
-            className="px-8 py-3 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
-          >
-            Explore Ethiopian Menu
-          </Link>
-        </div>
-      </section>
+      <Footer/>
     </div>
   );
 }
