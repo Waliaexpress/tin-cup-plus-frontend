@@ -3,10 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import IngredientForm from "../../create/page";
-
 import { Ingredient } from "@/types/ingredient";
-
-// Import mock data (in a real app, this would be an API call)
 import mockData from "../../data/mock-data.json";
 
 export default function EditIngredientPage() {
@@ -24,6 +21,7 @@ export default function EditIngredientPage() {
         const foundIngredient = mockData.response.items.find(item => item.id === id);
         
         if (foundIngredient) {
+          // @ts-ignore
           setIngredient(foundIngredient);
         } else {
           setError("Ingredient not found");
