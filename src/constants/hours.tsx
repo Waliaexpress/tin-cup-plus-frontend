@@ -1,4 +1,5 @@
 
+import { RouteEnums } from "@/routes/Routes";
 import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 
 export   const businessHours = {
@@ -50,9 +51,8 @@ export   const businessHours = {
       {
         title: "Menu",
         links: [
-          { label: "Ethiopian Dishes", href: "/ethiopian-dishes" },
-          { label: "Foreign Dishes", href: "/foreign-dishes" },
-          { label: "Special Offers", href: "/special-offers" },
+          { label: "Traditional Dishes", href: RouteEnums.ETHIOPIAN_DISHES },
+          { label: "American Dishes", href: RouteEnums.FOREIGN_DISHES },
         ],
       },
     ];
