@@ -46,7 +46,7 @@ const Footer = () => {
                 </h3>
               </div>
               <p className="text-white mb-6 font-montserrat">
-                Experience authentic Ethiopian and international cuisine in a warm,
+                Experience authentic Ethiopian and American cuisine in a warm,
                 welcoming environment.
               </p>
               <div className="flex space-x-4">

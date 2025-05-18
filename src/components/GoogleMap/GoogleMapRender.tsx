@@ -50,7 +50,7 @@ const GoogleMapRender: React.FC<GoogleMapProps> = ({ latitude, longitude, addres
 
   if (loadError) {
     return (
-      <div className="w-full flex items-center flex-col mb-6">
+      <div className="w-full flex items-center flex-col mb-3">
         <div className="w-full py-4">
         </div>
         <div className="w-full px-5 md:px-8 py-4 text-center text-red-500">
@@ -61,7 +61,7 @@ const GoogleMapRender: React.FC<GoogleMapProps> = ({ latitude, longitude, addres
   }
 
   return (
-    <div className="w-full flex items-center flex-col mb-6">
+    <div className="w-full flex items-center flex-col ">
       
       {isLoaded && hasValidCoordinates ? (
         <div className="w-full">

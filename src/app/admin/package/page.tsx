@@ -18,7 +18,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// Mock data for demonstration
+
 const mockPackages = [
   {
     _id: "package1",
@@ -81,9 +81,6 @@ export default function PackagesPage() {
   const limit = Number(searchParams.get('limit')) || 10;
   
   const [isLoading, setIsLoading] = useState(false);
-  
-  // In a real app, this would use a query hook like:
-  // const { data: packagesData, isLoading, error } = useGetPackagesQuery({ page, limit });
   const packages = mockPackages;
   
   const paginationData = {

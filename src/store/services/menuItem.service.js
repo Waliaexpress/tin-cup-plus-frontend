@@ -48,13 +48,28 @@ export const menuItemApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, arg) => [{ type: 'MenuItem', id: arg.id }],
     }),
 
-    // Delete menu item by ID (admin)
     deleteMenuItem: builder.mutation({
       query: (id) => ({
         url: `/admin/menu-items/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, error, id) => [{ type: 'MenuItem', id }],
+    }),
+    getPublicMenuItems: builder.query({
+      query: ({ page, limit, isSpecial, isTraditional, categoryId }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', page.toString());
+        if (limit) params.append('limit', limit.toString());
+         if (isSpecial !== undefined) params.append('isSpecial', isSpecial);
+        if (isTraditional !== undefined) params.append('isTraditional', isTraditional);
+        if (categoryId) params.append('categoryId', categoryId);
+    
+        return {
+          url: `/public/menu-items?${params.toString()}`,
+          method: 'GET',
+        };
+      },
+      providesTags: ['MenuItem'],
     }),
   }),
 });
@@ -65,4 +80,5 @@ export const {
   useCreateMenuItemMutation,
   useUpdateMenuItemMutation,
   useDeleteMenuItemMutation,
+  useGetPublicMenuItemsQuery,
 } = menuItemApiSlice;

@@ -1,14 +1,15 @@
 
+import { RouteEnums } from "@/routes/Routes";
 import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 
 export   const businessHours = {
-    "Monday": "9:00 AM - 9:00 PM",
-    "Tuesday": "9:00 AM - 9:00 PM",
-    "Wednesday": "9:00 AM - 9:00 PM",
-    "Thursday": "9:00 AM - 9:00 PM",
-    "Friday": "9:00 AM - 9:00 PM",
-    "Saturday": "9:00 AM - 10:00 PM",
-    "Sunday": "9:00 AM - 10:00 PM"
+    "Monday": "11:00 AM - 11:00 PM",
+    "Tuesday": "11:00 AM - 11:00 PM",
+    "Wednesday": "11:00 AM - 11:00 PM",
+    "Thursday": "11:00 AM - 11:00 PM",
+    "Friday": "11:00 AM - 11:00 PM",
+    "Saturday": "11:00 AM - 11:00 PM",
+    "Sunday": "11:00 AM - 11:00 PM"
   };
 
 
@@ -22,8 +23,8 @@ export   const businessHours = {
       {
         icon: <Phone className="text-primary" size={20} />,
         label: "Phone",
-        value: "+1 612-703-4169",
-        action: "tel:+16127034169",
+        value: "(612) 556-7705",
+        action: "tel: (612) 556-7705",
       },
       {
         icon: <MapPin className="text-primary" size={20} />,
@@ -50,9 +51,8 @@ export   const businessHours = {
       {
         title: "Menu",
         links: [
-          { label: "Ethiopian Dishes", href: "/ethiopian-dishes" },
-          { label: "Foreign Dishes", href: "/foreign-dishes" },
-          { label: "Special Offers", href: "/special-offers" },
+          { label: "Traditional Dishes", href: RouteEnums.ETHIOPIAN_DISHES },
+          { label: "American Dishes", href: RouteEnums.FOREIGN_DISHES },
         ],
       },
     ];

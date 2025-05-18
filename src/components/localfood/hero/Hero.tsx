@@ -13,7 +13,7 @@ const heroSlides = [
   {
     id: 1,
     image: "/images/slider_food/home-slider-tibse.jpg",
-    title: "Authentic Ethiopian Tibse",
+    title: "Authentic Traditional Tibse",
     description: "Experience the rich flavors of our signature spiced beef dish",
     buttonText: "Explore Menu",
     buttonLink: "/menu"
@@ -22,7 +22,7 @@ const heroSlides = [
     id: 2,
     image: "/images/slider_food/dulet.jpg",
     title: "Traditional Dulet",
-    description: "A delicious Ethiopian specialty prepared with authentic spices",
+    description: "A delicious Traditional specialty prepared with authentic spices",
     buttonText: "Our Specialties",
     buttonLink: "/menu?category=specialties"
   },

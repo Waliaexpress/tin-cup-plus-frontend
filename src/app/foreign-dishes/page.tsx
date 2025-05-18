@@ -8,30 +8,29 @@ import MenuItems from "@/components/localfood/menu/MenuItems";
 import foreignMenuData from "@/data/foreignMenuItems.json";
 import { setSelectedCategory } from "@/store/slices/categorySlice";
 import MainNavigation from "@/components/layout/navigation/MainNavigation";
+import { useGetPublicCategoriesQuery } from "@/store/services/category.service";
+import { useSearchParams } from "next/navigation";
+import Footer from "@/components/Landingpage/Footer";
 
 export default function ForeignDishesPage() {
   const dispatch = useDispatch();
   const [activeCategory, setActiveCategory] = useState("all");
-  
-  // Get categories from the JSON data
-  const categories = foreignMenuData.categories;
+  const { data: categoriesResponse, isLoading } = useGetPublicCategoriesQuery({ isTraditional: false, page: 1, limit: 10 });
+  const searchParams = useSearchParams();
 
-  // Handle category change
   const handleCategoryChange = (categoryId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('category', categoryId);
+    const newUrl = `/?${params.toString()}`;
+    window.history.pushState({}, '', newUrl);
     setActiveCategory(categoryId);
     
-    // Special handling for "all" category
     if (categoryId === "all") {
-      // For "all" category, we need a special approach
-      // First reset by using a temporary different category
       dispatch(setSelectedCategory("temp-reset"));
-      
-      // Then set it back to "all" after a short delay
       setTimeout(() => {
         dispatch(setSelectedCategory("all"));
       }, 50);
     } else {
-      // For other categories, just dispatch normally
       dispatch(setSelectedCategory(categoryId));
     }
   };
@@ -51,55 +50,34 @@ export default function ForeignDishesPage() {
         
         <div className="container mx-auto px-4 z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
-            Foreign Dishes
+            American Dishes
           </h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto">
-            Explore international flavors from around the world, prepared with authentic recipes and techniques
+            prepared with authentic recipes and techniques
           </p>
         </div>
       </section>
-
-      {/* Category Filter */}
       <section className="py-8 bg-white border-b">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-4">
-            {categories.map(category => (
+            {categoriesResponse?.data?.map((category: any) => (
               <button
-                key={category.id}
+                key={category._id}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                  activeCategory === category.id
+                  activeCategory === category._id
                     ? "bg-primary text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
-                onClick={() => handleCategoryChange(category.id)}
+                onClick={() => handleCategoryChange(category._id)}
               >
-                {category.name}
+                {category.name.en}
               </button>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Menu Items */}
-      <MenuItems type="foreign" title="Foreign Dishes" />
-
-      {/* Call to Action */}
-      <section className="py-16 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-serif font-semibold mb-6">
-            Try Our Ethiopian Specialties
-          </h2>
-          <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            While you're here, don't miss our authentic Ethiopian dishes prepared with traditional recipes and spices.
-          </p>
-          <Link 
-            href="/" 
-            className="px-8 py-3 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors"
-          >
-            Explore Ethiopian Menu
-          </Link>
-        </div>
-      </section>
+      <MenuItems type="foreign" title="Foreign Dishes" isTraditional={false} />
+      <Footer/>
     </div>
   );
 }

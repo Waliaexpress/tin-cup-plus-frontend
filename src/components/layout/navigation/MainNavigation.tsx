@@ -56,7 +56,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link 
+            {/* <Link 
               href="/about" 
               className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
                 isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
@@ -64,17 +64,9 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             >
               <Info size={18} />
               <span>About Us</span>
-            </Link>
+            </Link> */}
             
-            <Link 
-              href="/hours-location" 
-              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
-              }`}
-            >
-              <Clock size={18} />
-              <span>Hours & Location</span>
-            </Link>
+          
             
             <div className="relative group">
               <button 
@@ -90,18 +82,27 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                   href={RouteEnums.ETHIOPIAN_DISHES} 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  Ethiopian Dishes
+                  VIP Traditional Dishes
                 </Link>
                 <Link 
                   href="/foreign-dishes" 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  Foreign Dishes
+                  American Dishes
                 </Link>
               </div>
             </div>
+            <Link 
+              href="/hours-location" 
+              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
+                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
+              }`}
+            >
+              <Clock size={18} />
+              <span>Hours & Location</span>
+            </Link>
             
-            <div className="relative">
+            {/* <div className="relative">
               <Link 
                 href="/cart" 
                 className={`flex items-center gap-2 font-medium hover:text-primary transition-colors ${
@@ -114,7 +115,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                   2
                 </span>
               </Link>
-            </div>
+            </div> */}
             
             {/* User Account */}
             <div className="relative group">
@@ -142,7 +143,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               </div>
             </div>
             <button 
-              onClick={() => router.push("/order")}
+              onClick={() => router.push(RouteEnums.FOREIGN_DISHES)}
               className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
             >
               Order Now
@@ -167,7 +168,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
         }`}
       >
         <div className="container mx-auto px-4 flex flex-col space-y-4">
-          <Link 
+          {/* <Link 
             href="/about" 
             className="flex items-center gap-2 py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
@@ -175,9 +176,9 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             <Info size={18} />
             <span>About Us</span>
           </Link>
-          
+           */}
           <Link 
-            href="/hours-location" 
+            href={RouteEnums.HOURS_LOCATION} 
             className="flex items-center gap-2 py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
           >
@@ -186,22 +187,22 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           </Link>
           
           <Link 
-            href="/menu" 
+            href={RouteEnums.ETHIOPIAN_DISHES} 
             className="py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
           >
-            Ethiopian Dishes
+            VIP Traditional Dishes
           </Link>
           
           <Link 
-            href="/foreign-dishes" 
+            href={RouteEnums.FOREIGN_DISHES} 
             className="py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
           >
-            Foreign Dishes
+            American Dishes
           </Link>
           
-          <Link 
+          {/* <Link 
             href="/cart" 
             className="flex items-center justify-between py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
@@ -214,7 +215,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               </span>
             </div>
             <span>${cartTotal.toFixed(2)}</span>
-          </Link>
+          </Link> */}
           
           <Link 
             href={RouteEnums.SIGN_IN} 

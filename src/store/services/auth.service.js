@@ -9,7 +9,7 @@ export const authApi = apiSlice.injectEndpoints({
     // User Signup
     adminSignup: builder.mutation({
       query: (credentials) => ({
-        url: 'admin/signup',
+        url: '/customer/signup',
         method: 'POST',
         body: credentials,
       }),

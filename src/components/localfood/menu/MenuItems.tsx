@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
-import traditionalMenuData from "@/data/menuItems.json";
-import foreignMenuData from "@/data/foreignMenuItems.json";
+import { useGetPublicMenuItemsQuery } from "@/store/services/menuItem.service";
+import { useSearchParams } from "next/navigation";
 
 const MenuItem = dynamic(() => import("./MenuItem"), { ssr: false });
 const SwiperComponent = dynamic(() => import("./SwiperMenu"), { ssr: false });
@@ -24,13 +24,16 @@ interface Category {
   items: MenuItem[];
 }
 
-const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "traditional" | "foreign"}) => {
+const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional = true}: {title?: string, type?: "traditional" | "foreign", isSpecial?: boolean, isTraditional?: boolean}) => {
   
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("special-dishes");
   const [items, setItems] = useState<any[]>([]);
   const [menuTitle, setMenuTitle] = useState<string>("");
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get("category");
+  const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);
@@ -38,24 +41,16 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
     mounted ? state.category?.selectedCategory : null
   );
 
-  const menuData = type === "traditional" ? traditionalMenuData : foreignMenuData;
-
+  console.log("menuItemsResponse", menuItemsResponse)
   useEffect(() => {
     setMounted(true);
     
-    const defaultCategoryId = type === "traditional" ? "special-dishes" : "all";
-    const defaultCategory = menuData.categories.find(cat => cat.id === defaultCategoryId);
-    if (defaultCategory) {
-      if (type === "foreign" && defaultCategoryId === "all") {
-        const allItems = menuData.categories
-          .filter(cat => cat.id !== "all")
-          .flatMap(cat => cat.items);
-        setItems(allItems);
-      } else {
-        setItems(defaultCategory.items);
-      }
+    if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
+      setItems(menuItemsResponse?.data?.menuItems);
+    } else {
+      setItems([]);
     }
-  }, [type, menuData]);
+  }, [menuItemsResponse]);
   
   useEffect(() => {
     if (!mounted) return;
@@ -64,49 +59,66 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
       setActiveCategory(selectedCategory);
     }
 
-    if (type === "foreign" && activeCategory === "all") {
-      const allItems = menuData.categories
-        .filter(cat => cat.id !== "all")
-        .flatMap(cat => cat.items);
-      setItems(allItems);
-      return;
+    if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
+      if (categoryId) {
+        const filteredItems = menuItemsResponse?.data?.menuItems.filter((item: any) => 
+          item.category && item.category._id === categoryId
+        );
+        setItems(filteredItems.length > 0 ? filteredItems : menuItemsResponse?.data?.menuItems);
+      } else {
+        setItems(menuItemsResponse.data.menuItems);
+      }
+    } else {
+      setItems([]);
     }
-    
-    const category = menuData.categories.find((cat) => cat.id === activeCategory);
-    if (category) {
-      setItems(category.items);
-    }
-  }, [selectedCategory, activeCategory, mounted, type, menuData]);
+  }, [selectedCategory, activeCategory, mounted, menuItemsResponse, categoryId]);
 
   const handleAddToCart = (itemId: string) => {
     if (!mounted) return;
     
-    const itemToAdd = items.find((item) => item.id === itemId);
+    const itemToAdd = items.find((item) => {
+      return (item._id !== undefined) ? item._id === itemId : item.id === itemId;
+    });
+    
     if (itemToAdd) {
+      const isApiItem = itemToAdd._id !== undefined;
+      
       dispatch({
         type: "cart/addItem",
         payload: {
-          id: itemToAdd.id,
-          name: itemToAdd.name,
+          id: isApiItem ? itemToAdd._id : itemToAdd.id,
+          name: isApiItem ? itemToAdd.name.en : itemToAdd.name,
           price: itemToAdd.price,
           quantity: 1,
-          image: itemToAdd.image
+          image: isApiItem ? 
+            (itemToAdd.images && itemToAdd.images.length > 0 ? itemToAdd.images[0].fileUrl : '') : 
+            itemToAdd.image
         }
       });
     }
   };
 
-  const activeCategoryName = title || "Special Dishes"; 
+  const activeCategoryName = title || "Menu Items"; 
   
   useEffect(() => {
     if (mounted) {
-      const categoryName = menuData.categories.find(cat => cat.id === activeCategory)?.name || "Special Dishes";
+      let categoryName = "Menu Items";
+      
+      if (categoryId && menuItemsResponse?.data?.menuItems && menuItemsResponse.data.menuItems.length > 0) {
+        const item = menuItemsResponse.data.menuItems.find((item: any) => 
+          item.category && item.category._id === categoryId
+        );
+        if (item?.category?.name?.en) {
+          categoryName = item.category.name.en;
+        }
+      }
+      
       const titleElement = document.getElementById('category-title');
       if (titleElement) {
         titleElement.textContent = categoryName;
       }
     }
-  }, [activeCategory, mounted]);
+  }, [activeCategory, mounted, categoryId, menuItemsResponse, title]);
   if (!mounted) {
     return (
       <section className="py-12 bg-gray-50">
@@ -142,24 +154,38 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
 
         <div className="md:hidden">
           <SwiperComponent 
-            items={items} 
+            items={items.map(item => {
+              const isApiItem = item._id !== undefined;
+              return {
+                id: isApiItem ? item._id : item.id,
+                name: isApiItem ? item.name.en : item.name,
+                description: isApiItem ? item.description.en : item.description,
+                price: item.price,
+                unit: isApiItem ? 'item' : item.unit,
+                image: isApiItem ? (item.images && item.images.length > 0 ? item.images[0].fileUrl : '') : item.image
+              };
+            })} 
             onAddToCart={handleAddToCart} 
           />
         </div>
 
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {items.map((item) => (
-            <MenuItem
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              description={item.description}
-              price={item.price}
-              unit={item.unit}
-              image={item.image}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
+          {items.map((item) => {
+            const isApiItem = item._id !== undefined;
+            
+            return (
+              <MenuItem
+                key={isApiItem ? item._id : item.id}
+                id={isApiItem ? item._id : item.id}
+                name={isApiItem ? item.name.en : item.name}
+                description={isApiItem ? item.description.en : item.description}
+                price={item.price}
+                unit={isApiItem ? 'item' : item.unit}
+                image={isApiItem ? (item.images && item.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item.image}
+                onAddToCart={handleAddToCart}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

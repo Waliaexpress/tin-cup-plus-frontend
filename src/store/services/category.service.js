@@ -62,10 +62,17 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
     
     deleteCategory: builder.mutation({
       query: ({ id }) => ({
-        url: `/categories/${id}`,
+        url: `/admin/categories/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, err, arg) => [{ type: 'Category', id: arg.id }],
+    }),
+    getPublicCategories: builder.query({
+      query: ({isTraditional, limit, page}) => ({
+        url: `/public/categories?isTraditional=${isTraditional}&limit=${limit}&page=${page}`,
+        method: 'GET',
+      }),
+      providesTags: ['Category'],
     }),
   }),
 })
@@ -77,6 +84,7 @@ export const {
   useUpdateCategoryMutation,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
+  useGetPublicCategoriesQuery
 } = categoryApiSlice;
 
 

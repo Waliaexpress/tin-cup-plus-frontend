@@ -16,6 +16,7 @@ import StoreProvider from "./admin/providers/StoreProvider";
 import { Providers } from "./admin/providers/themProviders";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { Inter, Montserrat, Playfair_Display } from "next/font/google";
+import MobileNavigation from "@/components/MobileNavigation";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
                   <main className="isolate mx-auto w-full  overflow-hidden ">
                     {children}
+                    <MobileNavigation />
                   </main>
                 </div>
               </div>
