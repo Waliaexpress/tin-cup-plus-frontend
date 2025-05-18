@@ -1,0 +1,86 @@
+{
+  "count": 6,
+  "response": {
+    "items": [
+      {
+        "id": "1",
+        "name": {
+          "en": "vegetarian",
+          "am": "እራት"
+        },
+        "description": {
+          "en": "Food suitable for vegetarians, excludes meat and seafood.",
+          "am": "ለእራተኞች ተስማሚ የሆነ ምግብ፣ ስጋና የባህር ምግብን አያካትትም።"
+        },
+        "color": "#4CAF50",
+        "active": true
+      },
+      {
+        "id": "2",
+        "name": {
+          "en": "vegan",
+          "am": "ቢጫ"
+        },
+        "description": {
+          "en": "Excludes all animal products including dairy and eggs.",
+          "am": "ወተትና እንቁላል ጨምሮ ሁሉንም የእንስሳት ምርቶችን አያካትትም።"
+        },
+        "color": "#8BC34A",
+        "active": true
+      },
+      {
+        "id": "3",
+        "name": {
+          "en": "gluten-free",
+          "am": "ግሉተን-ነፃ"
+        },
+        "description": {
+          "en": "Contains no gluten, suitable for those with celiac disease.",
+          "am": "ግሉተን የሌለው፣ ሴሊያክ በሽታ ላለባቸው ተስማሚ።"
+        },
+        "color": "#FF9800",
+        "active": true
+      },
+      {
+        "id": "4",
+        "name": {
+          "en": "halal",
+          "am": "ሀላል"
+        },
+        "description": {
+          "en": "Prepared according to Islamic dietary laws.",
+          "am": "በእስልምና የምግብ ሕግጋት መሰረት የተዘጋጀ።"
+        },
+        "color": "#2196F3",
+        "active": true
+      },
+      {
+        "id": "5",
+        "name": {
+          "en": "dairy-free",
+          "am": "ወተት-ነፃ"
+        },
+        "description": {
+          "en": "Contains no dairy products, suitable for lactose intolerant people.",
+          "am": "የወተት ተዋጽኦዎችን የማያካትት፣ ለላክቶስ አለመቻል ችግር ላለባቸው ተስማሚ።"
+        },
+        "color": "#673AB7",
+        "active": false
+      },
+      {
+        "id": "6",
+        "name": {
+          "en": "nut-free",
+          "am": "ኮስፍ-ነፃ"
+        },
+        "description": {
+          "en": "Does not contain nuts, safe for people with nut allergies.",
+          "am": "ኮስፍ የማያካትት፣ ለኮስፍ አለርጂ ላላቸው ሰዎች ደህንነቱ የተጠበቀ።"
+        },
+        "color": "#E91E63",
+        "active": true
+      }
+    ]
+  },
+  "message": "success"
+}

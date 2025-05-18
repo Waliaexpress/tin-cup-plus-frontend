@@ -12,8 +12,29 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { Providers } from "@/app/providers/themProviders";
-import StoreProvider from "@/app/providers/StoreProvider";
+import StoreProvider from "./admin/providers/StoreProvider";
+import { Providers } from "./admin/providers/themProviders";
+import ReduxProvider from "@/providers/ReduxProvider";
+import { Inter, Montserrat, Playfair_Display } from "next/font/google";
+import MobileNavigation from "@/components/MobileNavigation";
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-montserrat',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-playfair',
+});
 
 // export const metadata: Metadata = {
 //   title: {
@@ -25,26 +46,21 @@ import StoreProvider from "@/app/providers/StoreProvider";
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body>
         <StoreProvider>
-          <Providers>
-            <NextTopLoader showSpinner={false} />
+              <NextTopLoader showSpinner={false} />
+              <ToastContainer position="top-right" autoClose={5000} />
 
-            <ToastContainer position="top-right" autoClose={5000} />
+              <div className="flex min-h-screen">
+                <div className="w-full bg-white dark:bg-[#020d1a]">
 
-            <div className="flex min-h-screen">
-              <Sidebar />
-
-              <div className="w-full bg-gray-2 dark:bg-[#020d1a]">
-                <Header />
-
-                <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
-                  {children}
-                </main>
+                  <main className="isolate mx-auto w-full  overflow-hidden ">
+                    {children}
+                    <MobileNavigation />
+                  </main>
+                </div>
               </div>
-            </div>
-          </Providers>
         </StoreProvider>
       </body>
     </html>

@@ -1,0 +1,190 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ExternalLink,
+  ArrowRight,
+  Clock
+} from "lucide-react";
+import { businessHours, contactInfo, footerLinks, socialLinks } from "@/constants/hours";
+
+const Footer = () => {
+
+ 
+
+  return (
+    <footer className="w-full">
+      <div
+        className="relative w-full h-[300px] bg-fixed bg-center bg-cover"
+        style={{ backgroundImage: "url('/images/landing_pages/res5.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-50" />
+      </div>
+      <div className="bg-[#8B2500] text-white">
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="col-span-1 lg:col-span-1"
+            >
+              <div className="flex items-center mb-6">
+                <Image
+                  src="/images/logo/tin-cup-plus-logo.png"
+                  width={60}
+                  height={60}
+                  alt="Tin Cup Plus Logo"
+                  loading="lazy"
+                  className="mr-3"
+                />
+                <h3 className="text-xl font-bold font-playfair text-white">
+                  Tin Cup Plus
+                </h3>
+              </div>
+              <p className="text-white mb-6 font-montserrat">
+                Experience authentic Ethiopian and American cuisine in a warm,
+                welcoming environment.
+              </p>
+              <div className="flex space-x-4">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white hover:bg-primary-dark transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label={social.label}
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+
+            {footerLinks.map((column, columnIndex) => (
+              <motion.div
+                key={columnIndex}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * columnIndex }}
+                viewport={{ once: true }}
+                className="col-span-1"
+              >
+                <h3 className="text-lg font-bold mb-6 text-white font-playfair">
+                  {column.title}
+                </h3>
+                <ul className="space-y-4">
+                  {column.links.map((link, linkIndex) => (
+                    <motion.li key={linkIndex} whileHover={{ x: 5 }}>
+                      <Link
+                        href={link.href}
+                        className="text-white hover:text-gray-200 flex items-center font-montserrat"
+                      >
+                        <ArrowRight size={16} className="mr-2 text-primary" />
+                        {link.label}
+                      </Link>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="col-span-1 lg:col-span-1"
+            >
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-lg font-bold mb-6 text-white font-playfair">
+                    Contact Us
+                  </h3>
+                  <ul className="space-y-4">
+                    {contactInfo.map((contact, index) => (
+                      <motion.li
+                        key={index}
+                        whileHover={{ x: 5 }}
+                        className="flex items-start"
+                      >
+                        <div className="mt-1 mr-3">{contact.icon}</div>
+                        <div>
+                          <p className="text-sm text-gray-200 font-montserrat">
+                            {contact.label}
+                          </p>
+                          <a
+                            href={contact.action}
+                            target={contact.label === "Address" ? "_blank" : undefined}
+                            rel={contact.label === "Address" ? "noopener noreferrer" : undefined}
+                            className="text-white hover:text-gray-200 flex items-center font-montserrat"
+                          >
+                            {contact.value}
+                            {contact.label === "Address" && (
+                              <ExternalLink size={14} className="ml-1 text-primary" />
+                            )}
+                          </a>
+                        </div>
+                      </motion.li>
+                      
+                    ))}
+                  </ul>
+                </div>
+
+              
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="col-span-3 lg:col-span-1"
+            >
+                <div className=" md:border-l md:px-2 border-white border-opacity-20 ">
+                  <h3 className="text-lg font-bold mb-6 text-white font-playfair flex items-center">
+                    <Clock className="text-primary mr-2" size={20} />
+                    Business Hours
+                  </h3>
+                  <ul className="space-y-2">
+                    {Object.entries(businessHours).map(([day, hours], index) => (
+                      <motion.li
+                        key={index}
+                        whileHover={{ x: 5 }}
+                        className="flex justify-between font-montserrat"
+                      >
+                        <span className="text-gray-200">{day}:</span>
+                        <span className="text-white">{hours}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+          </div>
+
+
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="border-t border-white border-opacity-20 mt-12 pt-8 text-center"
+          >
+            <p className="text-white text-opacity-80 text-sm font-montserrat">
+              © {new Date().getFullYear()} Tin Cup Plus Restaurant. All rights reserved.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

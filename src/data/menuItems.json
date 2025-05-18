@@ -1,0 +1,86 @@
+{
+  "categories": [
+    {
+      "id": "special-dishes",
+      "name": "Special Dishes",
+      "items": [
+        {
+          "id": "tire-sega",
+          "name": "Tire Sega",
+          "description": "Traditional raw meat dish served with spices",
+          "price": 20,
+          "unit": "1 Kilo",
+          "image": "https://barfblog.com/wp-content/uploads/2015/04/raw.meat_.ethiopia.jpg"
+        },
+        {
+          "id": "dullet",
+          "name": "Dullet",
+          "description": "Ethiopian fried tripe and liver delicacy, Made from cow tripe and liver with spices",
+          "price": 40,
+          "unit": "Serving",
+          "image": "https://ethiopian-food.org/wp-content/uploads/2024/02/Dulet-Ethiopian-Fried-Tripe-and-Liver-Recipe-1024x576.jpg"
+        },
+        {
+          "id": "awaze-tibs",
+          "name": "Awaze Tibs Recipe",
+          "description": "Extra spicy stir-fried beef with Ethiopian spices, Made from beef with spices",
+          "price": 35,
+          "unit": "Serving",
+          "image": "https://ethiopian-food.org/wp-content/uploads/2024/02/Awaze-Tibs-Extra-Spicy-Stir-Fried-Beef-Recipe-1024x576.jpg"
+        },
+        {
+          "id": "mulu-asa-tibs",
+          "name": "Mulu Asa Tibs Recipe",
+          "description": "Ethiopian pan-fried whole fish with herbs and spices, Made from fish with herbs and spices",
+          "price": 45,
+          "unit": "Serving",
+          "image": "https://ethiopian-food.org/wp-content/uploads/2024/02/Mulu-Asa-Tibs-Ethiopian-Pan-Fried-Whole-Fish-Recipe-1024x576.jpg"
+        }
+      ]
+    },
+    {
+      "id": "vegetarian",
+      "name": "Vegetarian Dishes",
+      "items": [
+        {
+          "id": "misir-wot",
+          "name": "Misir Wot",
+          "description": "Spicy red lentil stew, Made from lentils with spices",
+          "price": 15,
+          "unit": "Serving",
+          "image": "https://www.daringgourmet.com/wp-content/uploads/2019/11/Misir-Wat-3.jpg"
+        },
+        {
+          "id": "shiro",
+          "name": "Shiro",
+          "description": "Ground chickpea stew, Made from chickpeas with spices",
+          "price": 18,
+          "unit": "Serving",
+          "image": "https://www.daringgourmet.com/wp-content/uploads/2019/11/Shiro-5.jpg"
+        }
+      ]
+    },
+    {
+      "id": "meat-dishes",
+      "name": "Meat Dishes",
+      "items": [
+        {
+          "id": "doro-wot",
+          "name": "Doro Wot",
+          "description": "Spicy chicken stew, Made from chicken with spices",
+          "price": 25,
+          "unit": "Serving",
+          "image": "https://www.daringgourmet.com/wp-content/uploads/2013/08/Doro-Wat-11.jpg"
+        },
+        {
+          "id": "kitfo",
+          "name": "Kitfo",
+          "description": "Minced raw beef seasoned with mitmita and niter kibbeh",
+          "price": 30,
+          "unit": "Serving",
+          "image": "https://www.daringgourmet.com/wp-content/uploads/2018/04/Kitfo-7.jpg"
+        }
+      ]
+    }
+  ]
+}

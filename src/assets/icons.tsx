@@ -56,6 +56,25 @@ export function ArrowLeftIcon(props: IconProps) {
   );
 }
 
+
+export function ArrowRightIcon(props: IconProps) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="currentColor"
+      {...props}
+    >
+      <path
+        d="M2.25079 8.38125H14.2602L9.47891 3.51562C9.22578 3.2625 9.22578 2.86875 9.47891 2.61562C9.73203 2.3625 10.1258 2.3625 10.3789 2.61562L16.2008 8.52187C16.4539 8.775 16.4539 9.16875 16.2008 9.42188L10.3789 15.3281C10.2664 15.4406 10.0977 15.525 9.92891 15.525C9.76016 15.525 9.61953 15.4687 9.47891 15.3562C9.22578 15.1031 9.22578 14.7094 9.47891 14.4563L14.232 9.64687H2.25079C1.91331 9.64687 1.632 9.36562 1.632 9.02812C1.632 8.6625 1.91331 8.38125 2.25079 8.38125Z"
+        fill=""
+      />
+    </svg>
+  );
+}
+
+
 export function ChevronUpIcon(props: IconProps) {
   return (
     <svg
@@ -416,3 +435,25 @@ export function UploadIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function EditIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={20}
+      height={20}
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M9 15H17M13 3l4 4L7 17H3v-4L13 3z" />
+    </svg>
+  );
+}
+
+
+
+

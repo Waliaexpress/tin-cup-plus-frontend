@@ -1,0 +1,81 @@
+{
+  "response": {
+    "items": [
+      {
+        "id": "cat-001",
+        "name": {
+          "en": "Main dishes",
+          "am": "ዋና ምግቦች"
+        },
+        "description": {
+          "en": "Primary dishes that form the main part of a meal",
+          "am": "የምግብ ዋና ክፍል የሚሆኑ ምግቦች"
+        },
+        "image": "/images/categories/main-dishes.jpg",
+        "isActive": true,
+        "createdAt": "2023-09-15T10:30:00Z",
+        "updatedAt": "2023-09-15T10:30:00Z"
+      },
+      {
+        "id": "cat-002",
+        "name": {
+          "en": "Appetizers",
+          "am": "ቅድመ ምግቦች"
+        },
+        "description": {
+          "en": "Small dishes served before the main course",
+          "am": "ከዋናው ምግብ በፊት የሚቀርቡ ትናንሽ ምግቦች"
+        },
+        "image": "/images/categories/appetizers.jpg",
+        "isActive": true,
+        "createdAt": "2023-09-15T11:15:00Z",
+        "updatedAt": "2023-09-15T11:15:00Z"
+      },
+      {
+        "id": "cat-003",
+        "name": {
+          "en": "Desserts",
+          "am": "ጣፋጭ ምግቦች"
+        },
+        "description": {
+          "en": "Sweet dishes served after the main course",
+          "am": "ከዋናው ምግብ በኋላ የሚቀርቡ ጣፋጭ ምግቦች"
+        },
+        "image": "/images/categories/desserts.jpg",
+        "isActive": true,
+        "createdAt": "2023-09-15T12:00:00Z",
+        "updatedAt": "2023-09-15T12:00:00Z"
+      },
+      {
+        "id": "cat-004",
+        "name": {
+          "en": "Beverages",
+          "am": "መጠጦች"
+        },
+        "description": {
+          "en": "Drinks to accompany your meal",
+          "am": "ከምግብዎ ጋር የሚወሰዱ መጠጦች"
+        },
+        "image": "/images/categories/beverages.jpg",
+        "isActive": true,
+        "createdAt": "2023-09-15T12:45:00Z",
+        "updatedAt": "2023-09-15T12:45:00Z"
+      },
+      {
+        "id": "cat-005",
+        "name": {
+          "en": "Vegetarian",
+          "am": "አትክልታዊ"
+        },
+        "description": {
+          "en": "Dishes prepared without meat or fish",
+          "am": "ያለ ስጋ ወይም ዓሳ የተዘጋጁ ምግቦች"
+        },
+        "image": "/images/categories/vegetarian.jpg",
+        "isActive": true,
+        "createdAt": "2023-09-15T13:30:00Z",
+        "updatedAt": "2023-09-15T13:30:00Z"
+      }
+    ]
+  }
+}
