@@ -25,7 +25,7 @@ const Categories = () => {
   const dispatch = useDispatch();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
 
-  const { data: categoriesResponse, isLoading } = useGetPublicCategoriesQuery({ isTraditional: false });
+  const { data: categoriesResponse, isLoading } = useGetPublicCategoriesQuery({ isTraditional: true, page: 1, limit: 10 });
   const categories = categoriesResponse?.data || [];
 
   useEffect(() => {
@@ -103,14 +103,14 @@ const Categories = () => {
           })}
         </div>
         
-        <div className="mt-6 text-center">
+        {/* <div className="mt-6 text-center">
           <Link 
             href="/menu" 
             className="inline-block px-5 py-2 border-2 border-primary text-primary rounded-lg font-medium hover:bg-primary hover:text-white transition-colors text-sm"
           >
             View Full Menu
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );

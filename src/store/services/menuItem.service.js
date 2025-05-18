@@ -58,8 +58,8 @@ export const menuItemApiSlice = apiSlice.injectEndpoints({
         const params = new URLSearchParams();
         if (page) params.append('page', page.toString());
         if (limit) params.append('limit', limit.toString());
-        // if (isSpecial !== undefined) params.append('isSpecial', isSpecial.toString());
-        if (isTraditional !== undefined) params.append('isTraditional', isTraditional.toString());
+         if (isSpecial !== undefined) params.append('isSpecial', isSpecial);
+        if (isTraditional !== undefined) params.append('isTraditional', isTraditional);
         if (categoryId) params.append('categoryId', categoryId);
     
         return {

@@ -90,13 +90,13 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                   href={RouteEnums.ETHIOPIAN_DISHES} 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  Ethiopian Dishes
+                  VIP Traditional Dishes
                 </Link>
                 <Link 
                   href="/foreign-dishes" 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  Foreign Dishes
+                  American Dishes
                 </Link>
               </div>
             </div>
@@ -142,7 +142,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               </div>
             </div>
             <button 
-              onClick={() => router.push("/order")}
+              onClick={() => router.push(RouteEnums.FOREIGN_DISHES)}
               className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
             >
               Order Now

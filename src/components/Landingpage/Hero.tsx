@@ -24,7 +24,7 @@ const Hero = () => {
   "/images/landing_pages/res5.jpg",
     "/images/landing_pages/modern_res2.jpg",
     "/images/landing_pages/res3.jpg",
-    "/images/landing_pages/slider1.jpg",
+    "/images/landing_pages/rest1.jpg",
   ];
 
   const handleNavigation = (path: string) => {
@@ -134,7 +134,7 @@ const Hero = () => {
       
       <div className="absolute top-32 right-8 z-20 hidden md:block">
         <motion.a
-          href="tel:+16127034169"
+          href="tel:(612) 556-7705"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
@@ -143,7 +143,7 @@ const Hero = () => {
           className="flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-4 py-3 rounded-full shadow-lg border border-white/30"
         >
           <Phone className="text-white" size={20} />
-          <span className="font-medium font-inter">+1 612-703-4169</span>
+          <span className="font-medium font-inter">(612) 556-7705</span>
         </motion.a>
       </div>
     </div>

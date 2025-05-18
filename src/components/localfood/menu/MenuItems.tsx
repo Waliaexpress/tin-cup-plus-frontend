@@ -24,7 +24,7 @@ interface Category {
   items: MenuItem[];
 }
 
-const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "traditional" | "foreign"}) => {
+const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional = true}: {title?: string, type?: "traditional" | "foreign", isSpecial?: boolean, isTraditional?: boolean}) => {
   
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
@@ -33,7 +33,7 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
   const [menuTitle, setMenuTitle] = useState<string>("");
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
-  const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isSpecial: true, isTraditional: true, categoryId: categoryId });
+  const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);
@@ -45,8 +45,8 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
   useEffect(() => {
     setMounted(true);
     
-    if (menuItemsResponse?.data?.menuItems && menuItemsResponse.data.menuItems.length > 0) {
-      setItems(menuItemsResponse.data.menuItems);
+    if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
+      setItems(menuItemsResponse?.data?.menuItems);
     } else {
       setItems([]);
     }
@@ -59,12 +59,12 @@ const MenuItems = ({title, type = "traditional"}: {title?: string, type?: "tradi
       setActiveCategory(selectedCategory);
     }
 
-    if (menuItemsResponse?.data?.menuItems && menuItemsResponse.data.menuItems.length > 0) {
+    if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
       if (categoryId) {
-        const filteredItems = menuItemsResponse.data.menuItems.filter(item => 
+        const filteredItems = menuItemsResponse?.data?.menuItems.filter((item: any) => 
           item.category && item.category._id === categoryId
         );
-        setItems(filteredItems.length > 0 ? filteredItems : menuItemsResponse.data.menuItems);
+        setItems(filteredItems.length > 0 ? filteredItems : menuItemsResponse?.data?.menuItems);
       } else {
         setItems(menuItemsResponse.data.menuItems);
       }

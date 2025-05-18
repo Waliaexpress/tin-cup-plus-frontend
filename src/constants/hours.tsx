@@ -22,8 +22,8 @@ export   const businessHours = {
       {
         icon: <Phone className="text-primary" size={20} />,
         label: "Phone",
-        value: "+1 612-703-4169",
-        action: "tel:+16127034169",
+        value: "(612) 556-7705",
+        action: "tel: (612) 556-7705",
       },
       {
         icon: <MapPin className="text-primary" size={20} />,

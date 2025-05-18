@@ -28,7 +28,7 @@ const FindUs = () => {
           </motion.div>
           
           <motion.div
-            className="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg"
+            className="w-full mx-auto rounded-xl overflow-hidden shadow-lg"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}

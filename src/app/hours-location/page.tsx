@@ -88,20 +88,7 @@ export default function HoursLocationPage() {
                 </motion.div>
               ))}
             </div>
-            
-            <motion.div 
-              className="mt-10 p-4 bg-gray-50 rounded-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-            >
-              <p className="text-center text-gray-600 italic">
-                Kitchen closes 30 minutes before closing time
-              </p>
-            </motion.div>
           </motion.div>
-          
-          {/* Address Card */}
           <motion.div 
             className="bg-white p-8 rounded-2xl shadow-lg"
             initial={{ opacity: 0, x: 50 }}

@@ -53,6 +53,18 @@ export const dietaryTagApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'DietaryTag', id: arg.id }],
     }),
+    getPublicDietaryTags: builder.query({
+      query: ({ page, limit }) => {
+        const params = new URLSearchParams();
+        if (page) params.append('page', page);
+        if (limit) params.append('limit', limit);
+
+        return {
+          url: `/public/dietry-tags?${params.toString()}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -62,4 +74,5 @@ export const {
   useGetDietaryTagByIdQuery,
   useCreateDietaryTagMutation,
   useUpdateDietaryTagMutation,
+  useGetPublicDietaryTagsQuery
 } = dietaryTagApiSlice;
