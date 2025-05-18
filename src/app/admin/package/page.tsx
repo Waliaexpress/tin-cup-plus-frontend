@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui-elements/button";
 import { DataTable, TableColumn } from "@/components/Tables/data-table";
 import { PlusCircle } from "lucide-react";
@@ -75,10 +75,10 @@ const mockPackages = [
 
 export default function PackagesPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+
   
-  const page = Number(searchParams.get('page')) || 1;
-  const limit = Number(searchParams.get('limit')) || 10;
+  const page = Number(1) || 1;
+  const limit = Number(10) || 10;
   
   const [isLoading, setIsLoading] = useState(false);
   const packages = mockPackages;

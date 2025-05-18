@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import NProgress from 'nprogress'
@@ -13,7 +13,7 @@ NProgress.configure({ showSpinner: false })
 export default function PageLoading() {
   //? Assets
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  // const searchParams = useSearchParams()
 
   //? States
   const [loading, setLoading] = useState(false)
@@ -26,7 +26,7 @@ export default function PageLoading() {
       setLoading(true)
       NProgress.start()
     }
-  }, [pathname, searchParams])
+  }, [pathname])
 
   //? Render(s)
   return (

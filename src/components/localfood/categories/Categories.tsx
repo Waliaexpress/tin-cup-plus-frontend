@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
@@ -21,7 +21,16 @@ const getRandomColor = () => {
 };
 
 const Categories = () => {
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const [urlParams, setUrlParams] = useState<URLSearchParams>(
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+  );
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrlParams(new URLSearchParams(window.location.search));
+    }
+  }, [pathname]);
   const dispatch = useDispatch();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
 
@@ -29,7 +38,7 @@ const Categories = () => {
   const categories = categoriesResponse?.data || [];
 
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
+    const categoryParam = urlParams.get('category');
     if (categoryParam && categories.length > 0) {
       const foundCategory = categories.find((cat: any) => cat._id === categoryParam);
       if (foundCategory) {
@@ -37,15 +46,16 @@ const Categories = () => {
         dispatch(setSelectedCategory(foundCategory._id));
       }
     }
-  }, [searchParams, categories, dispatch]);
+  }, [urlParams, categories, dispatch]);
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
     dispatch(setSelectedCategory(categoryId));
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     params.set('category', categoryId);
-    const newUrl = `/?${params.toString()}`;
+    const newUrl = `${pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
+    setUrlParams(params);
   };
 
   return (

@@ -1,8 +1,4 @@
 "use client";
-
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import Hero from "@/components/localfood/hero/Hero";
 import Categories from "@/components/localfood/categories/Categories";
@@ -12,7 +8,6 @@ import { TraditionalFoodGallery } from "@/components/localfood";
 import Footer from "@/components/Landingpage/Footer";
 
 export default function EthiopianLandingPage() {
-  const router = useRouter();
 
   return (
     <div className="min-h-screen">

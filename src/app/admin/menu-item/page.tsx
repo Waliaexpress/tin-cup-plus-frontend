@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui-elements/button";
 import { DataTable, TableColumn } from "@/components/Tables/data-table";
 import { MenuItem } from "@/types/menu-item";
@@ -22,11 +22,20 @@ const LoadingSpinner = () => (
 
 export default function MenuItemsPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const [urlParams, setUrlParams] = useState<URLSearchParams>(
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+  );
   
-  const page = Number(searchParams.get('page')) || 1;
-  const limit = Number(searchParams.get('limit')) || 10;
-  const categoryId = searchParams.get('categoryId') || '';
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrlParams(new URLSearchParams(window.location.search));
+    }
+  }, [pathname]);
+  
+  const page = Number(urlParams.get('page')) || 1;
+  const limit = Number(urlParams.get('limit')) || 10;
+  const categoryId = urlParams.get('categoryId') || '';
   
   const [selectedCategory, setSelectedCategory] = useState<string>(categoryId);
   
