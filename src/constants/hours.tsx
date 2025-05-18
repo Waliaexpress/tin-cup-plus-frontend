@@ -3,13 +3,13 @@ import { RouteEnums } from "@/routes/Routes";
 import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 
 export   const businessHours = {
-    "Monday": "9:00 AM - 9:00 PM",
-    "Tuesday": "9:00 AM - 9:00 PM",
-    "Wednesday": "9:00 AM - 9:00 PM",
-    "Thursday": "9:00 AM - 9:00 PM",
-    "Friday": "9:00 AM - 9:00 PM",
-    "Saturday": "9:00 AM - 10:00 PM",
-    "Sunday": "9:00 AM - 10:00 PM"
+    "Monday": "11:00 AM - 11:00 PM",
+    "Tuesday": "11:00 AM - 11:00 PM",
+    "Wednesday": "11:00 AM - 11:00 PM",
+    "Thursday": "11:00 AM - 11:00 PM",
+    "Friday": "11:00 AM - 11:00 PM",
+    "Saturday": "11:00 AM - 11:00 PM",
+    "Sunday": "11:00 AM - 11:00 PM"
   };
 
 
