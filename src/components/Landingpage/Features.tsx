@@ -16,7 +16,7 @@ interface FeatureProps {
   menuLink: string;
 }
 
-const FeatureSection = ({ image, title, description, isReversed, index, menuLink }: FeatureProps) => {
+export const FeatureSection = ({ image, title, description, isReversed, index, menuLink }: FeatureProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });

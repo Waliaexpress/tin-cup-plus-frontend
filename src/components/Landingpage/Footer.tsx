@@ -10,15 +10,16 @@ import {
 } from "lucide-react";
 import { businessHours, contactInfo, footerLinks, socialLinks } from "@/constants/hours";
 
-const Footer = () => {
+interface FooterProps {
+  isTraditional?: boolean;
+}
 
- 
-
+const Footer = ({ isTraditional = false }: FooterProps) => {
   return (
     <footer className="w-full">
       <div
         className="relative w-full h-[300px] bg-fixed bg-center bg-cover"
-        style={{ backgroundImage: "url('/images/landing_pages/res5.jpg')" }}
+        style={{ backgroundImage: isTraditional ? "url('/images/landing_pages/trad9.jpg')" : "url('/images/landing_pages/res5.jpg')" }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50" />
       </div>
@@ -46,7 +47,7 @@ const Footer = () => {
                 </h3>
               </div>
               <p className="text-white mb-6 font-montserrat">
-                Experience authentic Ethiopian and American cuisine in a warm,
+                Experience authentic cuisine in a warm,
                 welcoming environment.
               </p>
               <div className="flex space-x-4">

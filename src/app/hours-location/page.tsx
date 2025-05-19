@@ -8,6 +8,8 @@ import { Calendar, Clock, MapPin, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { businessHours, contactInfo } from "@/constants/hours";
 import { RouteEnums } from "@/routes/Routes";
+import SocialLinks from "@/components/Landingpage/SocialLinks";
+import Footer from "@/components/Landingpage/Footer";
 
 export default function HoursLocationPage() {
 
@@ -53,7 +55,7 @@ export default function HoursLocationPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            Visit us to experience authentic Ethiopian cuisine in a vibrant atmosphere
+            Visit us to experience authentic cuisine in a vibrant atmosphere
           </motion.p>
         </div>
       </motion.section>
@@ -136,7 +138,7 @@ export default function HoursLocationPage() {
           </motion.div>
         </div>
       </div>
-
+              <SocialLinks/>
       <FindUs />
       <motion.section 
         className="py-16 bg-gradient-to-r from-primary to-primary/80 text-white"
@@ -144,12 +146,12 @@ export default function HoursLocationPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 text-center pb-6">
           <h2 className="text-3xl font-serif font-semibold mb-6">
             Looking Forward to Serving You
           </h2>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            Join us for an authentic Ethiopian dining experience with traditional flavors and warm hospitality.
+            Join us for an authentic dining experience and warm hospitality.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -166,7 +168,9 @@ export default function HoursLocationPage() {
             </Link> */}
           </div>
         </div>
+      
       </motion.section>
+      <Footer/>
     </div>
   );
 }

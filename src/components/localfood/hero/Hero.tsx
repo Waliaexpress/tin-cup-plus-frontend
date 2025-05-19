@@ -69,12 +69,12 @@ const Hero = () => {
               <p className="text-lg md:text-xl text-white/90 mb-4 md:mb-6 max-w-2xl">
                 {slide.description}
               </p>
-              <Link 
+              {/* <Link 
                 href={slide.buttonLink} 
                 className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
               >
                 {slide.buttonText}
-              </Link>
+              </Link> */}
             </div>
           </SwiperSlide>
         ))}

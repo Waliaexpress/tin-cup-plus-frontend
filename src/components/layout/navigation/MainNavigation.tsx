@@ -228,7 +228,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           
           <button 
             onClick={() => {
-              router.push("/order");
+              router.push(RouteEnums.FOREIGN_DISHES);
               setIsMenuOpen(false);
             }}
             className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
