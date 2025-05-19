@@ -23,8 +23,8 @@ const Footer = () => {
         <div className="absolute inset-0 bg-black bg-opacity-50" />
       </div>
       <div className="bg-[#8B2500] text-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="container mx-auto md:px-4 py-16 px-1">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ const Footer = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * columnIndex }}
                 viewport={{ once: true }}
-                className="col-span-1"
+                className="col-span-1 mb-8 md:mb-0"
               >
                 <h3 className="text-lg font-bold mb-6 text-white font-playfair">
                   {column.title}
@@ -88,7 +88,7 @@ const Footer = () => {
                     <motion.li key={linkIndex} whileHover={{ x: 5 }}>
                       <Link
                         href={link.href}
-                        className="text-white hover:text-gray-200 flex items-center font-montserrat"
+                        className="text-white hover:text-gray-200 flex items-center font-montserrat "
                       >
                         <ArrowRight size={16} className="mr-2 text-primary" />
                         {link.label}
@@ -111,23 +111,23 @@ const Footer = () => {
                   <h3 className="text-lg font-bold mb-6 text-white font-playfair">
                     Contact Us
                   </h3>
-                  <ul className="space-y-4">
+                  <ul className="md:space-y-4 space-y-2 ">
                     {contactInfo.map((contact, index) => (
                       <motion.li
                         key={index}
                         whileHover={{ x: 5 }}
                         className="flex items-start"
                       >
-                        <div className="mt-1 mr-3">{contact.icon}</div>
+                        <div className="mt-1 mr-3 hidden md:block">{contact.icon}</div>
                         <div>
-                          <p className="text-sm text-gray-200 font-montserrat">
+                          <p className="text-sm text-gray-200 font-montserrat break-words flex flex-wrap">
                             {contact.label}
                           </p>
                           <a
                             href={contact.action}
                             target={contact.label === "Address" ? "_blank" : undefined}
                             rel={contact.label === "Address" ? "noopener noreferrer" : undefined}
-                            className="text-white hover:text-gray-200 flex items-center font-montserrat"
+                            className="text-white hover:text-gray-200 flex items-center font-montserrat break-words flex-wrap"
                           >
                             {contact.value}
                             {contact.label === "Address" && (
@@ -149,7 +149,7 @@ const Footer = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               viewport={{ once: true }}
-              className="col-span-3 lg:col-span-1"
+              className="col-span-2 md:col-span-1 lg:col-span-1 mb-8 md:mb-0"
             >
                 <div className=" md:border-l md:px-2 border-white border-opacity-20 ">
                   <h3 className="text-lg font-bold mb-6 text-white font-playfair flex items-center">
