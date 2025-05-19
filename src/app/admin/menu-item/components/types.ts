@@ -13,6 +13,7 @@ export interface DietaryTag {
 export interface Category {
   id: string;
   name: string | { en: string; am: string };
+  _id: string;
 }
 
 export interface Image {

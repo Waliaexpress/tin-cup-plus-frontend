@@ -2,8 +2,8 @@
 
 import { ChevronUpIcon } from "@/assets/icons";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Dropdown, DropdownContent, DropdownTrigger } from "./ui/dropdown";
 
 type PropsType<TItem> = {
@@ -23,7 +23,15 @@ export function PeriodPicker<TItem extends string>({
 }: PropsType<TItem>) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const [urlParams, setUrlParams] = useState<URLSearchParams>(
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+  );
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrlParams(new URLSearchParams(window.location.search));
+    }
+  }, [pathname]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,7 +62,7 @@ export function PeriodPicker<TItem extends string>({
                   const queryString = createQueryString({
                     sectionKey,
                     value: item,
-                    selectedTimeFrame: searchParams.get(PARAM_KEY),
+                    selectedTimeFrame: urlParams.get(PARAM_KEY),
                   });
 
                   router.push(pathname + queryString, {

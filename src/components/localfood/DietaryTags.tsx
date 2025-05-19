@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useGetPublicDietaryTagsQuery } from "@/store/services/dietaryTag.service";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DietaryTags = () => {
-  const searchParams = useSearchParams();
   const [selectedTagId, setSelectedTagId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   
@@ -26,17 +24,17 @@ const DietaryTags = () => {
       } 
     : null;
 
-  useEffect(() => {
-    const tagParam = searchParams.get('tag');
-    if (tagParam) {
-      setSelectedTagId(tagParam);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const tagParam = searchParams.get('tag');
+  //   if (tagParam) {
+  //     setSelectedTagId(tagParam);
+  //   }
+  // }, [searchParams]);
 
   const handleTagClick = (tagId: string) => {
     const newSelectedId = selectedTagId === tagId ? null : tagId;
     setSelectedTagId(newSelectedId);
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
     
     if (newSelectedId) {
       params.set('tag', newSelectedId);

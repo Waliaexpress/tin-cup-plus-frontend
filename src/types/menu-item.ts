@@ -27,4 +27,5 @@ export interface MenuItem {
   isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
+  is_traditional: boolean;
 }

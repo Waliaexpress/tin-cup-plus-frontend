@@ -2,26 +2,35 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import MenuItems from "@/components/localfood/menu/MenuItems";
 import foreignMenuData from "@/data/foreignMenuItems.json";
 import { setSelectedCategory } from "@/store/slices/categorySlice";
 import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import { useGetPublicCategoriesQuery } from "@/store/services/category.service";
-import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Footer from "@/components/Landingpage/Footer";
 
 export default function ForeignDishesPage() {
   const dispatch = useDispatch();
   const [activeCategory, setActiveCategory] = useState("all");
   const { data: categoriesResponse, isLoading } = useGetPublicCategoriesQuery({ isTraditional: false, page: 1, limit: 10 });
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const [searchParamsState, setSearchParamsState] = useState<URLSearchParams>(
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+  );
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setSearchParamsState(new URLSearchParams(window.location.search));
+    }
+  }, [pathname]);
 
   const handleCategoryChange = (categoryId: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     params.set('category', categoryId);
-    const newUrl = `/?${params.toString()}`;
+    const newUrl = `${pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
     setActiveCategory(categoryId);
     
