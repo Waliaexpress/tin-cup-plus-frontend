@@ -1,6 +1,10 @@
-"use client";
+'use client'
 
-import MenuItemForm from "../components/MenuItemForm";
+import dynamic from "next/dynamic";
+
+const MenuItemForm = dynamic(() => import("../components/MenuItemForm"), {
+  ssr: false,
+});
 
 export default function CreateMenuItemPage() {
   return (
@@ -13,7 +17,7 @@ export default function CreateMenuItemPage() {
           Fill in the details to create a new menu item
         </p>
       </div>
-      
+
       <MenuItemForm isEditing={false} />
     </div>
   );
