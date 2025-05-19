@@ -5,7 +5,7 @@ import GoogleMapRender from '../GoogleMap/GoogleMapRender'
 const RESTAURANT_LOCATION = {
   latitude: 40.7128,  
   longitude: -74.0060,
-  address: "123 Restaurant Avenue, New York, NY 10001"
+  address: "North of Maryland"
 };
 
 const FindUs = () => {
