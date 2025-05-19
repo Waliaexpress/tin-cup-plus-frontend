@@ -5,7 +5,7 @@ import GoogleMapRender from '../GoogleMap/GoogleMapRender'
 const RESTAURANT_LOCATION = {
   latitude: 40.7128,  
   longitude: -74.0060,
-  address: "North of Maryland"
+  address: "1216-1228 County Rd 49, St Paul, MN 55117, North of Maryland"
 };
 
 const FindUs = () => {
