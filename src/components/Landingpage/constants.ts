@@ -16,10 +16,20 @@ export const featuresData = [
       menuLink: RouteEnums.FOREIGN_DISHES
     },
     {
-      image: "/images/landing_pages/land3.jpg",
-      title: "Exquisite Buffet Selection",
+      image: "/images/landing_pages/rest1.jpg",
+      title: "Stylish Restaurant & Bar Experience",
       description:
-        "Indulge in our extensive buffet offering a wide variety of both Ethiopian and international cuisines. Our buffet features a rotating selection of freshly prepared dishes, allowing you to sample multiple flavors in one visit. From traditional Ethiopian stews and injera to international favorites, our buffet caters to all palates. Perfect for those who want to explore a diverse range of culinary delights in a modern, elegant setting.",
+        "Enjoy a refined dining experience in our beautifully designed restaurant, complete with a polished bar, vibrant lighting, and ample seating. Whether you're here for a casual meal or a special gathering, our welcoming atmosphere sets the perfect tone.",
       menuLink: RouteEnums.FOREIGN_DISHES
     },
   ];
+
+  export const traditionalFeatures = [
+    {
+      image: "/images/landing_pages/land3.jpg",
+      title: "Exquisite Buffet Selection",
+      description:
+        "Indulge in our extensive buffet offering a wide variety of Traditional cuisines. Our buffet features a rotating selection of freshly prepared dishes, allowing you to sample multiple flavors in one visit. Our buffet caters to all palates. Perfect for those who want to explore a diverse range of culinary delights in a modern, elegant setting.",
+      menuLink: RouteEnums.ETHIOPIAN_DISHES
+    },
+  ]

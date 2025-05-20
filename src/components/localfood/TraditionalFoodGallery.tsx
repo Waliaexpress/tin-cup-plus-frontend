@@ -128,7 +128,7 @@ const TraditionalFoodGallery: React.FC = () => {
                   <h3 className="text-xl font-bold mb-2 text-primary">{image.title}</h3>
                   <p className="text-gray-600">{image.description}</p>
                   <p className="mt-3 text-sm italic">
-                    Visit our restaurant to experience the warm hospitality and authentic atmosphere of Ethiopian dining culture.
+                    Visit our restaurant to experience the warm hospitality and authentic atmosphere of Traditional dining culture.
                   </p>
                 </motion.div>
               )}

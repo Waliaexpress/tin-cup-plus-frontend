@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
+import { socialLinks } from "@/constants/hours";
 
 const Hero = () => {
   const router = useRouter();
@@ -144,6 +145,30 @@ const Hero = () => {
         >
           <Phone className="text-white" size={20} />
           <span className="font-medium font-inter">(612) 556-7705</span>
+          {socialLinks.map((link: any) => (
+                      <motion.a
+                      title={"Follow us on " +link.label}
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors duration-300"
+                      >
+                        {link.type === 'img' ? (
+                          <Image
+                            src={link.icon}
+                            alt={link.label}
+                            width={24}
+                            height={24}
+                            className="w-6 h-6"
+                          />
+                        ) : (
+                          <span className="text-primary">{link.icon}</span>
+                        )}
+                      </motion.a>
+                    ))}
         </motion.a>
       </div>
     </div>

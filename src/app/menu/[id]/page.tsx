@@ -9,6 +9,7 @@ import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import MenuItems from "@/components/localfood/menu/MenuItems";
 import { useDispatch } from "react-redux";
 import { useGetPublicMenuItemByIdQuery } from "@/store/services/menuItem.service";
+import { RouteEnums } from "@/routes/Routes";
 
 interface ApiMenuItem {
   _id: string;
@@ -155,7 +156,7 @@ export default function MenuItemDetail() {
         <div className="container mx-auto px-4 py-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Menu item not found</h2>
           <p className="mb-6">The menu item you're looking for doesn't exist or has been removed.</p>
-          <Link href="/menu" className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+          <Link href={RouteEnums.FOREIGN_DISHES} className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
             <ArrowLeft size={16} className="mr-2" />
             Back to Menu
           </Link>
@@ -171,7 +172,7 @@ export default function MenuItemDetail() {
       <div className="container mx-auto px-4 py-8">
         {/* Back Button */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden p-6">
-          <Link href="/menu" className="inline-flex items-center text-primary hover:underline mb-6">
+          <Link href={RouteEnums.FOREIGN_DISHES} className="inline-flex items-center text-primary hover:underline mb-6">
             <ArrowLeft size={16} className="mr-1" />
             Back to Menu
           </Link>

@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
 import { useGetPublicMenuItemsQuery } from "@/store/services/menuItem.service";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 const MenuItem = dynamic(() => import("./MenuItem"), { ssr: false });
-const SwiperComponent = dynamic(() => import("./SwiperMenu"), { ssr: false });
 
 interface MenuItem {
   id: string;
@@ -33,13 +33,14 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
   const [menuTitle, setMenuTitle] = useState<string>("");
   const pathname = usePathname();
   const [categoryId, setCategoryId] = useState<string | null>(null);
+  const [limit, setLimit] = useState(10);
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setCategoryId(new URLSearchParams(window.location.search).get('category'));
     }
   }, [pathname]);
-  const {data: menuItemsResponse, isLoading: menuItemsLoading} = useGetPublicMenuItemsQuery({ page: 1, limit: 10, isTraditional: isTraditional, categoryId: categoryId });
+  const {data: menuItemsResponse, isLoading: menuItemsLoading, refetch} = useGetPublicMenuItemsQuery({ page: 1, limit: limit, isTraditional: isTraditional, categoryId: categoryId });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);
@@ -47,13 +48,17 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
     mounted ? state.category?.selectedCategory : null
   );
 
+  useEffect(() => {
+      refetch();
+  }, [categoryId]);
+
   console.log("menuItemsResponse", menuItemsResponse)
   useEffect(() => {
     setMounted(true);
     
     if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
       setItems(menuItemsResponse?.data?.menuItems);
-    } else {
+        } else {
       setItems([]);
     }
   }, [menuItemsResponse]);
@@ -83,7 +88,7 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
     if (!mounted) return;
     
     const itemToAdd = items.find((item) => {
-      return (item._id !== undefined) ? item._id === itemId : item.id === itemId;
+      return (item._id !== undefined) ? item?._id === itemId : item?.id === itemId;
     });
     
     if (itemToAdd) {
@@ -93,12 +98,12 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
         type: "cart/addItem",
         payload: {
           id: isApiItem ? itemToAdd._id : itemToAdd.id,
-          name: isApiItem ? itemToAdd.name.en : itemToAdd.name,
-          price: itemToAdd.price,
+          name: isApiItem ? itemToAdd?.name?.en : itemToAdd?.name,
+          price: itemToAdd?.price,
           quantity: 1,
           image: isApiItem ? 
-            (itemToAdd.images && itemToAdd.images.length > 0 ? itemToAdd.images[0].fileUrl : '') : 
-            itemToAdd.image
+            (itemToAdd?.images && itemToAdd?.images?.length > 0 ? itemToAdd?.images?.[0]?.fileUrl : '') : 
+            itemToAdd?.image
         }
       });
     }
@@ -110,18 +115,13 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
     if (mounted) {
       let categoryName = "Menu Items";
       
-      if (categoryId && menuItemsResponse?.data?.menuItems && menuItemsResponse.data.menuItems.length > 0) {
-        const item = menuItemsResponse.data.menuItems.find((item: any) => 
+      if (categoryId && menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
+        const item = menuItemsResponse?.data?.menuItems.find((item: any) => 
           item.category && item.category._id === categoryId
         );
         if (item?.category?.name?.en) {
           categoryName = item.category.name.en;
         }
-      }
-      
-      const titleElement = document.getElementById('category-title');
-      if (titleElement) {
-        titleElement.textContent = categoryName;
       }
     }
   }, [activeCategory, mounted, categoryId, menuItemsResponse, title]);
@@ -158,41 +158,47 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
           {activeCategoryName}
         </h2>
 
-        <div className="md:hidden">
-          <SwiperComponent 
-            items={items.map(item => {
-              const isApiItem = item._id !== undefined;
-              return {
-                id: isApiItem ? item._id : item.id,
-                name: isApiItem ? item.name.en : item.name,
-                description: isApiItem ? item.description.en : item.description,
-                price: item.price,
-                unit: isApiItem ? 'item' : item.unit,
-                image: isApiItem ? (item.images && item.images.length > 0 ? item.images[0].fileUrl : '') : item.image
-              };
-            })} 
-            onAddToCart={handleAddToCart} 
-          />
-        </div>
-
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
+        >
           {items.map((item) => {
             const isApiItem = item._id !== undefined;
             
             return (
-              <MenuItem
-                key={isApiItem ? item._id : item.id}
-                id={isApiItem ? item._id : item.id}
-                name={isApiItem ? item.name.en : item.name}
-                description={isApiItem ? item.description.en : item.description}
-                price={item.price}
-                unit={isApiItem ? 'item' : item.unit}
-                image={isApiItem ? (item.images && item.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item.image}
-                onAddToCart={handleAddToCart}
-              />
+              <motion.div
+                key={isApiItem ? item._id : item?.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <MenuItem
+                  id={isApiItem ? item?._id : item?.id}
+                  name={isApiItem ? item?.name?.en : item?.name}
+                  description={isApiItem ? item?.description?.en : item?.description}
+                  price={item?.price}
+                  unit={isApiItem ? 'item' : item?.unit}
+                  image={isApiItem ? (item?.images && item?.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item?.image}
+                  onAddToCart={handleAddToCart}
+                />
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
+
+        {menuItemsResponse?.data?.count > items?.length && (
+          <div className="mt-8 text-center">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setLimit(prev => prev + 10)}
+              className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
+            >
+              Load More menu
+            </motion.button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import GoogleMapRender from '../GoogleMap/GoogleMapRender'
 const RESTAURANT_LOCATION = {
   latitude: 40.7128,  
   longitude: -74.0060,
-  address: "1216-1228 County Rd 49, St Paul, MN 55117, North of Maryland"
+  address: "1220 Rice Street St. Paul, MN 55117"
 };
 
 const FindUs = () => {
@@ -24,7 +24,7 @@ const FindUs = () => {
             transition={{ delay: 0.2 }}
           >
             <h2 className="text-3xl font-bold mb-2">Find Us</h2>
-            <p className="text-gray-600 max-w-xl mx-auto">Visit our restaurant at {RESTAURANT_LOCATION.address} or check the map below.</p>
+            <p className="text-gray-600 max-w-xl mx-auto">Visit our restaurant at <span className='font-bold'>{RESTAURANT_LOCATION.address}</span> or check the map below.</p>
           </motion.div>
           
           <motion.div
