@@ -40,7 +40,7 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
       setCategoryId(new URLSearchParams(window.location.search).get('category'));
     }
   }, [pathname]);
-  const {data: menuItemsResponse, isLoading: menuItemsLoading, refetch} = useGetPublicMenuItemsQuery({ page: 1, limit: limit, isTraditional: isTraditional, categoryId: categoryId });
+  const {data: menuItemsResponse, isLoading: menuItemsLoading, refetch} = useGetPublicMenuItemsQuery({ page: 1, limit: limit, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);
@@ -152,6 +152,11 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
   }
 
   return (
+    <>
+    {
+      menuItemsResponse?.data?.menuItems?.length > 0 ? (
+
+    
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 id="category-title" className="text-3xl font-serif font-semibold mb-8 text-center">
@@ -201,6 +206,10 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
         )}
       </div>
     </section>
+      ) : 
+      null
+       }
+    </>
   );
 };
 
