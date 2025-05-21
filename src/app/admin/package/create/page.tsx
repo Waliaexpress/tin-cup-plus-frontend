@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const defaultFormData: CreatePackageFormData = {
   name: { en: "", am: "" },
-  description: "",
+  description: { en: "", am: "" },
   basePrice: 0,
   minGuests: null,
   maxGuests: null,
@@ -29,7 +29,8 @@ const defaultFormData: CreatePackageFormData = {
   foods: [],
   drinks: [],
   services: [],
-  isActive: false
+  isActive: false,
+  forCatering: false
 };
 
 export default function CreatePackagePage() {
@@ -57,6 +58,7 @@ export default function CreatePackagePage() {
     setCurrentStep(nextStep);
   };
 
+
   const handlePrevious = () => {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
     if (currentIndex > 0) {
@@ -75,7 +77,6 @@ export default function CreatePackagePage() {
       autoClose: 3000,
     });
     
-    console.log("Package data:", formData);
     
     setTimeout(() => {
       router.push(RouteEnums.PACKAGE);
@@ -87,16 +88,14 @@ export default function CreatePackagePage() {
       case "base":
         return (
           <BasePackageForm
-            formData={formData}
-            updateFormData={updateFormData}
+            defaultValues={defaultFormData}
             onContinue={() => handleStepComplete("hall")}
           />
         );
       case "hall":
         return (
           <HallPackageForm
-            formData={formData}
-            updateFormData={updateFormData}
+            defaultValues={defaultFormData}
             onContinue={() => handleStepComplete("food")}
             onSkip={handleSkipHall}
             onPrevious={handlePrevious}

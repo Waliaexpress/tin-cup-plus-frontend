@@ -22,13 +22,13 @@ export interface PackageDrink {
 
 export interface PackageService {
   name: MultiLanguageField;
-  description?: string;
+  description?: MultiLanguageField;
 }
 
 export interface Package {
   _id?: string;
   name: MultiLanguageField;
-  description?: string;
+  description?: MultiLanguageField;
   basePrice: number;
   minGuests?: number;
   maxGuests?: number;
@@ -44,7 +44,7 @@ export interface Package {
 
 export interface CreatePackageFormData {
   name: MultiLanguageField;
-  description: string;
+  description: MultiLanguageField;
   basePrice: number;
   minGuests: number | null;
   maxGuests: number | null;
@@ -58,6 +58,7 @@ export interface CreatePackageFormData {
   drinks: string[];
   services: PackageService[];
   isActive: boolean;
+  forCatering: boolean;
 }
 
 export type PackageStepType = 
