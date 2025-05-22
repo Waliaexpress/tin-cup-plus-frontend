@@ -286,6 +286,7 @@ export default function MenuItemForm({ initialData, isEditing }: MenuItemFormPro
       formData.append('price', data.price.toString());
       formData.append('category', data.categoryId);
       formData.append('isTraditional', isTraditional.toString());
+      formData.append('type', data.type);
 
       if (data.dietaryTagIds && data.dietaryTagIds.length > 0) {
         const filteredTags = data.dietaryTagIds.filter(id => id); 

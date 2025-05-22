@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui-elements/button";
 import { ArrowLeft, Check } from "lucide-react";
@@ -35,9 +35,11 @@ const defaultFormData: CreatePackageFormData = {
 
 export default function CreatePackagePage() {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState<PackageStepType>("base");
+  const [packageIdUrl, setPackageIdUrl] = useState<string>("");
+  const [currentStep, setCurrentStep] = useState<PackageStepType>(packageIdUrl ? "hall" : "base");
   const [formData, setFormData] = useState<CreatePackageFormData>(defaultFormData);
   const [completedSteps, setCompletedSteps] = useState<PackageStepType[]>([]);
+ 
 
   const steps: { id: PackageStepType; label: string }[] = [
     { id: "base", label: "Package Details" },
@@ -58,7 +60,12 @@ export default function CreatePackagePage() {
     setCurrentStep(nextStep);
   };
 
-
+ useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const step = urlParams.get("step") || "";
+    setPackageIdUrl(step);
+    setCurrentStep(step ? step as PackageStepType : "base");
+  }, []);
   const handlePrevious = () => {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
     if (currentIndex > 0) {
@@ -90,6 +97,7 @@ export default function CreatePackagePage() {
           <BasePackageForm
             defaultValues={defaultFormData}
             onContinue={() => handleStepComplete("hall")}
+            
           />
         );
       case "hall":

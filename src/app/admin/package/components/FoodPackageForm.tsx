@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui-elements/button";
 import { ArrowRight, ArrowLeft, Search, Check, X } from "lucide-react";
 import { CreatePackageFormData } from "@/types/package";
+import Image from "next/image";
 
-import {  useGetMenuItemsQuery,} from "@/store/services"
+import {  useAddFoodAndDrinkToPackageMutation, useAddItemsToPackageMutation, useGetMenuItemsQuery, useGetPublicMenuItemsQuery,} from "@/store/services"
 
 interface FoodPackageFormProps {
   formData: CreatePackageFormData;
@@ -33,23 +34,31 @@ const mockDrinks = [
 
 export default function FoodPackageForm({ formData, updateFormData, onContinue, onPrevious }: FoodPackageFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [addFoodAndDrinkToPackage, { isLoading: addItemsLoading }] =   useAddFoodAndDrinkToPackageMutation
+  ();
+  const [packageId, setPackageIdUrl] = useState("");
   const [foodSearch, setFoodSearch] = useState("");
   const [drinkSearch, setDrinkSearch] = useState("");
+  const [limit, setLimit] = useState(50);
+  const [type, setType] = useState("food");
+  const [categoryId, setCategoryId] = useState<string | null>("");
+  const { data: menuItemsData, isLoading: isLoadingMenuItems, error: menuItemError } = useGetMenuItemsQuery({
+    page: 1, 
+    limit: limit,
+    enName: foodSearch,
+    ...(categoryId ? { categoryId: categoryId } : {}),
+    type: type,
+  });
 
-  const  {data: foodMenuItems}  =   useGetMenuItemsQuery( {page:1, limit: 20});
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const pkgId = urlParams.get("pkg_id") || "";
+      setPackageIdUrl(pkgId);
+    }, []);
   
-  const filteredFoods = mockFoods.filter(food => 
-    food.name.en.toLowerCase().includes(foodSearch.toLowerCase()) ||
-    food.name.am.includes(foodSearch)
-  );
-  
-  const filteredDrinks = mockDrinks.filter(drink => 
-    drink.name.en.toLowerCase().includes(drinkSearch.toLowerCase()) ||
-    drink.name.am.includes(drinkSearch)
-  );
-  
-  const toggleFoodSelection = (foodId: string) => {
-    if (formData.foods.includes(foodId)) {
+
+  const toggleFoodSelection = (foodId: string, type: string) => {
+    if (formData.foods?.includes(foodId)) {
       updateFormData({ 
         foods: formData.foods.filter(id => id !== foodId) 
       });
@@ -57,47 +66,58 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
       updateFormData({ 
         foods: [...formData.foods, foodId] 
       });
+}
     }
-  };
   
-  const toggleDrinkSelection = (drinkId: string) => {
-    if (formData.drinks.includes(drinkId)) {
-      updateFormData({ 
-        drinks: formData.drinks.filter(id => id !== drinkId) 
-      });
-    } else {
-      updateFormData({ 
-        drinks: [...formData.drinks, drinkId] 
-      });
-    }
-  };
+
   
   const validate = () => {
     const newErrors: Record<string, string> = {};
     
-    if (formData.foods.length === 0) {
+    if (formData.foods?.length === 0) {
       newErrors.foods = "Select at least one food item";
     }
     
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newErrors)?.length === 0;
   };
   
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validate()) {
+      const data = {
+        itemIds: formData.foods,
+        type: type+"s",
+      };
+      console.log("DATA", data)
+      await addFoodAndDrinkToPackage({
+        packageId: packageId.toString(),
+        items: data
+      });
+      
       onContinue();
     }
   };
-  
+  const setTypeofMenu = (type: string) => {
+    setType(type);
+  };
   return (
     <div className="space-y-6">
       <h3 className="text-xl font-semibold mb-4">Foods & Drinks Selection</h3>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 ">
         <div>
           <div className="flex justify-between items-center mb-4">
             <h4 className="text-lg font-medium">Foods <span className="text-red-500">*</span></h4>
-            <div className="relative w-48">
+            <div className="relative max-w-[450px] w-full min-w-[300px] flex gap-3">
+              <select
+                value={type}
+                onChange={(e) => setTypeofMenu(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md pr-10 focus:outline-none focus:ring-primary focus:border-primary"
+              >
+              
+                <option value="food">Food</option>
+                <option value="drink">Drink</option>
+              </select>
               <input
                 type="text"
                 placeholder="Search foods..."
@@ -113,7 +133,7 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
           
           <div className="border border-gray-200 rounded-lg overflow-hidden">
             <div className="max-h-80 overflow-y-auto">
-              {filteredFoods.length > 0 ? (
+              {menuItemsData?.data?.menuItems?.length > 0 ? (
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50 sticky top-0">
                     <tr>
@@ -121,48 +141,79 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
                         Select
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Name
+                        Picture
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Category
+                        Name
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Price
                       </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Special 
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredFoods.map((food) => (
+                    {menuItemsData && menuItemsData?.data?.menuItems.map((menuItem : any) => (
                       <tr 
-                        key={food.id} 
-                        onClick={() => toggleFoodSelection(food.id)}
+                        key={menuItem?._id} 
+                        onClick={() => toggleFoodSelection(menuItem?._id, menuItem?.type)}
                         className={`hover:bg-gray-50 cursor-pointer ${
-                          formData.foods.includes(food.id) ? "bg-primary bg-opacity-10" : ""
+                          formData.foods.includes(menuItem?._id) ? "bg-primary bg-opacity-10" : ""
                         }`}
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className={`flex-shrink-0 h-6 w-6 rounded-full border ${
-                              formData.foods.includes(food.id) 
+                              formData.foods.includes(menuItem._id) 
                                 ? "border-primary text-primary" 
                                 : "border-gray-300 text-transparent"
                             } flex items-center justify-center`}>
-                              {formData.foods.includes(food.id) && <Check className="h-4 w-4" />}
+                              {formData.foods.includes(menuItem._id) && <Check className="h-4 w-4" />}
                             </div>
                           </div>
                         </td>
+                        <td>
+                          <Image 
+                            src={menuItem?.images?.[0]?.fileUrl}
+                            alt={menuItem?.name?.en}
+                            width={50}
+                            height={50}
+                          />
+                        </td>
                         <td className="px-6 py-4">
-                          <div className="text-sm font-medium text-gray-900">{food.name.en}</div>
-                          <div className="text-sm text-gray-500">{food.name.am}</div>
+                          <div className="text-sm font-medium text-gray-900">{menuItem?.name?.en}</div>
+                          <div className="text-sm text-gray-500">{menuItem?.name?.am}</div>
                         </td>
+                        
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {food.category}
+                            {menuItem?.price} $
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          ${food.price.toFixed(2)}
+                        <td>
+                          {
+                            menuItem?.isSpecial ? (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Special
+                              </span>
+                            ) : (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                Regular
+                              </span>
+                            )
+                          }
                         </td>
                       </tr>
                     ))}
+                    <tr className="flex items-center justify-center w-full">
+                      <td className="flex items-center justify-center my-3">
+                        <div
+                        className="px-2 py-1 bg-primary text-white rounded-md cursor-pointer"
+                          onClick={() => setLimit(limit + 10)}
+                          
+                        >{isLoadingMenuItems ? "Loading..." : "Load More"}</div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               ) : (
@@ -175,85 +226,7 @@ export default function FoodPackageForm({ formData, updateFormData, onContinue, 
             Selected: {formData.foods.length} foods
           </div>
         </div>
-        <div>
-          <div className="flex justify-between items-center mb-4">
-            <h4 className="text-lg font-medium">Drinks</h4>
-            <div className="relative w-48">
-              <input
-                type="text"
-                placeholder="Search drinks..."
-                value={drinkSearch}
-                onChange={(e) => setDrinkSearch(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md pr-10 focus:outline-none focus:ring-primary focus:border-primary"
-              />
-              <Search className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-          
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
-            <div className="max-h-80 overflow-y-auto">
-              {filteredDrinks.length > 0 ? (
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50 sticky top-0">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Select
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Name
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Price
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredDrinks.map((drink) => (
-                      <tr 
-                        key={drink.id} 
-                        onClick={() => toggleDrinkSelection(drink.id)}
-                        className={`hover:bg-gray-50 cursor-pointer ${
-                          formData.drinks.includes(drink.id) ? "bg-primary bg-opacity-10" : ""
-                        }`}
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className={`flex-shrink-0 h-6 w-6 rounded-full border ${
-                              formData.drinks.includes(drink.id) 
-                                ? "border-primary text-primary" 
-                                : "border-gray-300 text-transparent"
-                            } flex items-center justify-center`}>
-                              {formData.drinks.includes(drink.id) && <Check className="h-4 w-4" />}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm font-medium text-gray-900">{drink.name.en}</div>
-                          <div className="text-sm text-gray-500">{drink.name.am}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {drink.category}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          ${drink.price.toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className="p-6 text-center text-gray-500">No drinks found matching your search</div>
-              )}
-            </div>
-          </div>
-          
-          <div className="mt-3 text-sm text-gray-600">
-            Selected: {formData.drinks.length} drinks
-          </div>
-        </div>
+      
       </div>
       
       <div className="flex justify-between mt-6">

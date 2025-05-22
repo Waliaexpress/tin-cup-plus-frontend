@@ -47,7 +47,7 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
         Review all the details of your package before activating it. Once activated, the package will be visible to customers.
       </p>
       
-      <div className="bg-gray-50 rounded-lg overflow-hidden">
+      {/* <div className="bg-gray-50 rounded-lg overflow-hidden">
         {formData.bannerImage && (
           <div className="relative w-full h-48 sm:h-64 bg-gray-200">
             <Image
@@ -236,7 +236,7 @@ export default function PackagePreview({ formData, updateFormData, onSubmit, onP
           onClick={onSubmit}
           className="px-8 ml-auto"
         />
-      </div>
+      </div> */}
     </div>
   );
 }

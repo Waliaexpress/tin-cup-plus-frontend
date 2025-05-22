@@ -1,11 +1,12 @@
 "use client"
 import { useForm, Controller } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui-elements/button";
 import { Upload, ArrowRight, ArrowLeft, X } from "lucide-react";
 import { CreatePackageFormData } from "@/types/package";
 import Image from "next/image";
 import { useAddHallToPackageMutation } from "@/store/services";
+import { useParams } from 'next/navigation';
 import { toast } from "react-toastify";
 
 interface HallPackageFormProps {
@@ -13,7 +14,7 @@ interface HallPackageFormProps {
   onContinue: () => void;
   onSkip: () => void;
   onPrevious?: () => void;
-  packageId: string; // Added packageId for the mutation
+  packageIds: string; // Added packageId for the mutation
 }
 
 export default function HallPackageForm({ 
@@ -21,7 +22,7 @@ export default function HallPackageForm({
   onContinue, 
   onSkip,
   onPrevious,
-  packageId
+  packageIds
 }: HallPackageFormProps) {
   const {
     control,
@@ -35,8 +36,15 @@ export default function HallPackageForm({
 
   const [addHallToPackage, { isLoading }] = useAddHallToPackageMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [packageId, setPackageIdUrl] = useState("");
   const hallImages = watch("hall.images");
   const hallCapacity = watch("hall.capacity");
+  const params = useParams();
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pkgId = urlParams.get("pkg_id") || "";
+    setPackageIdUrl(pkgId);
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -81,19 +89,19 @@ export default function HallPackageForm({
       }
 
       const formData = new FormData();
-      formData.append("packageId", packageId);
-
+      console.log("PACKAGE ID", packageId)
+     
       if (data.hall?.capacity) {
-        formData.append("capacity", data.hall.capacity.toString());
+        formData.append("capacity ", data.hall.capacity.toString());
       }
 
       if (data.hall?.images) {
         data.hall.images.forEach((file, index) => {
-          formData.append(`images[${index}]`, file);
+          formData.append(`hallImages`, file);
         });
       }
 
-      await addHallToPackage(formData).unwrap();
+      await addHallToPackage({packageId, formData}).unwrap();
       toast.success('Hall information added successfully!');
       onContinue();
     } catch (error: any) {

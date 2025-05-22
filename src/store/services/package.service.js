@@ -101,9 +101,18 @@ export const packageApiSlice = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `/public/packages/${id}`,
         method: 'GET',
-      }),
+      }), 
       providesTags: (result, error, id) => [{ type: 'PublicPackage', id }],
     }),
+    addFoodAndDrinkToPackage: builder.mutation({
+      query: ({ packageId, items }) => (
+        {
+        url: `/admin/items/packages/${packageId}`,
+        method: 'PUT',
+        body: { itemIds: items.itemIds, type: items.type },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Package', id: arg.packageId }],
+    })
   }),
 });
 
@@ -117,5 +126,5 @@ export const {
   useGetPackageByIdQuery,
   useDeletePackageMutation,
   useGetAllActivePackagesQuery,
-  useGetPublicPackageByIdQuery,
+  useAddFoodAndDrinkToPackageMutation,
 } = packageApiSlice;

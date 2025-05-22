@@ -92,6 +92,9 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
       const result = await createBasicPackage(formData).unwrap();
       toast.success('Package created successfully!');
       onContinue(result); // Pass the API response to onContinue
+      console.log("API RES", result) 
+      router.push(`${window.location.pathname}?pkg_id=${result.data?._id}`);
+
     } catch (error: any) {
       console.error("Error submitting form:", error);
       toast.error(error?.data?.message || "Failed to create package. Please try again.");
