@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Toggle from "@/components/common/Toggle";
 import Pagination from "@/components/filters/Pagination";
 import { RouteEnums } from "@/routes/Routes";
+import { useGetPackagesWithPaginationQuery } from "@/store/services/package.service";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-8">
@@ -18,6 +19,10 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// const { data: packagesData, isLoading: isLoadingPackages, error: packagesError } = useGetPackagesWithPaginationQuery({
+//   page: 1,
+//   limit: 10,
+// });
 
 const mockPackages = [
   {

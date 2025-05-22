@@ -44,8 +44,8 @@ export const packageApiSlice = apiSlice.injectEndpoints({
 
     // Activate package (admin)
     activatePackage: builder.mutation({
-      query: (id) => ({
-        url: `/admin/packages/${id}`,
+      query: (id, isActive) => ({
+        url: `/admin/packages/${id}?isActive=${isActive}`,
         method: 'PATCH',
       }),
       invalidatesTags: (result, error, id) => [

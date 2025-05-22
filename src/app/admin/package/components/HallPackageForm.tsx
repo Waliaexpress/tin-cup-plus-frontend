@@ -44,7 +44,7 @@ export default function HallPackageForm({
     const urlParams = new URLSearchParams(window.location.search);
     const pkgId = urlParams.get("pkg_id") || "";
     setPackageIdUrl(pkgId);
-  }, []);
+  }, [params]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -52,7 +52,6 @@ export default function HallPackageForm({
       const newFiles = Array.from(files);
       const currentImages = watch("hall.images") || [];
       
-      // Validate files
       for (const file of newFiles) {
         if (file.size > 10 * 1024 * 1024) {
           toast.error("File size must be less than 10MB");
@@ -100,7 +99,7 @@ export default function HallPackageForm({
           formData.append(`hallImages`, file);
         });
       }
-
+console.log("packageId",packageId)
       await addHallToPackage({packageId, formData}).unwrap();
       toast.success('Hall information added successfully!');
       onContinue();

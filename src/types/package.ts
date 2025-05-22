@@ -59,6 +59,7 @@ export interface CreatePackageFormData {
   services: PackageService[];
   isActive: boolean;
   forCatering: boolean;
+  active?: boolean
 }
 
 export type PackageStepType = 

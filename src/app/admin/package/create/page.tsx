@@ -130,6 +130,7 @@ export default function CreatePackagePage() {
       case "preview":
         return (
           <PackagePreview
+          defaultValues={defaultFormData}
             formData={formData}
             updateFormData={updateFormData}
             onSubmit={handleCreatePackage}

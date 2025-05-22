@@ -12,25 +12,6 @@ interface FoodPackageFormProps {
   onContinue: () => void;
   onPrevious?: () => void;
 }
-const mockFoods = [
-  { id: "food1", name: { en: "Injera with Doro Wat", am: "ዶሮ ወጥ" }, price: 12.99, category: "Main Course" },
-  { id: "food2", name: { en: "Tibs", am: "ጥብስ" }, price: 14.99, category: "Main Course" },
-  { id: "food3", name: { en: "Kitfo", am: "ክትፎ" }, price: 15.99, category: "Main Course" },
-  { id: "food4", name: { en: "Shiro", am: "ሽሮ" }, price: 10.99, category: "Main Course" },
-  { id: "food5", name: { en: "Misir Wat", am: "ምስር ወጥ" }, price: 9.99, category: "Side Dish" },
-  { id: "food6", name: { en: "Gomen", am: "ጎመን" }, price: 8.99, category: "Side Dish" },
-  { id: "food7", name: { en: "Atakilt Wat", am: "አታክልት ወጥ" }, price: 8.99, category: "Side Dish" },
-  { id: "food8", name: { en: "Azifa", am: "አዚፋ" }, price: 7.99, category: "Appetizer" }
-];
-
-const mockDrinks = [
-  { id: "drink1", name: { en: "Ethiopian Coffee", am: "ቡና" }, price: 3.99, category: "Hot Beverages" },
-  { id: "drink2", name: { en: "Tej (Honey Wine)", am: "ጠጅ" }, price: 6.99, category: "Alcoholic" },
-  { id: "drink3", name: { en: "Mango Juice", am: "የማንጎ ጁስ" }, price: 4.99, category: "Juice" },
-  { id: "drink4", name: { en: "Avocado Juice", am: "የአቮካዶ ጁስ" }, price: 5.99, category: "Juice" },
-  { id: "drink5", name: { en: "Coca-Cola", am: "ኮካ-ኮላ" }, price: 2.99, category: "Soft Drinks" },
-  { id: "drink6", name: { en: "Bottled Water", am: "ውሃ" }, price: 1.99, category: "Water" }
-];
 
 export default function FoodPackageForm({ formData, updateFormData, onContinue, onPrevious }: FoodPackageFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
