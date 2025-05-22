@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui-elements/button";
 import { DataTable, TableColumn } from "@/components/Tables/data-table";
 import { PlusCircle } from "lucide-react";
@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Toggle from "@/components/common/Toggle";
 import Pagination from "@/components/filters/Pagination";
 import { RouteEnums } from "@/routes/Routes";
-import { useGetPackagesWithPaginationQuery } from "@/store/services/package.service";
+import { useActivatePackageMutation, useGetPackagesWithPaginationQuery } from "@/store/services/package.service";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-8">
@@ -19,103 +19,82 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// const { data: packagesData, isLoading: isLoadingPackages, error: packagesError } = useGetPackagesWithPaginationQuery({
-//   page: 1,
-//   limit: 10,
-// });
-
-const mockPackages = [
-  {
-    _id: "package1",
-    name: {
-      en: "Wedding package",
-      am: "የጋብቻ ፓኬጅ"
-    },
-    description: "Perfect for small to medium weddings with full service",
-    basePrice: 2999.99,
-    minGuests: 50,
-    maxGuests: 200,
-    includesHall: true,
-    foodCount: 12,
-    drinkCount: 8,
-    serviceCount: 5,
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    _id: "package2",
-    name: {
-      en: "Birthday celebration",
-      am: "የልደት በዓል"
-    },
-    description: "Complete birthday party setup with decorations",
-    basePrice: 799.99,
-    minGuests: 10,
-    maxGuests: 50,
-    includesHall: false,
-    foodCount: 6,
-    drinkCount: 4,
-    serviceCount: 3,
-    isActive: false,
-    createdAt: new Date().toISOString()
-  },
-  {
-    _id: "package3",
-    name: {
-      en: "Corporate event",
-      am: "የኮርፖሬት ዝግጅት"
-    },
-    description: "Professional setup for business meetings and gatherings",
-    basePrice: 1499.99,
-    minGuests: 20,
-    maxGuests: 100,
-    includesHall: true,
-    foodCount: 10,
-    drinkCount: 6,
-    serviceCount: 4,
-    isActive: true,
-    createdAt: new Date().toISOString()
-  }
-];
-
 export default function PackagesPage() {
+  const [activatePackage] = useActivatePackageMutation()
   const router = useRouter();
-
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   
-  const page = Number(1) || 1;
-  const limit = Number(10) || 10;
+  const pathname = usePathname();
   
-  const [isLoading, setIsLoading] = useState(false);
-  const packages = mockPackages;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const newPage = Number(params.get('page')) || 1;
+      const newLimit = Number(params.get('limit')) || 10;
+      
+      if (page !== newPage) setPage(newPage);
+      if (limit !== newLimit) setLimit(newLimit);
+    }
+  }, [pathname, window?.location?.search]);
+  
+  const { data: packagesData, isLoading, error } = useGetPackagesWithPaginationQuery(
+    { page, limit },
+    { refetchOnMountOrArgChange: true }
+  );
+  
+  const packages = packagesData?.data?.packages || [];
   
   const paginationData = {
     currentPage: page,
-    nextPage: page < Math.ceil(packages.length / limit) ? page + 1 : null,
+    nextPage: page < (packagesData?.data?.lastPage || 1) ? page + 1 : null,
     previousPage: page > 1 ? page - 1 : null,
-    hasNextPage: page < Math.ceil(packages.length / limit),
+    hasNextPage: page < (packagesData?.data?.lastPage || 1),
     hasPreviousPage: page > 1,
-    lastPage: Math.ceil(packages.length / limit),
-    total: packages.length
+    lastPage: packagesData?.data?.lastPage || 1,
+    total: packagesData?.data?.total || 0
   };
+  
 
   const navigateWithFilters = (newParams: Record<string, string | number | null>) => {
+    const updatedParams = { 
+      page: newParams.page !== undefined ? newParams.page : page,
+      limit: newParams.limit !== undefined ? newParams.limit : limit,
+      ...newParams 
+    };
+    
     const params = new URLSearchParams();
-    
-    if (page > 1) params.set('page', page.toString());
-    if (limit !== 10) params.set('limit', limit.toString());
-    
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value === null) {
-        params.delete(key);
-      } else {
+    Object.entries(updatedParams).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
         params.set(key, String(value));
       }
     });
     
-    router.push(`/admin/package?${params.toString()}`);
+    const queryString = params.toString();
+    const url = queryString ? `?${queryString}` : '';
+    
+
+    if (newParams.page !== undefined) setPage(Number(newParams.page));
+    if (newParams.limit !== undefined) setLimit(Number(newParams.limit));
+    
+    router.push(url, { scroll: false });
   };
   
+  const hasError = error !== undefined;
+
   const columns: TableColumn<any>[] = [
+    {
+      header: "Created At",
+      accessor: (item) => {
+        if (!item?.createdAt) return 'N/A';
+        const date = new Date(item?.createdAt);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+    },
     {
       header: "Name (English)",
       accessor: (item) => (
@@ -150,42 +129,45 @@ export default function PackagesPage() {
         <div className="space-y-1 text-sm">
           <div className="flex items-center">
             <span className="font-medium text-gray-600">Hall:</span>
-            <span className="ml-2">{item.includesHall ? 'Yes' : 'No'}</span>
+            <span className="ml-2">{item.hall?.images?.length > 0 ? 'Yes' : 'No'}</span>
           </div>
           <div className="flex items-center">
             <span className="font-medium text-gray-600">Foods:</span>
-            <span className="ml-2">{item.foodCount}</span>
+            <span className="ml-2">{item.foods?.length || 0}</span>
           </div>
           <div className="flex items-center">
             <span className="font-medium text-gray-600">Drinks:</span>
-            <span className="ml-2">{item.drinkCount}</span>
+            <span className="ml-2">{item.drinks?.length || 0}</span>
           </div>
           <div className="flex items-center">
             <span className="font-medium text-gray-600">Services:</span>
-            <span className="ml-2">{item.serviceCount}</span>
+            <span className="ml-2">{item.services?.length || 0}</span>
           </div>
         </div>
       )
     },
     {
       header: "Status",
-      accessor: (item) => (
-        <div className="flex items-center gap-2">
-          {item.isActive ? (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              Active
-            </span>
-          ) : (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-              Inactive
-            </span>
-          )}
-          <Toggle 
-            checked={item.isActive} 
-            onChange={(checked) => handleToggleActive(item, checked)}
-          />
-        </div>
-      )
+      accessor: (item) => {
+        const isActive = !!item.isActive;
+        return (
+          <div className="flex items-center gap-2">
+            {isActive ? (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                Active
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                Inactive
+              </span>
+            )}
+            <Toggle 
+              checked={isActive} 
+              onChange={(checked) => handleToggleActive(item, checked)}
+            />
+          </div>
+        );
+      }
     },
   ];
 
@@ -193,7 +175,7 @@ export default function PackagesPage() {
     router.push(`${RouteEnums.EDIT_PACKAGE}/${item._id}`);
   };
 
-  const handleDelete = (item: any) => {
+  const handleDelete = async (item: any) => {
     toast.success(`${item.name?.en} has been deleted successfully.`, {
       position: "top-right",
       autoClose: 3000,
@@ -204,8 +186,9 @@ export default function PackagesPage() {
     });
   };
 
-  const handleToggleActive = (item: any, isActive: boolean) => {
-    // In a real app, we'd call an update API endpoint
+  const handleToggleActive = async (item: any, isActive: boolean) => {
+  try {
+    await activatePackage({ id: item._id, isActive });
     toast.success(`${item.name?.en} has been ${isActive ? 'activated' : 'deactivated'} successfully.`, {
       position: "top-right",
       autoClose: 3000,
@@ -214,6 +197,14 @@ export default function PackagesPage() {
       pauseOnHover: true,
       draggable: true
     });
+  }
+  catch (error) {
+    console.error("Error toggling package activation:", error);
+    toast.error("An error occurred. Please try again.", {
+      position: "top-right",
+      autoClose: 3000
+    });
+  }
   };
 
   return (
@@ -237,7 +228,19 @@ export default function PackagesPage() {
         <LoadingSpinner />
       )}
 
-      {!isLoading && packages.length > 0 && (
+      {hasError && (
+        <div className="p-8 text-center bg-white rounded-lg shadow-sm border border-red-200">
+          <p className="text-red-500 mb-4">Error loading packages. Please try again later.</p>
+          <Button
+            label="Retry"
+            variant="primary"
+            onClick={() => window.location.reload()}
+            className="mx-auto"
+          />
+        </div>
+      )}
+
+      {!isLoading && !hasError && packages.length > 0 && (
         <div className="flex flex-col gap-5 md:gap-7">
           <DataTable
             columns={columns}
@@ -260,7 +263,7 @@ export default function PackagesPage() {
         </div>
       )}
 
-      {!isLoading && packages.length === 0 && (
+      {!isLoading && !hasError && packages.length === 0 && (
         <div className="p-8 text-center bg-white rounded-lg shadow-sm border border-stroke">
           <p className="text-gray-500 mb-4">No packages found.</p>
           <Button

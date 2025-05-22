@@ -38,8 +38,8 @@ const [packageId, setPackageIdUrl] = useState("")
       const pkgId = urlParams.get("pkg_id") || "";
       setPackageIdUrl(pkgId);
     }, []);
-  const handleFinalSubmit = () => {
-    activatePackage(packageId, active)
+  const handleFinalSubmit = async () => {
+    await activatePackage(packageId, active)
     onSubmit()
   
   }

@@ -44,25 +44,21 @@ export const packageApiSlice = apiSlice.injectEndpoints({
 
     // Activate package (admin)
     activatePackage: builder.mutation({
-      query: (id, isActive) => ({
+      query: ({id, isActive}) => ({
         url: `/admin/packages/${id}?isActive=${isActive}`,
         method: 'PATCH',
       }),
       invalidatesTags: (result, error, id) => [
         { type: 'Package', id },
-        { type: 'PublicPackage', id },
+        { type: 'isActive', id },
       ],
     }),
 
     // Get paginated packages (admin)
     getPackagesWithPagination: builder.query({
       query: ({ page, limit }) => {
-        const params = new URLSearchParams();
-        if (page) params.append('page', page);
-        if (limit) params.append('limit', limit);
-
         return {
-          url: `/admin/packages?${params.toString()}`,
+          url: `/admin/packages?page=${page || 1}&limit=${limit || 10}`,
           method: 'GET',
         };
       },
