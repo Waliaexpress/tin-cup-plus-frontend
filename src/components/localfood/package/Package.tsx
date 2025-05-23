@@ -70,6 +70,7 @@ const PackageSkeleton = () => {
 
 const PackageCard = ({ pkg }: { pkg: PackageData }) => {
   return (
+    <Link title='View details' href={`/package/${pkg._id}`} >
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -128,6 +129,7 @@ const PackageCard = ({ pkg }: { pkg: PackageData }) => {
         </Link>
       </div>
     </motion.div>
+    </Link>
   );
 };
 

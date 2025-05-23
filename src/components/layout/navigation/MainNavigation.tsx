@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { 
   User, 
   ShoppingCart, 
@@ -22,6 +22,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const router = useRouter();
+  const path = usePathname();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -41,7 +42,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-sm ${
         isScrolled || isMenuOpen ? `bg-white  dark:bg-gray-900 shadow-md` : `${landing ? "bg-transparent  " : "bg-white/80 shadow-md"}  dark:bg-gray-900/80`
       }`}
     >
@@ -93,7 +94,8 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               <Clock size={18} />
               <span>Hours & Location</span>
             </Link>
-            <Link 
+            {(path.includes("packages") || path.includes("ethiopian-dishes")) &&
+              <Link 
               href="/packages" 
               className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
                 isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
@@ -102,6 +104,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
              <Box size={16}/>
               <span>Packages</span>
             </Link>
+            }
             
             {/* <div className="relative">
               <Link 
@@ -217,7 +220,17 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             </div>
             <span>${cartTotal.toFixed(2)}</span>
           </Link> */}
-          
+           {
+            (path.includes("packages") || path.includes("ethiopian-dishes")) &&
+            <Link 
+            href="/packages" 
+            className="flex items-center gap-2 py-2 text-gray-700 dark:text-white"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Box size={20} />
+            <span>Packages</span>
+          </Link>
+           }
           <Link 
             href={RouteEnums.SIGN_IN} 
             className="flex items-center gap-2 py-2 text-gray-700 dark:text-white"
