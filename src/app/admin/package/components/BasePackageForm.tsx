@@ -133,7 +133,6 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
     reset();
     router.push("/admin/package");
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <h3 className="text-xl font-semibold mb-4">Package Basic Information</h3>
@@ -157,6 +156,7 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
                     errors.name?.en ? "border-red-500" : "border-gray-300"
                   } focus:border-primary focus:outline-none focus:ring-primary`}
                   placeholder="e.g., Wedding Package"
+                
                 />
                 {errors.name?.en && (
                   <p className="mt-1 text-sm text-red-500">{errors.name.en.message}</p>

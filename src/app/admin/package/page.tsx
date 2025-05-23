@@ -108,8 +108,6 @@ export default function PackagesPage() {
   
   const hasError = isError !== undefined;
 
-  // Removed unused handleEdit and handleDelete functions
-
   return (
     <div className="mx-auto px-4 md:px-8 2xl:px-0" id="packages-section">
       <ToastContainer />

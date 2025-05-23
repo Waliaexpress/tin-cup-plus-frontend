@@ -4,6 +4,7 @@ import Toggle from "@/components/common/Toggle";
 import { Package } from "@/types/package";
 import { Eye, Edit, Trash2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
 const PackageDetailsModal = dynamic(
   () => import('./components/PackageDetailsModal'),
@@ -23,7 +24,6 @@ const PackageStatusToggle: React.FC<PackageStatusToggleProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [localIsActive, setLocalIsActive] = useState(isActive);
-
   const handleToggle = async (checked: boolean) => {
     setIsLoading(true);
     try {
@@ -60,7 +60,7 @@ export const usePackageColumns = (
   onStatusChange: (id: string, isActive: boolean) => Promise<boolean>
 ) => {
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-
+  const router = useRouter();
   const handleViewDetails = (pkg: Package) => {
     setSelectedPackage(pkg);
   };
@@ -139,8 +139,7 @@ export const usePackageColumns = (
           </button>
           <button
             onClick={(e) => {
-              e.stopPropagation();
-              console.log('Edit package:', item._id);
+             router.push(`/admin/package/edit/${item._id}`);
             }}
             className="p-1 text-gray-500 hover:text-blue-600 transition-colors"
             title="Edit package"
