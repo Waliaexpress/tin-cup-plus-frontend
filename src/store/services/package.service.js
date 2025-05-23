@@ -11,7 +11,6 @@ export const packageApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Package'],
     }),
-
     // Add hall to package (admin)
     addHallToPackage: builder.mutation({
       query: ({ packageId, formData }) => ({
@@ -109,6 +108,14 @@ export const packageApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Package', id: arg.packageId }],
     }),
+     updatePackage: builder.mutation({
+      query: ({formData, id}) => ({
+        url: `/admin/basic/packages/${id}`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Package', id: arg.id }],
+    }),
   }),
 });
 
@@ -124,4 +131,5 @@ export const {
   useGetAllActivePackagesQuery,
   useAddFoodAndDrinkToPackageMutation,
   useGetPublicPackageByIdQuery,
+  useUpdatePackageMutation,
 } = packageApiSlice;

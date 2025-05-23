@@ -52,7 +52,7 @@ export default function EditPackagePage() {
 
   // Set form data when package data is loaded
   useEffect(() => {
-    console.log("packageData: ",packageData);
+    console.log("packageData EDIT page: ",packageData);
     if (packageData?.data) {
       const pkg = packageData.data;
       setFormData({

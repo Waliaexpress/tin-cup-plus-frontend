@@ -14,7 +14,7 @@ interface HallPackageFormProps {
   onContinue: () => void;
   onSkip: () => void;
   onPrevious?: () => void;
-  packageIds: string; // Added packageId for the mutation
+  packageIds: string; 
 }
 
 export default function HallPackageForm({ 

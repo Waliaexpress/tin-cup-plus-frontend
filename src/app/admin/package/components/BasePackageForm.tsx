@@ -1,13 +1,13 @@
 "use client"
 import { useForm, Controller } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui-elements/buttons/Buttons";
 import { Upload } from "lucide-react";
 import { CreatePackageFormData } from "@/types/package";
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
 import Image from "next/image";
-import { useCreateBasicPackageMutation } from "@/store/services";
+import { useCreateBasicPackageMutation, useUpdatePackageMutation } from "@/store/services";
 import Toggle from "@/components/common/Toggle";
 import { Info } from "lucide-react";
 
@@ -27,28 +27,27 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
     reset,
     formState: { errors, isDirty },
   } = useForm<CreatePackageFormData>({
-    defaultValues: {
-      ...defaultValues,
-      isCustom: defaultValues.isCustom || false,
-      isCatering: defaultValues.isCatering || false,
-      perPerson: defaultValues.perPerson || false,
-      perPersonPrice: defaultValues.perPersonPrice || 0,
-    },
+    defaultValues,
   });
+  
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createBasicPackage] = useCreateBasicPackageMutation();
+  const [updatePackage] = useUpdatePackageMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const bannerImage = watch("bannerImage");
   const packageType = watch("forCatering");
   const isCustom = watch("isCustom");
   const isCatering = watch("isCatering");
   const perPerson = watch("perPerson");
-
+ const path = usePathname();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) {
-      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      if (file.size > 10 * 1024 * 1024) {
         toast.error("File size must be less than 10MB");
         return;
       }
@@ -107,6 +106,7 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
         }
       }
   
+     if(path.includes("create")) {
       const result = await createBasicPackage(formData).unwrap();
       toast.success('Package created successfully!');
       
@@ -117,6 +117,15 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
       onContinue(result); 
       console.log("API RES", result) 
       router.push(`${window.location.pathname}?pkg_id=${result.data?._id}`);
+     }
+     else if(path.includes("edit")){
+     
+      console.log("UP data formData", JSON.stringify(data))
+      const id = path.split("/").pop();
+      const result = await updatePackage({ formData, id }).unwrap();
+      toast.success('Package updated successfully!');
+      onContinue(result); 
+     }
 
     } catch (error: any) {
       console.error("Error submitting form:", error);
@@ -208,7 +217,7 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
                 rows={4}
                 className="block w-full rounded-md py-2 px-3 border border-gray-300 focus:border-primary focus:outline-none focus:ring-primary"
                 placeholder="(English) Describe what this package offers..."
-                value={field.value as string} // Ensure value is treated as a string
+                value={field.value as string} 
               />
             )}
           />
@@ -537,7 +546,7 @@ export default function BasePackageForm({ defaultValues, onContinue, setIsCustom
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          Create
+         {path.includes("edit") ? "Update" : "Create"}
         </Button>
       </div>
     </form>
