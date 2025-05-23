@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui-elements/button";
-import { Check, ArrowLeft, MapPin, Users, Coffee, Wine, Utensils, DollarSign } from "lucide-react";
 import { CreatePackageFormData } from "@/types/package";
-import Image from "next/image";
 import Toggle from "@/components/common/Toggle";
 import { Controller, useForm } from "react-hook-form";
 import { useActivatePackageMutation } from "@/store/services/package.service";
@@ -68,8 +66,9 @@ const [packageId, setPackageIdUrl] = useState("")
               <Toggle
                 checked={active}
                 onChange={()=> {
-                  setActive(value)
-                  onChange(value)
+                  const newValue = !active;
+                  setActive(newValue);
+                  onChange(newValue);
                 }}
                 className="mr-2"
               />

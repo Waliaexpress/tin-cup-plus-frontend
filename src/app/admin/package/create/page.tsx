@@ -30,7 +30,11 @@ const defaultFormData: CreatePackageFormData = {
   drinks: [],
   services: [],
   isActive: false,
-  forCatering: false
+  forCatering: false,
+  isCustom: false,
+  isCatering: false,
+  perPerson: false,
+  perPersonPrice: 0
 };
 
 export default function CreatePackagePage() {
@@ -39,33 +43,44 @@ export default function CreatePackagePage() {
   const [currentStep, setCurrentStep] = useState<PackageStepType>(packageIdUrl ? "hall" : "base");
   const [formData, setFormData] = useState<CreatePackageFormData>(defaultFormData);
   const [completedSteps, setCompletedSteps] = useState<PackageStepType[]>([]);
- 
+  const [isCustomPackage, setIsCustomPackage] = useState<boolean>(false);
 
   const steps: { id: PackageStepType; label: string }[] = [
     { id: "base", label: "Package Details" },
     { id: "hall", label: "Hall Information" },
     { id: "food", label: "Foods & Drinks" },
     { id: "services", label: "Additional Services" },
-    { id: "preview", label: "Review & Activate" }
+    { id: "preview", label: "Activate" }
   ];
 
   const updateFormData = (data: Partial<CreatePackageFormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
+    
+    if (data.hasOwnProperty('isCustom')) {
+      setIsCustomPackage(!!data.isCustom);
+    }
   };
 
   const handleStepComplete = (nextStep: PackageStepType) => {
     if (!completedSteps.includes(currentStep)) {
       setCompletedSteps((prev) => [...prev, currentStep]);
     }
-    setCurrentStep(nextStep);
+    
+    if (isCustomPackage && currentStep === 'base') {
+      setCurrentStep('preview');
+      setCompletedSteps(['base', 'hall', 'food', 'services']);
+    } else {
+      setCurrentStep(nextStep);
+    }
   };
 
- useEffect(() => {
+  useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const step = urlParams.get("step") || "";
     setPackageIdUrl(step);
     setCurrentStep(step ? step as PackageStepType : "base");
   }, []);
+  
   const handlePrevious = () => {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
     if (currentIndex > 0) {
@@ -84,7 +99,6 @@ export default function CreatePackagePage() {
       autoClose: 3000,
     });
     
-    
     setTimeout(() => {
       router.push(RouteEnums.PACKAGE);
     }, 2000);
@@ -96,8 +110,11 @@ export default function CreatePackagePage() {
         return (
           <BasePackageForm
             defaultValues={defaultFormData}
-            onContinue={() => handleStepComplete("hall")}
-            
+            onContinue={(data) => {
+              updateFormData(data);
+              handleStepComplete("hall");
+            }}
+            setIsCustomPackage={setIsCustomPackage}
           />
         );
       case "hall":
@@ -107,6 +124,7 @@ export default function CreatePackagePage() {
             onContinue={() => handleStepComplete("food")}
             onSkip={handleSkipHall}
             onPrevious={handlePrevious}
+            packageIds={packageIdUrl}
           />
         );
       case "food":
@@ -130,7 +148,7 @@ export default function CreatePackagePage() {
       case "preview":
         return (
           <PackagePreview
-          defaultValues={defaultFormData}
+            defaultValues={defaultFormData}
             formData={formData}
             updateFormData={updateFormData}
             onSubmit={handleCreatePackage}
@@ -145,8 +163,6 @@ export default function CreatePackagePage() {
   return (
     <div className="mx-auto px-4 md:px-8 2xl:px-0">
       <ToastContainer />
-      
-      {/* Header */}
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-semibold text-dark dark:text-white">
@@ -173,13 +189,18 @@ export default function CreatePackagePage() {
         </div>
       </div>
 
-      {/* Stepper */}
+      {isCustomPackage && currentStep !== 'base' && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md text-amber-800">
+          <p className="font-medium">Custom Package Mode</p>
+          <p className="text-sm">This is a custom package. The intermediate steps are skipped as customers will contact you to customize their package.</p>
+        </div>
+      )}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           {steps.map((step, index) => {
             const isActive = step.id === currentStep;
             const isCompleted = completedSteps.includes(step.id);
-            const isDisabled = !isActive && !isCompleted;
+            const isDisabled = isCustomPackage && step.id !== 'base' && step.id !== 'preview';
 
             return (
               <div key={step.id} className="flex items-center">
@@ -190,8 +211,16 @@ export default function CreatePackagePage() {
                         ? "border-primary bg-primary text-white"
                         : isCompleted
                         ? "border-primary bg-white text-primary"
+                        : isDisabled
+                        ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
                         : "border-gray-300 bg-white text-gray-400"
                     }`}
+                    onClick={() => {
+                      if (!isDisabled && (isCompleted || isActive)) {
+                        setCurrentStep(step.id);
+                      }
+                    }}
+                    style={{ cursor: isDisabled ? "not-allowed" : isCompleted || isActive ? "pointer" : "default" }}
                   >
                     {isCompleted ? (
                       <Check className="h-5 w-5" />
@@ -201,8 +230,12 @@ export default function CreatePackagePage() {
                   </div>
                   <span
                     className={`mt-2 text-sm ${
-                      isActive || isCompleted
+                      isActive
                         ? "text-primary"
+                        : isCompleted
+                        ? "text-primary"
+                        : isDisabled
+                        ? "text-gray-300"
                         : "text-gray-500"
                     }`}
                   >

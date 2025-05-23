@@ -9,13 +9,15 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import { useCreateBasicPackageMutation } from "@/store/services";
 import Toggle from "@/components/common/Toggle";
+import { Info } from "lucide-react";
 
 interface BasePackageFormProps {
   defaultValues: CreatePackageFormData;
   onContinue: (data: CreatePackageFormData) => void;
+  setIsCustomPackage?: (isCustom: boolean) => void;
 }
 
-export default function BasePackageForm({ defaultValues, onContinue }: BasePackageFormProps) {
+export default function BasePackageForm({ defaultValues, onContinue, setIsCustomPackage }: BasePackageFormProps) {
   const router = useRouter();
   const {
     control,
@@ -25,7 +27,13 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
     reset,
     formState: { errors, isDirty },
   } = useForm<CreatePackageFormData>({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      isCustom: defaultValues.isCustom || false,
+      isCatering: defaultValues.isCatering || false,
+      perPerson: defaultValues.perPerson || false,
+      perPersonPrice: defaultValues.perPersonPrice || 0,
+    },
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +41,9 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
   const fileInputRef = useRef<HTMLInputElement>(null);
   const bannerImage = watch("bannerImage");
   const packageType = watch("forCatering");
+  const isCustom = watch("isCustom");
+  const isCatering = watch("isCatering");
+  const perPerson = watch("perPerson");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -58,7 +69,6 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
       setIsSubmitting(true);
       const formData = new FormData();
   
-      // Append required fields
       if(data?.name.en){
         formData.append("name[en]", data.name.en.trim());
       }
@@ -66,7 +76,6 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
         formData.append("name[am]", data.name.am.trim());
       }
      
-      // Append optional fields
       if (data.description?.en) {
         formData.append("description[en]", data.description.en.trim());
       }
@@ -88,10 +97,24 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
       }
   
       formData.append("forCatering", data.forCatering.toString());
+      formData.append("isCustom", data.isCustom.toString());
+      // formData.append("isCatering", data.isCatering.toString());
+      
+      if (data.perPerson) {
+        formData.append("perPerson", data.perPerson.toString());
+        if (data.perPersonPrice) {
+          formData.append("perPersonPrice", data.perPersonPrice.toString());
+        }
+      }
   
       const result = await createBasicPackage(formData).unwrap();
       toast.success('Package created successfully!');
-      onContinue(result); // Pass the API response to onContinue
+      
+      if (setIsCustomPackage) {
+        setIsCustomPackage(data.isCustom);
+      }
+      
+      onContinue(result); 
       console.log("API RES", result) 
       router.push(`${window.location.pathname}?pkg_id=${result.data?._id}`);
 
@@ -291,6 +314,126 @@ export default function BasePackageForm({ defaultValues, onContinue }: BasePacka
           <p className="mt-1 text-sm text-red-500">
             Minimum guests cannot be greater than maximum guests
           </p>
+      )}
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label className="text-dark dark:text-white font-medium mb-2.5 block">
+            Is Custom Package
+          </label>
+          <div className="flex items-center">
+            <Controller
+              name="isCustom"
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                const handleChange = (newValue: boolean) => {
+                  onChange(newValue);
+                  if (setIsCustomPackage) {
+                    setIsCustomPackage(newValue);
+                  }
+                };
+                
+                return (
+                  <Toggle
+                    checked={value ?? false}
+                    onChange={handleChange}
+                    className="mr-2"
+                  />
+                );
+              }}
+            />
+            <span className="text-sm text-dark dark:text-white mr-2">
+              {isCustom ? "Yes" : "No"}
+            </span>
+            <div className="relative group ml-1">
+              <Info size={16} className="text-gray-400 cursor-help" />
+              <div className="absolute left-0 bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                If enabled, this will be a custom package. Users will skip adding items and services, and will contact us for customization.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label className="text-dark dark:text-white font-medium mb-2.5 block">
+            Is Catering Package
+          </label>
+          <div className="flex items-center">
+            <Controller
+              name="isCatering"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <Toggle
+                  checked={value ?? false}
+                  onChange={onChange}
+                  className="mr-2"
+                />
+              )}
+            />
+            <span className="text-sm text-dark dark:text-white">
+              {isCatering ? "Yes" : "No"}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      {isCatering && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <div>
+            <label className="text-dark dark:text-white font-medium mb-2.5 block">
+              Price Per Person
+            </label>
+            <div className="flex items-center">
+              <Controller
+                name="perPerson"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <Toggle
+                    checked={value ?? false}
+                    onChange={onChange}
+                    className="mr-2"
+                  />
+                )}
+              />
+              <span className="text-sm text-dark dark:text-white">
+                {perPerson ? "Yes" : "No"}
+              </span>
+            </div>
+          </div>
+          
+          {perPerson && (
+            <div>
+              <label htmlFor="perPersonPrice" className="block text-sm font-medium text-gray-700 mb-1">
+                Per Person Price ($)
+              </label>
+              <Controller
+                name="perPersonPrice"
+                control={control}
+                rules={{
+                  required: perPerson ? "Per person price is required" : false,
+                  min: { value: 0.01, message: "Price must be greater than 0" },
+                }}
+                render={({ field }) => (
+                  <>
+                    <input
+                      {...field}
+                      id="perPersonPrice"
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      className={`block w-full rounded-md py-2 px-3 border ${errors.perPersonPrice ? "border-red-500" : "border-gray-300"} focus:border-primary focus:outline-none focus:ring-primary`}
+                      placeholder="0.00"
+                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    />
+                    {errors.perPersonPrice && (
+                      <p className="mt-1 text-sm text-red-500">{errors.perPersonPrice.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          )}
+        </div>
       )}
       
       <div className="mb-6">

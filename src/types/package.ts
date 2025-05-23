@@ -59,7 +59,12 @@ export interface CreatePackageFormData {
   services: PackageService[];
   isActive: boolean;
   forCatering: boolean;
-  active?: boolean
+  active?: boolean;
+  // New properties for custom and catering packages
+  isCustom?: boolean;
+  isCatering?: boolean;
+  perPerson?: boolean;
+  perPersonPrice?: number;
 }
 
 export type PackageStepType = 
