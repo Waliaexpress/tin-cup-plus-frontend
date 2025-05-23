@@ -22,8 +22,7 @@ const SocialLinks = () => {
   };
 
   return (
-    <section className="w-full py-16 px-4 md:px-6 relative overflow-hidden">
-      {/* === Left Side SVG Art === */}
+    <section className="w-full md:py-16 py-6 px-4 md:px-6 relative overflow-hidden">
       <div className="absolute top-0 left-0 z-0 hidden lg:block">
         <svg width="200" height="400" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
