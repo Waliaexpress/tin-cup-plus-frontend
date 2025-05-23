@@ -108,7 +108,7 @@ export const packageApiSlice = apiSlice.injectEndpoints({
         body: { itemIds: items.itemIds, type: items.type },
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Package', id: arg.packageId }],
-    })
+    }),
   }),
 });
 
@@ -123,4 +123,5 @@ export const {
   useDeletePackageMutation,
   useGetAllActivePackagesQuery,
   useAddFoodAndDrinkToPackageMutation,
+  useGetPublicPackageByIdQuery,
 } = packageApiSlice;

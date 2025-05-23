@@ -6,6 +6,7 @@ import Image from "next/image";
 import Toggle from "@/components/common/Toggle";
 import { Controller, useForm } from "react-hook-form";
 import { useActivatePackageMutation } from "@/store/services/package.service";
+import { toast } from "react-toastify";
 
 interface PackagePreviewProps {
   formData: CreatePackageFormData;
@@ -39,8 +40,14 @@ const [packageId, setPackageIdUrl] = useState("")
       setPackageIdUrl(pkgId);
     }, []);
   const handleFinalSubmit = async () => {
-    await activatePackage(packageId, active)
+    const toastId = toast.loading("Activating package...")
+    await activatePackage({ id: packageId, isActive: active })
     onSubmit()
+    toast.dismiss(toastId)
+    toast.success("Package activated successfully", {
+      autoClose: 5000,
+      toastId: "activate"
+    })
   
   }
   return (
@@ -51,7 +58,7 @@ const [packageId, setPackageIdUrl] = useState("")
       </p>
       <div className="mb-6">
         <label className="text-dark dark:text-white font-medium mb-2.5 block">
-          Package Category
+          Active/Inactive
         </label>
         <div className="flex items-center">
           <Controller
@@ -69,7 +76,7 @@ const [packageId, setPackageIdUrl] = useState("")
             )}
           />
           <span className="text-sm text-dark dark:text-white">
-            {active ? "Catering" : "Normal"}
+            {active ? "Active" : "Inactive"}
           </span>
         </div>
       </div>
