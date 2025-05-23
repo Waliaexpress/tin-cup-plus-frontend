@@ -106,22 +106,23 @@ const PackageCard = ({ pkg }: { pkg: PackageData }) => {
         </p>
         
         <div className="flex flex-wrap gap-2 mt-auto">
-          <div className="flex items-center text-sm text-gray-600">
+          {/* <div className="flex items-center text-sm text-gray-600">
             <DollarSign size={16} className="mr-1 text-primary" />
             <span>${pkg.basePrice}</span>
-          </div>
+          </div> */}
           <div className="flex items-center text-sm text-gray-600">
             <Users size={16} className="mr-1 text-primary" />
             <span>{pkg.minGuests}-{pkg.maxGuests} guests</span>
           </div>
-          {pkg.hall?.images?.length > 0 && (
-            <div className="flex items-center text-sm text-gray-600">
-              <PieChart size={16} className="mr-1 text-primary" />
-              <span>{pkg.hall.images.length} hall {pkg.hall.images.length === 1 ? 'image' : 'images'}</span>
-            </div>
-          )}
         </div>
-        
+        {/*isCustom */}
+        {pkg.isCustom && (
+          <div className="mt-4 inline-flex items-center justify-left hover:bg-primary/90 text-primary py-2  rounded-md transition-colors p-2 w-48 text-[12px]">
+            <PlusCircle size={16} className="mr-1" />
+            Custom Package 
+          </div>
+        )}
+
         <Link href={`/package/${pkg._id}`} className="mt-4 inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-md transition-colors w-full">
           View Details <ArrowRight size={16} className="ml-2" />
         </Link>

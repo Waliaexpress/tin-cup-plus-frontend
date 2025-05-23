@@ -11,7 +11,8 @@ import {
   ChevronDown,
   Info,
   Clock,
-  MapPin
+  MapPin,
+  Box
 } from "lucide-react";
 import { RouteEnums } from "@/routes/Routes";
 import Image from "next/image";
@@ -56,15 +57,6 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            {/* <Link 
-              href="/about" 
-              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
-                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
-              }`}
-            >
-              <Info size={18} />
-              <span>About Us</span>
-            </Link> */}
             
           
             
@@ -100,6 +92,15 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             >
               <Clock size={18} />
               <span>Hours & Location</span>
+            </Link>
+            <Link 
+              href="/packages" 
+              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
+                isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
+              }`}
+            >
+             <Box size={16}/>
+              <span>Packages</span>
             </Link>
             
             {/* <div className="relative">
