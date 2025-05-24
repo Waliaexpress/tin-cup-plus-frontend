@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui-elements/button";
 import { ArrowRight, ArrowLeft, Plus, Trash } from "lucide-react";
 import { CreatePackageFormData, PackageService } from "@/types/package";
+import { useAddServicesToPackageMutation } from "@/store/services/package.service";
+import { toast } from "react-toastify";
 
 interface ServicesPackageFormProps {
   formData: CreatePackageFormData;
@@ -11,8 +13,10 @@ interface ServicesPackageFormProps {
 }
 
 export default function ServicesPackageForm({ formData, updateFormData, onContinue, onPrevious }: ServicesPackageFormProps) {
-  const [newService, setNewService] = useState<PackageService>({ name: { en: "", am: "" }, description: "" });
+  const [newService, setNewService] = useState<PackageService>({ name: { en: "", am: "" }, description: { en: "", am: "" } });
+  const [addServicesToPackage] = useAddServicesToPackageMutation()
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [packageId, setPackageIdUrl] = useState("");
 
   const handleServiceChange = (field: string, value: string) => {
     if (field === "name.en" || field === "name.am") {
@@ -24,14 +28,28 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
           [child]: value
         }
       });
-    } else {
+    }else if(field === "description.en" || field === "description.am") {
+      const [parent, child] = field.split(".");
+      setNewService({
+        ...newService,
+        [parent]: {
+          ...newService.description,
+          [child]: value
+        }
+      });
+    }
+    else {
       setNewService({
         ...newService,
         [field]: value
       });
     }
   };
-
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pkgId = urlParams.get("pkg_id") || "";
+    setPackageIdUrl(pkgId);
+  }, []);
   const validateNewService = () => {
     const newErrors: Record<string, string> = {};
 
@@ -52,7 +70,7 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
       updateFormData({
         services: [...formData.services, { ...newService }]
       });
-      setNewService({ name: { en: "", am: "" }, description: "" });
+      setNewService({ name: { en: "", am: "" }, description: { en: "", am: "" } });
       setErrors({});
     }
   };
@@ -62,15 +80,21 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
     updatedServices.splice(index, 1);
     updateFormData({ services: updatedServices });
   };
-
+const handleonContinue = () => {
+  try {
+     addServicesToPackage({ packageId: packageId, services: formData.services }).unwrap();
+     toast.success('Services added successfully!');
+     onContinue();
+  } catch (error) {
+    toast.error(error?.data?.message || "Failed to add services. Please try again.");
+  }
+}
   return (
     <div className="space-y-6">
       <h3 className="text-xl font-semibold mb-4">Additional Services</h3>
       <p className="text-gray-600 text-sm mb-6">
         Add optional services for this package (e.g., DJ, Decoration, Mestengdo, etc.). These services will be included in the package price.
       </p>
-
-      {/* Existing Services List */}
       {formData.services.length > 0 && (
         <div className="mb-6">
           <h4 className="text-md font-medium mb-3">Added Services</h4>
@@ -82,7 +106,7 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
                     <h5 className="font-medium text-gray-800">{service.name.en}</h5>
                     <div className="text-sm text-gray-600 flex gap-3">
                       <span>Amharic: {service.name.am}</span>
-                      {service.description && <span>| {service.description}</span>}
+                      {service.description && <span>| {service.description.en}</span>}
                     </div>
                   </div>
                   <button
@@ -140,14 +164,27 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
         
         <div className="mb-4">
           <label htmlFor="service-description" className="block text-sm font-medium text-gray-700 mb-1">
-            Description (Optional)
+            Description (Optional) (English)
           </label>
           <textarea
             id="service-description"
             rows={3}
             className="block w-full rounded-md py-2 px-3 border border-gray-300 focus:border-primary focus:outline-none focus:ring-primary"
-            value={newService.description || ""}
-            onChange={(e) => handleServiceChange("description", e.target.value)}
+            value={newService.description.en || ""}
+            onChange={(e) => handleServiceChange("description.en", e.target.value)}
+            placeholder="Describe this service..."
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="service-description" className="block text-sm font-medium text-gray-700 mb-1">
+            Description (Optional) (Amharic)
+          </label>
+          <textarea
+            id="service-description-am"
+            rows={3}
+            className="block w-full rounded-md py-2 px-3 border border-gray-300 focus:border-primary focus:outline-none focus:ring-primary"
+            value={newService.description.am || ""}
+            onChange={(e) => handleServiceChange("description.am", e.target.value)}
             placeholder="Describe this service..."
           />
         </div>
@@ -175,7 +212,7 @@ export default function ServicesPackageForm({ formData, updateFormData, onContin
           label="Continue to Preview"
           icon={<ArrowRight className="h-4 w-4 ml-2" />}
           variant="primary"
-          onClick={onContinue}
+          onClick={handleonContinue}
           className="ml-auto"
         />
       </div>

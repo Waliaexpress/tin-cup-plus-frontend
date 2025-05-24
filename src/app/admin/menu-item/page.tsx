@@ -23,35 +23,39 @@ const LoadingSpinner = () => (
 export default function MenuItemsPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const [urlParams, setUrlParams] = useState<URLSearchParams>(
-    typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
-  );
+  
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [selectedCategory, setSelectedCategory] = useState('');
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setUrlParams(new URLSearchParams(window.location.search));
+      const params = new URLSearchParams(window.location.search);
+      const newPage = Number(params.get('page')) || 1;
+      const newLimit = Number(params.get('limit')) || 10;
+      const newCategoryId = params.get('categoryId') || '';
+      
+      setPage(newPage);
+      setLimit(newLimit);
+      setSelectedCategory(newCategoryId);
     }
-  }, [pathname]);
+  }, [pathname, window?.location?.search]);
   
-  const page = Number(urlParams.get('page')) || 1;
-  const limit = Number(urlParams.get('limit')) || 10;
-  const categoryId = urlParams.get('categoryId') || '';
-  
-  const [selectedCategory, setSelectedCategory] = useState<string>(categoryId);
-  
-  const { data: menuItemsData, isLoading: isLoadingMenuItems, error: menuItemError } = useGetMenuItemsQuery({
-    page, 
-    limit,
-    ...(selectedCategory ? { categoryId: selectedCategory } : {})
-  });
-  
+  const { data: menuItemsData, isLoading: isLoadingMenuItems, error: menuItemError } = useGetMenuItemsQuery(
+    { 
+      page, 
+      limit,
+      ...(selectedCategory ? { categoryId: selectedCategory } : {})
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetCategoriesQuery({
     page: 1,
     limit: 100 
   });
-  
-  // Extract menu items and pagination data
+ 
+
   const menuItems = menuItemsData?.data?.menuItems || [];
   const paginationData = menuItemsData?.data ? {
     currentPage: menuItemsData.data.page,
@@ -64,28 +68,35 @@ export default function MenuItemsPage() {
   } : null;
 
   const navigateWithFilters = (newParams: Record<string, string | number | null>) => {
+    const updatedParams = { 
+      page: newParams.page !== undefined ? newParams.page : page,
+      limit: newParams.limit !== undefined ? newParams.limit : limit,
+      categoryId: selectedCategory || '',
+      ...newParams 
+    };
+    
     const params = new URLSearchParams();
-    
-    if (page > 1) params.set('page', page.toString());
-    if (limit !== 10) params.set('limit', limit.toString());
-    if (selectedCategory) params.set('categoryId', selectedCategory);
-    
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value === null) {
-        params.delete(key);
-      } else {
+    Object.entries(updatedParams).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '') {
         params.set(key, String(value));
       }
     });
     
-
-    router.push(`/admin/menu-item?${params.toString()}`);
+    if (newParams.page !== undefined) setPage(Number(newParams.page));
+    if (newParams.limit !== undefined) setLimit(Number(newParams.limit));
+    if (newParams.categoryId !== undefined) setSelectedCategory(String(newParams.categoryId || ''));
+    
+    const queryString = params.toString();
+    const url = queryString ? `?${queryString}` : '';
+    router.push(`/admin/menu-item${url}`, { scroll: false });
   };
   
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategoryId = e.target.value;
-    setSelectedCategory(newCategoryId);
-    navigateWithFilters({ categoryId: newCategoryId || null, page: 1 });
+    navigateWithFilters({ 
+      categoryId: newCategoryId || null, 
+      page: 1 
+    });
   };
 
   const columns: TableColumn<any>[] = [
@@ -167,7 +178,6 @@ export default function MenuItemsPage() {
   };
 
   const handleToggleActive = (item: any, isActive: boolean) => {
-    // In a real app, we'd call an update API endpoint
     toast.success(`${item.name?.en} has been ${isActive ? 'activated' : 'deactivated'} successfully.`, {
       position: "top-right",
       autoClose: 3000,
@@ -228,14 +238,12 @@ export default function MenuItemsPage() {
         <LoadingSpinner />
       )}
 
-      {/* Error State */}
       {menuItemError && (
         <div className="p-4 bg-red-100 text-red-800 rounded-md mb-6">
           <p>Error loading menu items. Please try again.</p>
         </div>
       )}
 
-      {/* Data Table */}
       {!isLoadingMenuItems && !menuItemError && menuItems.length > 0 && (
         <div className="flex flex-col gap-5 md:gap-7">
           <DataTable
@@ -246,7 +254,6 @@ export default function MenuItemsPage() {
             keyField="_id"
           />
           
-          {/* Pagination */}
           {paginationData && (
             <Pagination 
               pagination={paginationData}
@@ -259,7 +266,6 @@ export default function MenuItemsPage() {
         </div>
       )}
 
-      {/* Empty State */}
       {!isLoadingMenuItems && !menuItemError && menuItems.length === 0 && (
         <div className="p-8 text-center bg-white rounded-lg shadow-sm border border-stroke">
           <p className="text-gray-500 mb-4">No menu items found.</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui-elements/button";
 import { ArrowLeft, Check } from "lucide-react";
 import { RouteEnums } from "@/routes/Routes";
@@ -13,6 +13,7 @@ import ServicesPackageForm from "@/app/admin/package/components/ServicesPackageF
 import PackagePreview from "@/app/admin/package/components/PackagePreview";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGetPackageByIdQuery } from "@/store/services/package.service";
 
 const defaultFormData: CreatePackageFormData = {
   name: { en: "", am: "" },
@@ -37,13 +38,51 @@ const defaultFormData: CreatePackageFormData = {
   perPersonPrice: 0
 };
 
-export default function CreatePackagePage() {
+export default function EditPackagePage() {
   const router = useRouter();
-  const [packageIdUrl, setPackageIdUrl] = useState<string>("");
-  const [currentStep, setCurrentStep] = useState<PackageStepType>(packageIdUrl ? "hall" : "base");
+  const params = useParams();
+  const packageId = params.id as string;
+  
+  const { data: packageData, isLoading, error } = useGetPackageByIdQuery(packageId);
+  
+  const [currentStep, setCurrentStep] = useState<PackageStepType>("base");
   const [formData, setFormData] = useState<CreatePackageFormData>(defaultFormData);
   const [completedSteps, setCompletedSteps] = useState<PackageStepType[]>([]);
   const [isCustomPackage, setIsCustomPackage] = useState<boolean>(false);
+
+  // Set form data when package data is loaded
+  useEffect(() => {
+    console.log("packageData EDIT page: ",packageData);
+    if (packageData?.data) {
+      const pkg = packageData.data;
+      setFormData({
+        name: pkg.name,
+        description: pkg.description || { en: "", am: "" },
+        basePrice: pkg.basePrice,
+        minGuests: pkg.minGuests || null,
+        maxGuests: pkg.maxGuests || null,
+        bannerImage: null, // Can't set the file object from API response
+        includesHall: !!pkg.hall,
+        hall: {
+          capacity: pkg.hall?.capacity || null,
+          images: []
+        },
+        foods: pkg.foods?.map(food => food._id) || [],
+        drinks: pkg.drinks?.map(drink => drink._id) || [],
+        services: pkg.services || [],
+        isActive: pkg.isActive,
+        forCatering: pkg.forCategring || false, // Note: API has a typo 'forCategring'
+        isCustom: pkg.isCustom || false,
+        isCatering: pkg.isCatering || false,
+        perPerson: pkg.perPerson || false,
+        perPersonPrice: pkg.perPersonPrice || 0
+      });
+      
+      setIsCustomPackage(pkg.isCustom || false);
+      // Mark all steps as completed initially for edit mode
+      setCompletedSteps(['base', 'hall', 'food', 'services']);
+    }
+  }, [packageData]);
 
   const steps: { id: PackageStepType; label: string }[] = [
     { id: "base", label: "Package Details" },
@@ -73,13 +112,6 @@ export default function CreatePackagePage() {
       setCurrentStep(nextStep);
     }
   };
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const step = urlParams.get("step") || "";
-    setPackageIdUrl(step);
-    setCurrentStep(step ? step as PackageStepType : "base");
-  }, []);
   
   const handlePrevious = () => {
     const currentIndex = steps.findIndex((step) => step.id === currentStep);
@@ -93,8 +125,8 @@ export default function CreatePackagePage() {
     handleStepComplete("food");
   };
 
-  const handleCreatePackage = () => {
-    toast.success("Package created successfully!", {
+  const handleUpdatePackage = () => {
+    toast.success("Package updated successfully!", {
       position: "top-right",
       autoClose: 3000,
     });
@@ -104,12 +136,33 @@ export default function CreatePackagePage() {
     }, 2000);
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <span className="ml-2">Loading package data...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="text-red-500 mb-4">Failed to load package data</div>
+        <Button 
+          label="Go Back" 
+          variant="primary" 
+          onClick={() => router.push(RouteEnums.PACKAGE)}
+        />
+      </div>
+    );
+  }
+
   const renderFormStep = () => {
     switch (currentStep) {
       case "base":
         return (
           <BasePackageForm
-            defaultValues={defaultFormData}
+            defaultValues={formData}
             onContinue={(data) => {
               updateFormData(data);
               handleStepComplete("hall");
@@ -120,11 +173,11 @@ export default function CreatePackagePage() {
       case "hall":
         return (
           <HallPackageForm
-            defaultValues={defaultFormData}
+            defaultValues={formData}
             onContinue={() => handleStepComplete("food")}
             onSkip={handleSkipHall}
             onPrevious={handlePrevious}
-            packageIds={packageIdUrl}
+            packageIds={packageId}
           />
         );
       case "food":
@@ -148,10 +201,10 @@ export default function CreatePackagePage() {
       case "preview":
         return (
           <PackagePreview
-            defaultValues={defaultFormData}
+            defaultValues={formData}
             formData={formData}
             updateFormData={updateFormData}
-            onSubmit={handleCreatePackage}
+            onSubmit={handleUpdatePackage}
             onPrevious={handlePrevious}
           />
         );
@@ -166,10 +219,10 @@ export default function CreatePackagePage() {
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-semibold text-dark dark:text-white">
-            Create New Package
+            Edit Package
           </h2>
           <p className="text-body-color dark:text-dark-6 mt-1">
-            Create a new package by completing all steps
+            Update package information by completing all steps
           </p>
         </div>
         <div className="flex space-x-2">
@@ -201,52 +254,28 @@ export default function CreatePackagePage() {
             const isActive = step.id === currentStep;
             const isCompleted = completedSteps.includes(step.id);
             const isDisabled = isCustomPackage && step.id !== 'base' && step.id !== 'preview';
-
+            
             return (
-              <div key={step.id} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 ${
-                      isActive
-                        ? "border-primary bg-primary text-white"
-                        : isCompleted
-                        ? "border-primary bg-white text-primary"
-                        : isDisabled
-                        ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "border-gray-300 bg-white text-gray-400"
-                    }`}
-                    onClick={() => {
-                      if (!isDisabled && (isCompleted || isActive)) {
-                        setCurrentStep(step.id);
-                      }
-                    }}
-                    style={{ cursor: isDisabled ? "not-allowed" : isCompleted || isActive ? "pointer" : "default" }}
-                  >
-                    {isCompleted ? (
-                      <Check className="h-5 w-5" />
-                    ) : (
-                      <span>{index + 1}</span>
-                    )}
-                  </div>
-                  <span
-                    className={`mt-2 text-sm ${
-                      isActive
-                        ? "text-primary"
-                        : isCompleted
-                        ? "text-primary"
-                        : isDisabled
-                        ? "text-gray-300"
-                        : "text-gray-500"
-                    }`}
+              <div key={step.id} className="flex flex-1 items-center">
+                <div
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isActive ? 'bg-primary text-white' : isCompleted ? 'bg-success text-white' : 'bg-gray-200 text-gray-500 dark:bg-dark-3 dark:text-dark-6'} ${isDisabled ? 'opacity-50' : ''}`}
+                >
+                  {isCompleted ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <span>{index + 1}</span>
+                  )}
+                </div>
+                <div className="ml-2 hidden md:block">
+                  <p
+                    className={`text-sm font-medium ${isActive ? 'text-primary' : isCompleted ? 'text-success' : 'text-body-color dark:text-dark-6'} ${isDisabled ? 'opacity-50' : ''}`}
                   >
                     {step.label}
-                  </span>
+                  </p>
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`h-1 w-12 md:w-28 ${
-                      isCompleted ? "bg-primary" : "bg-gray-300"
-                    }`}
+                    className={`ml-auto mr-auto h-px w-full max-w-[100px] ${isCompleted && steps[index + 1].id === currentStep ? 'bg-primary' : isCompleted ? 'bg-success' : 'bg-gray-200 dark:bg-dark-3'} ${isDisabled ? 'opacity-50' : ''}`}
                   ></div>
                 )}
               </div>
@@ -254,9 +283,8 @@ export default function CreatePackagePage() {
           })}
         </div>
       </div>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-stroke p-6 md:p-8">
-        {renderFormStep()}
-      </div>
+
+      <div>{renderFormStep()}</div>
     </div>
   );
 }

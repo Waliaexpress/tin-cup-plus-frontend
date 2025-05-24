@@ -38,7 +38,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'https://nyc3.digitaloceanspaces.com',
+        hostname: 'nyc3.digitaloceanspaces.com',
         port: '',
         pathname: '/**',
       }
