@@ -20,4 +20,5 @@ export enum RouteEnums {
     CREATE_PACKAGE = "/admin/package/create",
     EDIT_PACKAGE = "/admin/package/edit",
     HOURS_LOCATION = "/hours-location",
+    PACKAGE_DETAILS = "/admin/package/details",
 }
