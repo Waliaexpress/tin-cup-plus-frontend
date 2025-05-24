@@ -77,7 +77,7 @@ const PackageCard = ({ pkg }: { pkg: PackageData }) => {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
       whileHover={{ y: -5, boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)' }}
-      className="bg-white rounded-lg overflow-hidden shadow-md h-[460px] relative flex flex-col"
+      className="bg-white rounded-lg overflow-hidden shadow-md h-[400px] relative flex flex-col"
     >
       <div className="relative h-52 w-full overflow-hidden">
         {pkg.banner?.fileUrl && (
@@ -125,7 +125,8 @@ const PackageCard = ({ pkg }: { pkg: PackageData }) => {
         )}
 
         <Link href={`/package/${pkg._id}`} className="mt-4 inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-md transition-colors w-full">
-          View Details <ArrowRight size={16} className="ml-2" />
+          View Details 
+          <div className='hidden md:block'><ArrowRight size={16} className="ml-2" /></div>
         </Link>
       </div>
     </motion.div>
@@ -175,7 +176,7 @@ const Package = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {isLoading ? (
             skeletonArray.map((index) => (

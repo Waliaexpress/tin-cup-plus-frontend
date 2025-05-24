@@ -128,7 +128,7 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
   if (!mounted) {
     return (
       <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto md:px-4 px-1">
           <h2 className="text-3xl font-serif font-semibold mb-8 text-center">
            {menuTitle}
           </h2>
@@ -158,7 +158,7 @@ const MenuItems = ({title, type = "traditional", isSpecial = true, isTraditional
 
     
     <section className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto md:px-4 px-1">
         <h2 id="category-title" className="text-3xl font-serif font-semibold mb-8 text-center">
           {activeCategoryName}
         </h2>

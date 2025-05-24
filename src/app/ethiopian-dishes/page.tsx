@@ -6,8 +6,8 @@ import MenuItems from "@/components/localfood/menu/MenuItems";
 import { TraditionalFoodGallery } from "@/components/localfood";
 import Footer from "@/components/Landingpage/Footer";
 import { traditionalFeatures } from "@/components/Landingpage/constants";
-import { FeatureSection } from "@/components/Landingpage/Features";
 import Package from "@/components/localfood/package/Package";
+import { FeatureSection } from "@/components/Landingpage/FeatureSection";
 
 
 export default function EthiopianLandingPage() {
