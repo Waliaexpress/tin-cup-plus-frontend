@@ -29,7 +29,7 @@ const PackageDetails = () => {
     return (
       <>
         <MainNavigation />
-        <div className="container mx-auto px-4 py-16 min-h-[50vh] flex flex-col items-center justify-center">
+        <div className="container mx-auto md:px-4 px-1 py-16 min-h-[50vh] flex flex-col items-center justify-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -58,7 +58,7 @@ const PackageDetails = () => {
   return (
     <>
       <MainNavigation />
-      <div className="container mx-auto px-4 py-8 mt-16">
+      <div className="container mx-auto md:px-4 px-1 py-8 mt-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
