@@ -59,7 +59,7 @@ export default function HoursLocationPage() {
           </motion.p>
         </div>
       </motion.section>
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto md:px-4 px-1 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           
           <motion.div 
@@ -70,7 +70,7 @@ export default function HoursLocationPage() {
           >
             <div className="flex items-center mb-6">
               <Clock className="h-8 w-8 text-primary mr-3" />
-              <h2 className="text-3xl font-serif font-bold text-gray-800">Business Hours</h2>
+              <h2 className="text-xl md:text-3xl font-serif font-bold text-gray-800">Business Hours</h2>
             </div>
             
             <div className="space-y-4 mt-8">
@@ -100,7 +100,7 @@ export default function HoursLocationPage() {
           >
             <div className="flex items-center mb-6">
               <MapPin className="h-8 w-8 text-primary mr-3" />
-              <h2 className="text-3xl font-serif font-bold text-gray-800">Our Location</h2>
+              <h2 className="text-xl md:text-3xl font-serif font-bold text-gray-800">Our Location</h2>
             </div>
             
             <div className="mt-6 p-6 bg-gray-50 rounded-xl space-y-5">

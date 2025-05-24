@@ -55,7 +55,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               <div className="flex min-h-screen">
                 <div className="w-full bg-white dark:bg-[#020d1a]">
 
-                  <main className="isolate mx-auto w-full  overflow-hidden ">
+                  <main className="isolate mx-auto w-full  overflow-hidden mb-10 md:mb-0 ">
                     {children}
                     <MobileNavigation />
                   </main>
