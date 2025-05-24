@@ -24,7 +24,6 @@ const Hero = () => {
     "/images/landing_pages/res4.jpg",
   "/images/landing_pages/res5.jpg",
     "/images/landing_pages/modern_res2.jpg",
-    "/images/landing_pages/res3.jpg",
     "/images/landing_pages/rest1.jpg",
   ];
 

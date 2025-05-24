@@ -29,7 +29,7 @@ export   const businessHours = {
       {
         icon: <MapPin className="text-primary" size={20} />,
         label: "Address",
-        value: "2720 RICE STREET, Saint Paul, MN, United States, Minnesota",
+        value: "1220 Rice Street St. Paul, MN 55117",
         action: "https://www.google.com/maps/search/2720+RICE+STREET,+Saint+Paul,+MN,+United+States,+Minnesota",
       },
     ];
