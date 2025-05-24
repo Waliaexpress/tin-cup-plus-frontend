@@ -7,6 +7,11 @@ import InputGroup from "../FormElements/InputGroup";
 import { useState } from "react";
 import { useAdminSignupMutation } from "@/store/services";
 import { Mail, Lock, User, Phone, Eye, EyeOff } from "lucide-react";
+import { RouteEnums } from "@/routes/Routes";
+import { useRouter } from "next/navigation";
+import 'react-phone-input-2/lib/style.css';
+import PhoneInput from 'react-phone-input-2';
+
 
 export enum Role {
   ADMIN = "ADMIN",
@@ -25,6 +30,7 @@ interface SignupFormData {
 }
 
 export default function Signup() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [createUser, { data, isLoading }] = useAdminSignupMutation();
@@ -55,6 +61,7 @@ export default function Signup() {
       const response = await createUser(data).unwrap();
       toast.success(response?.message || "Signup successful!");
       reset();
+      router.push(RouteEnums.SIGN_IN);
     } catch (error: any) {
       const errorMessage = error?.data?.message || "Signup failed. Please try again.";
       toast.error(errorMessage);
@@ -122,16 +129,37 @@ export default function Signup() {
         </button>
       </div>
 
-      {/* Phone Input (optional) */}
-      <InputGroup
-        label="Phone (Optional)"
-        type="tel"
-        placeholder="Enter your phone number"
-        className="[&_input]:py-[15px]"
-        icon={<Phone size={20} />}
-        control={control}
+      <Controller
         name="phone"
-        errors={errors.phone}
+        control={control}
+        rules={{
+          required: false,
+          validate: (value) => {
+            if (value && value.length < 8) return "Enter a valid phone number";
+            return true;
+          },
+        }}
+        render={({ field }) => (
+          <div>
+            <label className="block text-sm font-medium mb-1">Phone (Optional)</label>
+            <PhoneInput
+              country={'us'}
+              enableSearch
+              value={field.value}
+              onChange={(value) => field.onChange(value)}
+              inputStyle={{
+                width: '100%',
+                paddingTop: "24px",
+                paddingBottom: '24px',
+                borderRadius: '0.5rem',
+                border: '1px solid #ccc',
+              }}
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+            )}
+          </div>
+        )}
       />
 
 

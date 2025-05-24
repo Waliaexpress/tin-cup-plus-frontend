@@ -17,6 +17,7 @@ import { Providers } from "./admin/providers/themProviders";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import MobileNavigation from "@/components/MobileNavigation";
+import AuthCheck from "@/components/Auth/AuthCheck";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -49,8 +50,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body>
         <StoreProvider>
-              <NextTopLoader showSpinner={false} />
-              <ToastContainer position="top-right" autoClose={5000} />
+              <ReduxProvider>
+                <AuthCheck />
+                <NextTopLoader showSpinner={false} />
+                <ToastContainer position="top-right" autoClose={5000} />
 
               <div className="flex min-h-screen">
                 <div className="w-full bg-white dark:bg-[#020d1a]">
@@ -61,6 +64,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
                   </main>
                 </div>
               </div>
+              </ReduxProvider>
         </StoreProvider>
       </body>
     </html>

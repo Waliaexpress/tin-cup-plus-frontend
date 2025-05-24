@@ -136,12 +136,12 @@ export default function Signin() {
               )}
             />
           </div>
-          <Link
+          {/* <Link
             href="/auth/forgot-password"
             className="hover:text-primary dark:text-white dark:hover:text-primary transition-colors"
           >
             Forgot Password?
-          </Link>
+          </Link> */}
         </div>
 
         <button
