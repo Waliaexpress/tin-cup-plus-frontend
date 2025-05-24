@@ -46,7 +46,7 @@ export const authApi = apiSlice.injectEndpoints({
     // Get User Info
     getUserInfo: builder.query({
       query: () => ({
-        url: '/user/me',
+        url: '/user/info',
         method: 'GET',
       }),
     }),
@@ -84,13 +84,6 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     */
   }),
-  ///api/v1/user/info
-  getUserInfo: builder.query({
-    query: () => ({
-      url: '/user/info',
-      method: 'GET',
-    }),
-  }),
 });
 
 // Export hooks for usage in components
@@ -99,7 +92,6 @@ export const {
   useCustomerSignupMutation,
   useLoginMutation,
   useGetUserInfoQuery,
-  useUserInfoQuery,
   
   // useLogoutMutation,
   // useRefreshMutation,
