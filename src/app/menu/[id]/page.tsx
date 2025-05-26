@@ -169,9 +169,8 @@ export default function MenuItemDetail() {
     <div className="min-h-screen pt-20 bg-gray-50">
       <MainNavigation />
       
-      <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden p-6">
+      <div className="container mx-auto md:px-4 py-8">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden md:p-6 p-3">
           <Link href={RouteEnums.FOREIGN_DISHES} className="inline-flex items-center text-primary hover:underline mb-6">
             <ArrowLeft size={16} className="mr-1" />
             Back to Menu

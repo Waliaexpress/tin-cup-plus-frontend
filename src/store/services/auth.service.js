@@ -46,7 +46,7 @@ export const authApi = apiSlice.injectEndpoints({
     // Get User Info
     getUserInfo: builder.query({
       query: () => ({
-        url: '/user/me',
+        url: '/user/info',
         method: 'GET',
       }),
     }),
