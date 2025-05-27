@@ -144,7 +144,7 @@ const Hero = () => {
         >
           <Phone className="text-white" size={20} />
           <span className="font-medium font-inter">(612) 556-7705</span>
-          {socialLinks.map((link: any) => (
+          {/* {socialLinks.map((link: any) => (
                       <motion.a
                       title={"Follow us on " +link.label}
                         key={link.label}
@@ -167,7 +167,7 @@ const Hero = () => {
                           <span className="text-primary">{link.icon}</span>
                         )}
                       </motion.a>
-                    ))}
+                    ))} */}
         </motion.a>
       </div>
     </div>

@@ -138,7 +138,7 @@ export default function HoursLocationPage() {
           </motion.div>
         </div>
       </div>
-              <SocialLinks/>
+              {/* <SocialLinks/> */}
       <FindUs />
       <motion.section 
         className="py-16 bg-gradient-to-r from-primary to-primary/80 text-white"

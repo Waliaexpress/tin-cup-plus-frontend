@@ -12,7 +12,8 @@ import {
   Info,
   Clock,
   MapPin,
-  Box
+  Box,
+  MenuIcon
 } from "lucide-react";
 import { RouteEnums } from "@/routes/Routes";
 import Image from "next/image";
@@ -59,19 +60,23 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            
-          
-            
-            <div className="relative group">
+            <div >
+            <Link 
+                  href="/foreign-dishes" 
+                  className="block px-4 py-2 text-gray-700 dark:text-white  dark:hover:
+                  "
+                >
               <button 
-                className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
+                className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : "hover:text-white"} transition-colors ${
                   isScrolled ? "text-gray-700 dark:text-white" : `${landing ? "text-white" : "text-gray-700"}`
                 }`}
               >
+                 <MenuIcon size={16}/>
                 <span>Menu</span>
-                <ChevronDown size={16} />
+               
               </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+              </Link>
+              {/* <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                 <Link 
                   href={RouteEnums.ETHIOPIAN_DISHES} 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -84,11 +89,11 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                 >
                   American Dishes
                 </Link>
-              </div>
+              </div> */}
             </div>
             <Link 
               href="/hours-location" 
-              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
+              className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : "hover:text-white"} transition-colors ${
                 isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
               }`}
             >
@@ -98,7 +103,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             {(path.includes("packages") || path.includes("ethiopian-dishes")) &&
               <Link 
               href="/packages" 
-              className={`flex items-center gap-1 font-medium hover:text-primary transition-colors ${
+              className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : "hover:text-white"} transition-colors ${
                 isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
               }`}
             >
@@ -225,13 +230,13 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             <span>Hours & Location</span>
           </Link>
           
-          <Link 
+          {/* <Link 
             href={RouteEnums.ETHIOPIAN_DISHES} 
             className="py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
           >
             VIP Traditional Dishes
-          </Link>
+          </Link> */}
           
           <Link 
             href={RouteEnums.FOREIGN_DISHES} 

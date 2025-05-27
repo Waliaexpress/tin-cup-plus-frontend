@@ -40,12 +40,12 @@ export const NAV_DATA = [
         icon: Icons.CategoryIcon,
         items: [],
       },
-      {
-        title: "Package",
-        url: RouteEnums.PACKAGE,
-        icon: PackageIcon,
-        items: [],
-      },
+      // {
+      //   title: "Package",
+      //   url: RouteEnums.PACKAGE,
+      //   icon: PackageIcon,
+      //   items: [],
+      // },
   //     {
   //       title: "Calendar",
   //       url: "/admin/calendar",
