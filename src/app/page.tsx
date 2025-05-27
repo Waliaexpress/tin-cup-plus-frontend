@@ -16,7 +16,7 @@ export default function LandingPage() {
       <MainNavigation landing={true} />
       <Hero />
       <Features />
-      <SocialLinks/>
+      {/* <SocialLinks/> */}
       <FindUs/>
       <Footer />
     </div>

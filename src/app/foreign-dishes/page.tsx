@@ -50,7 +50,7 @@ export default function ForeignDishesPage() {
       <section className="relative h-80 flex items-center justify-center overflow-hidden mt-20">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://c7.alamy.com/comp/2D4Y728/traditional-indian-cuisine-indian-recipes-food-various-panorama-banner-2D4Y728.jpg"
+            src="/images/slider_food/amdish.jpg"
             alt="Foreign Dishes"
             className="object-cover w-full h-full"
           />

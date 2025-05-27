@@ -50,7 +50,7 @@ const Footer = ({ isTraditional = false }: FooterProps) => {
                 Experience authentic cuisine in a warm,
                 welcoming environment.
               </p>
-              <div className="flex space-x-4">
+              {/* <div className="flex space-x-4">
                 {socialLinks.map((social: any, index) => (
                   <motion.a
                     key={index}
@@ -69,7 +69,7 @@ const Footer = ({ isTraditional = false }: FooterProps) => {
                    }
                   </motion.a>
                 ))}
-              </div>
+              </div> */}
             </motion.div>
 
             {footerLinks.map((column, columnIndex) => (

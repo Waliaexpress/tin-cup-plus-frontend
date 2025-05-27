@@ -57,7 +57,7 @@ export   const businessHours = {
       {
         title: "Menu",
         links: [
-          { label: "Traditional Dishes", href: RouteEnums.ETHIOPIAN_DISHES },
+          // { label: "Traditional Dishes", href: RouteEnums.ETHIOPIAN_DISHES },
           { label: "American Dishes", href: RouteEnums.FOREIGN_DISHES },
         ],
       },
