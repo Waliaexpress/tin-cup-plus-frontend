@@ -230,13 +230,13 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             <span>Hours & Location</span>
           </Link>
           
-          <Link 
+          {/* <Link 
             href={RouteEnums.ETHIOPIAN_DISHES} 
             className="py-2 text-gray-700 dark:text-white"
             onClick={() => setIsMenuOpen(false)}
           >
             VIP Traditional Dishes
-          </Link>
+          </Link> */}
           
           <Link 
             href={RouteEnums.FOREIGN_DISHES} 
