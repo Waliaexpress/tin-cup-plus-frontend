@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
 import { useRouter } from "next/navigation";
+
 
 interface MenuItemProps {
   id: string;
@@ -11,88 +10,51 @@ interface MenuItemProps {
   price: number;
   unit: string;
   image: string;
+  category?: { name?: { en?: string }; _id?: string };
   onAddToCart: (id: string) => void;
 }
 
-const MenuItem = ({ id, name, description, price, unit, image, onAddToCart }: MenuItemProps) => {
-  const [quantity, setQuantity] = useState(0);
+const MenuItem = ({ id, name, description, price, unit, image, category, onAddToCart }: MenuItemProps) => {
   const router = useRouter();
-  
-  const handleIncrement = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-    onAddToCart(id);
-  };
-  
-  const handleDecrement = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
-    }
-  };
   
   const handleItemClick = () => {
     router.push(`/menu/${id}`);
   };
+
   return (
     <div 
-      className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+      className="py-4 px-3 border-b border-dashed border-amber-800/30 hover:bg-amber-50/50 transition-colors cursor-pointer"
       onClick={handleItemClick}
     >
-      <div className="relative h-48 w-full overflow-hidden">
-        <img
-          src={image}
-          alt={name}
-          className="object-cover w-full h-full"
-        />
-      </div>
-      <div className="p-4">
-        <h3 className="text-lg font-serif font-medium text-gray-900 mb-1">{name}</h3>
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{description}</p>
-        <div className="flex justify-between items-center">
-          <div className="text-primary font-medium">
-            ${price} <span className="text-sm text-gray-500">/ {unit}</span>
+      <div className="flex gap-4">
+        {image && (
+          <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0 rounded-md overflow-hidden border border-amber-800/20">
+            <img 
+              src={image} 
+              alt={name}
+              className="w-full h-full object-cover"
+            />
           </div>
-          {/* <div className="flex items-center">
-            {quantity === 0 ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent navigation when clicking the button
-                  handleIncrement();
-                }}
-                className="bg-primary text-white px-3 py-1 rounded-md hover:bg-primary/90 transition-colors"
-                aria-label={`Add ${name} to cart`}
-              >
-                Add
-              </button>
-            ) : (
-              <div 
-                className="flex items-center bg-primary text-white px-2 py-1 rounded-md"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDecrement();
-                  }}
-                  className="p-0.5 hover:bg-primary-dark rounded-full"
-                  aria-label={`Remove ${name} from cart`}
-                >
-                  <Minus size={14} />
-                </button>
-                <span className="font-medium text-white min-w-[24px] text-center mx-1">{quantity}</span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleIncrement();
-                  }}
-                  className="p-0.5 hover:bg-primary-dark rounded-full"
-                  aria-label={`Add ${name} to cart`}
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
+        )}
+        <div className="flex flex-1 justify-between items-start">
+          <div className="flex-1">
+           
+            <h3 className="text-lg font-serif font-semibold text-amber-900">{name}</h3>
+            {description && (
+              <p className="text-sm text-amber-800/70 mt-1 line-clamp-2 italic">{description}</p>
             )}
-          </div> */}
+             {category?.name?.en && (
+              <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 mb-1">
+                {category.name.en}
+              </span>
+            )}
+          </div>
+          
+          <div className="flex items-center ml-2">
+            <div className="font-serif font-bold text-amber-900 whitespace-nowrap">
+              ${price.toFixed(2)}
+            </div>
+          </div>
         </div>
       </div>
     </div>
