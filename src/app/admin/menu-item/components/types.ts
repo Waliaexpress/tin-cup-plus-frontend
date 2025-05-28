@@ -46,4 +46,5 @@ export interface FormValues {
   isAvailable: boolean;
   is_traditional?: boolean;
   type?: string;
+  isSpecial?: boolean;
 }

@@ -57,13 +57,14 @@ export const menuItemApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, id) => [{ type: 'MenuItem', id }],
     }),
     getPublicMenuItems: builder.query({
-      query: ({ page, limit, isSpecial, isTraditional, categoryId }) => {
+      query: ({ page, limit, isSpecial, isTraditional, categoryId, type }) => {
         const params = new URLSearchParams();
         if (page) params.append('page', page.toString());
         if (limit) params.append('limit', limit.toString());
          if (isSpecial !== undefined) params.append('isSpecial', isSpecial);
         if (isTraditional !== undefined) params.append('isTraditional', isTraditional);
         if (categoryId) params.append('categoryId', categoryId);
+        if (type) params.append("type", type)
     
         return {
           url: `/public/menu-items?${params.toString()}`,
