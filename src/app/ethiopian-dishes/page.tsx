@@ -17,7 +17,7 @@ export default function EthiopianLandingPage() {
       <MainNavigation />
       <Hero />
       <Categories />
-      <div className="flex flex-col gap-14">
+      {/* <div className="flex flex-col gap-14">
         <MenuItems title="Special Dishes" isSpecial={true} isTraditional={true} />
         <MenuItems title="Popular Dishes" isSpecial={false} isTraditional={true} />
       </div>
@@ -34,7 +34,7 @@ export default function EthiopianLandingPage() {
             menuLink={feature?.menuLink}
           />
         ))}
-      </div>
+      </div> */}
       <section className="py-16 bg-white">
         <TraditionalFoodGallery />
       </section>
