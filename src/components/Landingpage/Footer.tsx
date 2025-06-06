@@ -50,6 +50,9 @@ const Footer = ({ isTraditional = false }: FooterProps) => {
                 Experience authentic cuisine in a warm,
                 welcoming environment.
               </p>
+              <p className="text-white mb-6 font-montserrat text-base md:text-lg md:block hidden">
+                For Hall Reservations and Catering, call <a href="tel:16127034169" className="underline hover:text-amber-200">(612) 703-4169</a> or email <a href="mailto:order@tincupplus.com" className="underline hover:text-amber-200">order@tincupplus.com</a>.
+              </p>
               {/* <div className="flex space-x-4">
                 {socialLinks.map((social: any, index) => (
                   <motion.a
@@ -91,12 +94,15 @@ const Footer = ({ isTraditional = false }: FooterProps) => {
                         href={link.href}
                         className="text-white hover:text-gray-200 flex items-center font-montserrat "
                       >
-                        <ArrowRight size={16} className="mr-2 text-primary" />
+                        <ArrowRight size={16} className="md:mr-2 text-primary hidden md:block" />
                         {link.label}
                       </Link>
                     </motion.li>
                   ))}
                 </ul>
+                <p className="text-white mb-6 font-montserrat text-base md:text-lg md:hidden mt-8">
+                For Hall Reservations and Catering, call <a href="tel:16127034169" className="underline hover:text-amber-200">(612) 703-4169</a> or email <a href="mailto:order@tincupplus.com" className="underline hover:text-amber-200">order@tincupplus.com</a>.
+              </p>
               </motion.div>
             ))}
 
@@ -110,7 +116,7 @@ const Footer = ({ isTraditional = false }: FooterProps) => {
               <div className="space-y-8">
                 <div>
                   <h3 className="text-lg font-bold mb-6 text-white font-playfair">
-                    Contact Us
+                    Contact Us  
                   </h3>
                   <ul className="md:space-y-4 space-y-2 ">
                     {contactInfo.map((contact, index) => (

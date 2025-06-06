@@ -9,7 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
-import { socialLinks } from "@/constants/hours";
+import { RouteEnums } from "@/routes/Routes";
 
 const Hero = () => {
   const router = useRouter();
@@ -23,8 +23,9 @@ const Hero = () => {
   const sliderImages = [
     "/images/landing_pages/res4.jpg",
   "/images/landing_pages/res5.jpg",
-    "/images/landing_pages/modern_res2.jpg",
+    "/images/landing_pages/modern_res",
     "/images/landing_pages/rest1.jpg",
+     "/images/landing_pages/res6.jpg",
   ];
 
   const handleNavigation = (path: string) => {
@@ -67,6 +68,7 @@ const Hero = () => {
       </Swiper>
 
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+     
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -89,30 +91,23 @@ const Hero = () => {
           >
             Discover a world of flavors at Tin Cup Plus Restaurant
           </motion.p>
-          <motion.div
+
+        </motion.div>
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 "
           >
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => handleNavigation("/foreign-dishes")}
+              onClick={() => handleNavigation(RouteEnums.FOREIGN_DISHES)}
               className="px-8 py-3 bg-white text-primary font-semibold rounded-lg text-lg transition-all hover:shadow-lg w-64 sm:w-auto font-inter"
             >
               Explore Menu
             </motion.button>
-            {/* <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleNavigation("/ethiopian-dishes")}
-              className="px-8 py-3 bg-primary text-white font-semibold rounded-lg text-lg transition-all hover:shadow-lg w-64 sm:w-auto font-inter"
-            >
-              Ethiopian Dishes
-            </motion.button> */}
           </motion.div>
-        </motion.div>
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
@@ -132,9 +127,9 @@ const Hero = () => {
         </motion.div>
       </div>
       
-      <div className="absolute top-32 right-8 z-20 hidden md:block">
+      <div className="absolute top-32 right-8 z-20 ">
         <motion.a
-          href="tel:(612) 556-7705"
+          href="tel:+16125567705"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
