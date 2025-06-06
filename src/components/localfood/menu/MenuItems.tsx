@@ -187,6 +187,7 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
                       unit={isApiItem ? 'item' : item?.unit}
                       image={isApiItem ? (item?.images && item?.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item?.image}
                       category={isApiItem ? item?.category : null}
+                      dietaryTag={isApiItem ? item?.dietaryTag : []}
                       onAddToCart={handleAddToCart}
                     />
                   </motion.div>

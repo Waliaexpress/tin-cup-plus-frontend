@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
+import { DietaryTag } from "@/types/menu-item";
+import Link from "next/link";
 
 interface MenuItemProps {
   id: string;
@@ -11,20 +11,15 @@ interface MenuItemProps {
   unit: string;
   image: string;
   category?: { name?: { en?: string }; _id?: string };
+  dietaryTag?: DietaryTag[];
   onAddToCart: (id: string) => void;
 }
 
-const MenuItem = ({ id, name, description, price, unit, image, category, onAddToCart }: MenuItemProps) => {
-  const router = useRouter();
+const MenuItem = ({ id, name, description, price, unit, image, category, dietaryTag = [], onAddToCart }: MenuItemProps) => {
   
-  const handleItemClick = () => {
-    router.push(`/menu/${id}`);
-  };
-
   return (
-    <div 
+    <Link href={`/menu/${id}`}
       className="py-4 px-3 border-b border-dashed border-amber-800/30 hover:bg-amber-50/50 transition-colors cursor-pointer"
-      onClick={handleItemClick}
     >
       <div className="flex gap-4">
         {image && (
@@ -43,7 +38,29 @@ const MenuItem = ({ id, name, description, price, unit, image, category, onAddTo
             {description && (
               <p className="text-sm text-amber-800/70 mt-1 line-clamp-2 italic">{description}</p>
             )}
-             {category?.name?.en && (
+            {dietaryTag && dietaryTag.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1 mb-1">
+                {dietaryTag.map((tag) => (
+                  <span
+                    key={tag._id}
+                    className="px-2 py-0.5 rounded-full text-xs font-medium border"
+                    style={{
+                      backgroundColor: tag?.colorCode || '#8B2500', 
+                      color: tag.colorCode ? '#fff' : '#92400e',
+                      borderColor: tag.colorCode || '#fef3c7',
+                      maxWidth: '90vw',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                    title={tag.name.en}
+                  >
+                    {tag.name.en}
+                  </span>
+                ))}
+              </div>
+            )}
+            {category?.name?.en && (
               <span className="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 mb-1">
                 {category.name.en}
               </span>
@@ -57,7 +74,7 @@ const MenuItem = ({ id, name, description, price, unit, image, category, onAddTo
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
