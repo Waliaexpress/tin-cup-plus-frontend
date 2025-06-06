@@ -23,7 +23,6 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
   const { user, isAuthenticated } = useSelector((state: any) => state.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [cartTotal, setCartTotal] = useState(0);
   const router = useRouter();
   const path = usePathname();
   useEffect(() => {
@@ -42,6 +41,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   return (
     <header 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-sm ${
@@ -62,12 +62,12 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           <nav className="hidden md:flex items-center space-x-8">
             <div >
             <Link 
-                  href="/foreign-dishes" 
+                  href={RouteEnums.FOREIGN_DISHES} 
                   className="block px-4 py-2 text-gray-700 dark:text-white  dark:hover:
                   "
                 >
               <button 
-                className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : "hover:text-white"} transition-colors ${
+                className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : landing ? "hover:text-white" : "hover:text-primary"} transition-colors ${
                   isScrolled ? "text-gray-700 dark:text-white" : `${landing ? "text-white" : "text-gray-700"}`
                 }`}
               >
@@ -84,7 +84,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
                   VIP Traditional Dishes
                 </Link>
                 <Link 
-                  href="/foreign-dishes" 
+                  href={RouteEnums.FOREIGN_DISHES} 
                   className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   American Dishes
@@ -92,8 +92,8 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
               </div> */}
             </div>
             <Link 
-              href="/hours-location" 
-              className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : "hover:text-white"} transition-colors ${
+              href={RouteEnums.HOURS_LOCATION} 
+              className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : landing ? "hover:text-white" : "hover:text-primary"} transition-colors ${
                 isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
               }`}
             >
@@ -103,7 +103,7 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
             {(path.includes("packages") || path.includes("ethiopian-dishes")) &&
               <Link 
               href="/packages" 
-              className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : "hover:text-white"} transition-colors ${
+              className={`flex items-center gap-1 font-medium ${isScrolled ? "hover:text-primary" : landing ? "hover:text-white" : "hover:text-primary"} transition-colors ${
                 isScrolled ? "text-gray-700 dark:text-white" : `${landing ?  "text-white": "text-gray-700"} `
               }`}
             >

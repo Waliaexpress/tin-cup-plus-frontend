@@ -35,7 +35,7 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [categoryId, setCategoryId] = useState<string | null>(null);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
 
   useEffect(() => {
     try {
@@ -52,7 +52,7 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
   }, [searchParams]);
   const { data: menuItemsResponse, isLoading: menuItemsLoading, refetch } = useGetPublicMenuItemsQuery({ page: 1, limit: limit, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId, type: type });
   useEffect(() => {
-    setMenuTitle(title || "Special Dishes");
+    setMenuTitle(title || "Dishes");
   }, [title]);
   const selectedCategory = useSelector((state: any) =>
     mounted ? state.category?.selectedCategory : null
@@ -154,17 +154,21 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
       </div>
     );
   }
-
+  if ( menuItemsResponse?.data?.menuItems?.length === 0 )
+  {
+    return <></>
+  }
   return (
     <>
-      {
-        menuItemsResponse?.data?.menuItems?.length > 0 ? (
           <div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="divide-y divide-dashed divide-gray-200/30"
             >
+              <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
+                  {menuTitle} 
+                </h2>
               {items.map((item) => {
                 const isApiItem = item._id !== undefined;
 
@@ -183,6 +187,7 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
                       unit={isApiItem ? 'item' : item?.unit}
                       image={isApiItem ? (item?.images && item?.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item?.image}
                       category={isApiItem ? item?.category : null}
+                      dietaryTag={isApiItem ? item?.dietaryTag : []}
                       onAddToCart={handleAddToCart}
                     />
                   </motion.div>
@@ -202,15 +207,7 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
                 </motion.button>
               </div>
             )}
-          </div>
-        ) :
-          <div className="md:py-40 py-20 bg-gray-50 flex flex-col items-center justify-center gap-3">
-            <Utensils/>
-            <p className="text-center text-gray-600">
-              No menu items found
-            </p>
-          </div>
-      }
+          </div> 
     </>
   );
 };

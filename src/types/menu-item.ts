@@ -29,3 +29,14 @@ export interface MenuItem {
   updatedAt: string;
   is_traditional: boolean;
 }
+
+
+export interface DietaryTag {
+  _id: string;
+  name: { en: string; am?: string };
+  description?: { en?: string; am?: string };
+  colorCode?: string;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
