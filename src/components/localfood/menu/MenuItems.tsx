@@ -35,7 +35,7 @@ const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = tru
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [categoryId, setCategoryId] = useState<string | null>(null);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
 
   useEffect(() => {
     try {
