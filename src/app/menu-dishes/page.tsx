@@ -114,27 +114,18 @@ export default function ForeignDishesPage() {
             <div className="border-double  md:p-5 p-3">
               
               <div className="mb-10">
-                <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
-                  Special Dishes
-                </h2>
                 <Suspense fallback={<MenuSkeleton />}>
                   <MenuItems type="food" title="Special Dishes" isTraditional={false} />
                 </Suspense>
               </div>
               
               <div className="mb-10">
-                <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
-                 Dishes
-                </h2>
                 <Suspense fallback={<MenuSkeleton />}>
                   <MenuItems type="food" title="Dishes" isSpecial={false} isTraditional={false} />
                 </Suspense>
               </div>
               
               <div>
-                <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
-                    Drinks
-                </h2>
                 <Suspense fallback={<MenuSkeleton />}>
                   <MenuItems type="drink" title="Drinks" isTraditional={false} isSpecial={false} />
                 </Suspense>
