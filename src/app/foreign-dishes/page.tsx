@@ -1,8 +1,5 @@
 "use client";
-
-import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import MenuItems from "@/components/localfood/menu/MenuItems";
 import foreignMenuData from "@/data/foreignMenuItems.json";
@@ -11,6 +8,42 @@ import MainNavigation from "@/components/layout/navigation/MainNavigation";
 import { useGetPublicCategoriesQuery } from "@/store/services/category.service";
 import { usePathname } from "next/navigation";
 import Footer from "@/components/Landingpage/Footer";
+import CategoriesRender from "@/components/localfood/categories/CategoriesRender";
+
+
+const MenuSkeleton = () => (
+  <div className="animate-pulse">
+    {[1, 2, 3, 4, 5].map((i) => (
+      <div key={i} className="py-4 px-3 border-b border-dashed border-gray-800/30">
+        <div className="flex gap-4">
+          <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0 rounded-md bg-gray-200/50"></div>
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="h-5 bg-gray-200/50 rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-gray-200/50 rounded w-1/2"></div>
+          </div>
+          <div className="flex items-start">
+            <div className="w-16 h-6 bg-gray-200/50 rounded self-center"></div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const CategorySkeleton = () => (
+  <section className="py-8 bg-white border-b">
+    <div className="container mx-auto px-4">
+      <div className="flex flex-wrap justify-center gap-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div 
+            key={i}
+            className="px-6 py-2 rounded-full bg-gray-200 animate-pulse h-9 w-24"
+          ></div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 export default function ForeignDishesPage() {
   const dispatch = useDispatch();
@@ -66,26 +99,51 @@ export default function ForeignDishesPage() {
           </p>
         </div>
       </section>
-      <section className="py-8 bg-white border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-4">
-            {categoriesResponse?.data?.map((category: any) => (
-              <button
-                key={category._id}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
-                  activeCategory === category._id
-                    ? "bg-primary text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-                onClick={() => handleCategoryChange(category._id)}
-              >
-                {category.name.en}
-              </button>
-            ))}
+     {isLoading ? (
+        <CategorySkeleton />
+      ) : (
+        <CategoriesRender 
+          categoriesResponse={categoriesResponse} 
+          activeCategory={activeCategory} 
+          handleCategoryChange={handleCategoryChange} 
+        />
+      )}
+      <section className="md:py-8 py-3">
+        <div className="md:container mx-auto md:px-4">
+          <div className="md:max-w-6xl w-full mx-auto rounded-lg md:p-6 p-3 ">
+            <div className="border-double  md:p-5 p-3">
+              
+              <div className="mb-10">
+                <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
+                  Special Dishes
+                </h2>
+                <Suspense fallback={<MenuSkeleton />}>
+                  <MenuItems type="food" title="Special Dishes" isTraditional={false} />
+                </Suspense>
+              </div>
+              
+              <div className="mb-10">
+                <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
+                 Dishes
+                </h2>
+                <Suspense fallback={<MenuSkeleton />}>
+                  <MenuItems type="food" title="Dishes" isSpecial={false} isTraditional={false} />
+                </Suspense>
+              </div>
+              
+              <div>
+                <h2 className="text-3xl font-serif font-bold text-center text-amber-900 mb-6  pb-3">
+                    Drinks
+                </h2>
+                <Suspense fallback={<MenuSkeleton />}>
+                  <MenuItems type="drink" title="Drinks" isTraditional={false} isSpecial={false} />
+                </Suspense>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <MenuItems type="foreign" title="Foreign Dishes" isTraditional={false} />
+      
       <Footer/>
     </div>
   );

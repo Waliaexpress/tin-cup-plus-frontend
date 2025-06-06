@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import dynamic from "next/dynamic";
 import { useGetPublicMenuItemsQuery } from "@/store/services/menuItem.service";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Utensils } from "lucide-react";
 
@@ -25,7 +25,7 @@ interface Category {
   items: MenuItem[];
 }
 
-const MenuItems = ({ title, type = "traditional", isSpecial = true, isTraditional = true }: { title?: string, type?: "traditional" | "foreign", isSpecial?: boolean, isTraditional?: boolean }) => {
+const MenuItems = ({ title, type = "food", isSpecial = true, isTraditional = true }: { title?: string, type?: "food" | "drink", isSpecial?: boolean, isTraditional?: boolean }) => {
 
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
@@ -33,15 +33,24 @@ const MenuItems = ({ title, type = "traditional", isSpecial = true, isTraditiona
   const [items, setItems] = useState<any[]>([]);
   const [menuTitle, setMenuTitle] = useState<string>("");
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [limit, setLimit] = useState(10);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setCategoryId(new URLSearchParams(window.location.search).get('category'));
+    try {
+      const category = searchParams?.get('category');
+      if (category && category.trim() !== '') {
+        setCategoryId(category);
+      } else {
+        setCategoryId(null);
+      }
+    } catch (error) {
+      console.error('Error extracting category from URL:', error);
+      setCategoryId(null);
     }
-  }, [pathname]);
-  const { data: menuItemsResponse, isLoading: menuItemsLoading, refetch } = useGetPublicMenuItemsQuery({ page: 1, limit: limit, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId });
+  }, [searchParams]);
+  const { data: menuItemsResponse, isLoading: menuItemsLoading, refetch } = useGetPublicMenuItemsQuery({ page: 1, limit: limit, isSpecial: isSpecial, isTraditional: isTraditional, categoryId: categoryId, type: type });
   useEffect(() => {
     setMenuTitle(title || "Special Dishes");
   }, [title]);
@@ -53,7 +62,6 @@ const MenuItems = ({ title, type = "traditional", isSpecial = true, isTraditiona
     refetch();
   }, [categoryId]);
 
-  console.log("menuItemsResponse", menuItemsResponse)
   useEffect(() => {
     setMounted(true);
 
@@ -71,9 +79,9 @@ const MenuItems = ({ title, type = "traditional", isSpecial = true, isTraditiona
       setActiveCategory(selectedCategory);
     }
 
-    if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems.length > 0) {
+    if (menuItemsResponse?.data?.menuItems && menuItemsResponse?.data?.menuItems?.length > 0) {
       if (categoryId) {
-        const filteredItems = menuItemsResponse?.data?.menuItems.filter((item: any) =>
+        const filteredItems = menuItemsResponse?.data?.menuItems?.filter((item: any) =>
           item.category && item.category._id === categoryId
         );
         setItems(filteredItems.length > 0 ? filteredItems : menuItemsResponse?.data?.menuItems);
@@ -128,27 +136,22 @@ const MenuItems = ({ title, type = "traditional", isSpecial = true, isTraditiona
   }, [activeCategory, mounted, categoryId, menuItemsResponse, title]);
   if (!mounted) {
     return (
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto md:px-4 px-1">
-          <h2 className="text-3xl font-serif font-semibold mb-8 text-center">
-            {menuTitle}
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((placeholder) => (
-              <div
-                key={placeholder}
-                className="bg-white rounded-lg shadow-md overflow-hidden h-72 animate-pulse"
-              >
-                <div className="h-48 w-full bg-gray-200"></div>
-                <div className="p-4">
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                </div>
+      <div className="animate-pulse">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="py-4 px-3 border-b border-dashed border-gray-200/30">
+            <div className="flex gap-4">
+              <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0 rounded-md bg-gray-200/50"></div>
+              <div className="flex-1 flex flex-col justify-center">
+                <div className="h-5 bg-gray-200/50 rounded w-3/4 mb-2"></div>
+                <div className="h-4 bg-gray-200/50 rounded w-1/2"></div>
               </div>
-            ))}
+              <div className="flex items-start">
+                <div className="w-16 h-6 bg-gray-200/50 rounded self-center"></div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
     );
   }
 
@@ -156,57 +159,50 @@ const MenuItems = ({ title, type = "traditional", isSpecial = true, isTraditiona
     <>
       {
         menuItemsResponse?.data?.menuItems?.length > 0 ? (
+          <div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="divide-y divide-dashed divide-gray-200/30"
+            >
+              {items.map((item) => {
+                const isApiItem = item._id !== undefined;
 
-
-          <section className="py-12 bg-gray-50">
-            <div className="container mx-auto md:px-4 px-1">
-              <h2 id="category-title" className="text-3xl font-serif font-semibold mb-8 text-center">
-                {activeCategoryName}
-              </h2>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
-              >
-                {items.map((item) => {
-                  const isApiItem = item._id !== undefined;
-
-                  return (
-                    <motion.div
-                      key={isApiItem ? item._id : item?.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <MenuItem
-                        id={isApiItem ? item?._id : item?.id}
-                        name={isApiItem ? item?.name?.en : item?.name}
-                        description={isApiItem ? item?.description?.en : item?.description}
-                        price={item?.price}
-                        unit={isApiItem ? 'item' : item?.unit}
-                        image={isApiItem ? (item?.images && item?.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item?.image}
-                        onAddToCart={handleAddToCart}
-                      />
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-
-              {menuItemsResponse?.data?.count > items?.length && (
-                <div className="mt-8 text-center">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setLimit(prev => prev + 10)}
-                    className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors"
+                return (
+                  <motion.div 
+                    key={isApiItem ? item._id : item?.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    Load More menu
-                  </motion.button>
-                </div>
-              )}
-            </div>
-          </section>
+                    <MenuItem
+                      id={isApiItem ? item?._id : item?.id}
+                      name={isApiItem ? item?.name?.en : item?.name}
+                      description={isApiItem ? item?.description?.en : item?.description}
+                      price={item?.price}
+                      unit={isApiItem ? 'item' : item?.unit}
+                      image={isApiItem ? (item?.images && item?.images.length > 0 ? item?.images?.[0]?.fileUrl : '') : item?.image}
+                      category={isApiItem ? item?.category : null}
+                      onAddToCart={handleAddToCart}
+                    />
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+
+            {menuItemsResponse?.data?.count > items?.length && (
+              <div className="mt-8 text-center">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="py-2 px-4 bg-gray-800 text-amber-50 font-serif rounded hover:bg-amber-700 transition-colors"
+                  onClick={() => setLimit(prev => prev + 10)}
+                >
+                  Load More
+                </motion.button>
+              </div>
+            )}
+          </div>
         ) :
           <div className="md:py-40 py-20 bg-gray-50 flex flex-col items-center justify-center gap-3">
             <Utensils/>

@@ -14,6 +14,6 @@ export const apiSlice = createApi({
         return headers;
       },
     }),
-    tagTypes: ['Category', 'Menu', 'DietaryTag', 'Ingridient'], 
+    tagTypes: ['Category', 'Menu', 'DietaryTag', 'Ingridient', 'MenuItem'], 
     endpoints: (builder) => ({}), // Empty, as endpoints are injected later
   });
