@@ -17,8 +17,8 @@ export   const businessHours = {
       {
         icon: <Mail className="text-primary" size={20} />,
         label: "Email",
-        value: "Tincupplusmn@gmail.com",
-        action: "mailto:Tincupplusmn@gmail.com",
+        value: "info@tincupplus.com",
+        action: "mailto:info@tincupplus.com",
       },
       {
         icon: <Phone className="text-primary" size={20} />,
@@ -57,8 +57,7 @@ export   const businessHours = {
       {
         title: "Menu",
         links: [
-          // { label: "Traditional Dishes", href: RouteEnums.ETHIOPIAN_DISHES },
-          { label: "American Dishes", href: RouteEnums.FOREIGN_DISHES },
+          { label: "Dishes", href: RouteEnums.FOREIGN_DISHES },
         ],
       },
     ];
