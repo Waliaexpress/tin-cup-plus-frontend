@@ -240,10 +240,11 @@ const MainNavigation = ({landing}: {landing?: boolean}) => {
           
           <Link 
             href={RouteEnums.FOREIGN_DISHES} 
-            className="py-2 text-gray-700 dark:text-white"
+            className="py-2 text-gray-700 dark:text-white flex items-center gap-2"
             onClick={() => setIsMenuOpen(false)}
           >
-            American Dishes
+            <Menu size={18} />
+           Dishes
           </Link>
           
           {/* <Link 
